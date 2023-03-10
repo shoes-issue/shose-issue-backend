@@ -1,5 +1,5 @@
 package com.issue.shoes.communityBoard.dao;
 
-public interface communityBoardDao {
+public interface CommunityBoardDao {
 
 }
