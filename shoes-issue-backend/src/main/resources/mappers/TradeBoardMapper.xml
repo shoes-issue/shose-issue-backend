@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="tradeBoard">
+
+	<select id="searchAllTradeBoard" resultType="tradeBoard">
+		SELECT tradeId, goodsCategory, tradeImage, tradeTitle,
+				userId, tradeLike, tradeDate
+		FROM tradeBoard
+	</select>
+	
+	<select id="selectTradeTitle" parameterType="String" resultType="tradeBoard">
+		SELECT tradeId, goodsCategory, tradeImage, tradeTitle,
+				userId, tradeLike, tradeDate
+		FROM tradeBoard
+		WHERE tradeTitle LIKE CONCAT('%',#{keyword},'%')
+	</select>
+</mapper>

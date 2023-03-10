@@ -3,15 +3,12 @@
           PUBLIC "-//mybatis.org/DTD Config 3.0//EN" 
           "http://mybatis.org/dtd/mybatis-3-config.dtd" >
 <configuration>
-
 	 <settings>
 	 	<setting name="jdbcTypeForNull" value="NULL"/>
 	 	<setting name="logImpl" value="LOG4J2"/>
 	 </settings>
 	 
-	 <!-- 
-	 <typeAliases>
-	 Alias 설정 여기서
-	 </typeAliases>
- 	-->
+	<typeAliases>
+	 	<typeAlias type="com.issue.shoes.tradeBoard.vo.TradeBoard" alias="tradeBoard" />
+	</typeAliases>
 </configuration>
