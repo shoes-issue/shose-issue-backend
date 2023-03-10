@@ -25,6 +25,7 @@
 		<property name="mapperLocations">
 			<list>
 				<value>classpath:mappers/UserMapper.xml</value>
+				<value>classpath:mappers/TradeBoardMapper.xml</value>
 			</list>
 		</property>
 

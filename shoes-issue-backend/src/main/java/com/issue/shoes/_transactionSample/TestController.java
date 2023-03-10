@@ -3,16 +3,18 @@ package com.issue.shoes._transactionSample;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 
-@Controller
+@RestController
+@CrossOrigin("http://localhost:8081")
 public class TestController {
 	
 	@Autowired
@@ -27,6 +29,7 @@ public class TestController {
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		
+		// service
 		 TransactionStatus txStatus =
 		            transactionManager.getTransaction(new DefaultTransactionDefinition());
 		try {
