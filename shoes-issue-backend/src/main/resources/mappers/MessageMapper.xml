@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="message">
+ 
+ 	<resultMap id="result"
+ 		type="com.issue.shoes.message.vo.Message">
+ 		<result property="messageId" column="messageId" />
+ 		<result property="messageTitle" column="messageTitle" />
+ 		<result property="messageContents" column="messageContents" />
+ 		<result property="messageSenddate" column="messageSenddate" jdbcType="DATETIME" 
+ 			javaType="String"/>
+ 		<result property="messageReceivedate" column="messageReceivedate" jdbcType="DATETIME" 
+ 			javaType="String"/>
+ 		<result property="messageOpenstatus" column="messageOpenstatus" jdbcType="BOOLEAN"
+ 			javaType="int"/>
+ 		<result property="messageSender" column="messageSender" />
+ 		<result property="messageReceiver" column="messageReceiver" />
+ 	</resultMap>
+ 	
+ 	<select id=""></select>
+ 
+ </mapper> 
