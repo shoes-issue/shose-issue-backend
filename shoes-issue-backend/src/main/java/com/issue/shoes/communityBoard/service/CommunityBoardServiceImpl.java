@@ -12,10 +12,7 @@ import com.issue.shoes.communityBoard.vo.CommunityBoard;
 public class CommunityBoardServiceImpl implements CommunityBoardService {
 
 	Logger log = LogManager.getLogger("case3");
-	
-//	@Autowired
-	
-	@Bean
+
 	public CommunityBoard findOneCommunityBoard(CommunityBoard communityBoard) {
 		
 		return null;
