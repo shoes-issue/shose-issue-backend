@@ -1,7 +1,5 @@
 package com.issue.shoes.user.controller;
 
-
-
 public interface UserController {
 	
 	//유저 한명 검색
@@ -12,5 +10,4 @@ public interface UserController {
 	String updateUser();
 	//유저 탈퇴
 	String deleteUser();
-	
 }

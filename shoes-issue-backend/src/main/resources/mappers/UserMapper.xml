@@ -4,9 +4,39 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="user">
-<insert id="test"  parameterType="String">
-	INSERT INTO sample VALUES(#{sampleWord})
-</insert>
+
+<mapper namespace="User">
+
+	<select id="selectUserById" parameterType="String"
+		resultType="com.issue.shoes.user.vo.User">
+		SELECT userId, userPw, userName, nickName, signupDate, updateDate,
+		deleteDate,
+		adminStatus, point, profileImage, phone, reportCount, reportDate
+		FROM user WHERE userId = #{userId};
+	</select>
+
+	<insert id="insertUser"
+		parameterType="com.issue.shoes.user.vo.User">
+		INSERT INTO user (userId, userPw, userName, nickName,
+		profileImage, phone)
+		VALUES (#{userId}, #{userPw}, #{userName}, #{nickName}, #{profileImage},
+		#{phone})
+	</insert>
+
+	<update id="updateUser"
+		parameterType="com.issue.shoes.user.vo.User">
+		UPDATE user
+		SET userId = #{userId},
+		userPw = #{userPw},
+		userName = #{userName},
+		nickName = #{nickName},
+		profileImage = #{profileImage},
+		phone = #{phone}
+		WHERE userId = #{userId}
+	</update>
+
+	<delete id="deleteUser" parameterType="String">
+		DELETE FROM user WHERE userId = #{userId}
+	</delete>
 
 </mapper>
