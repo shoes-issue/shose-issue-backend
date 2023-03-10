@@ -1,4 +1,4 @@
-# database personal config
+i# database personal config
 database.properties
 
 lecture
@@ -19,7 +19,7 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-servers
+servers/*
 
 # External tool builders
 .externalToolBuilders/
