@@ -4,6 +4,8 @@ import com.issue.shoes.user.vo.User;
 
 public interface UserDao {
 
+	User selectLoginUser(User user);
+	
 	User selectUserById(String userId);
 
 	void insertUser(User user) throws Exception;
