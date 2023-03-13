@@ -26,6 +26,7 @@
 			<list>
 				<value>classpath:mappers/UserMapper.xml</value>
 				<value>classpath:mappers/TradeBoardMapper.xml</value>
+				<value>classpath:mappers/CommunityBoardMapper.xml</value>
 			</list>
 		</property>
 

@@ -10,5 +10,6 @@
 	 
 	<typeAliases>
 	 	<typeAlias type="com.issue.shoes.tradeBoard.vo.TradeBoard" alias="tradeBoard" />
+	 	<typeAlias type="com.issue.shoes.communityBoard.vo.CommunityBoard" alias="CommunityBoard" />
 	</typeAliases>
 </configuration>

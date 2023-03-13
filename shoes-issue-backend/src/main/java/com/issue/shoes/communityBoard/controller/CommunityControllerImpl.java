@@ -1,10 +1,18 @@
 package com.issue.shoes.communityBoard.controller;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +20,7 @@ import com.google.gson.Gson;
 import com.issue.shoes.communityBoard.service.CommunityBoardServiceImpl;
 import com.issue.shoes.communityBoard.vo.CommunityBoard;
 
-@RequestMapping(value="/board")
+@RequestMapping(value = "/board")
 @RestController // data형태로 결과를 반환하기 위한 controller
 @CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "Content-Type", allowCredentials = "true")
 // 자동으로 설정된 헤더들 말고, 내가 추가로 설정한 헤더 설정이 있으면 이 옵션을 넣어줘야해
@@ -22,25 +30,29 @@ public class CommunityControllerImpl implements CommunityBoardController {
 	Logger log = LogManager.getLogger("case3");
 
 	// gson 추가
-//	@Autowired
-//	private Gson gson;
-	
+	@Autowired
+	private Gson gson;
+
 	// service 주입
 	@Autowired
-	private CommunityBoardServiceImpl service; 
-	
+	private CommunityBoardServiceImpl service;
+
 	@Override
-	@GetMapping(produces = "application/json; charset=UTF-8")
-	public String searchCommunityBoard(CommunityBoard communityBoard) {
-		
-		
+	@GetMapping(value = "/{boardId}", produces = "application/json; charset=UTF-8")
+	public String searchCommunityBoard(@PathVariable("boardId") String boardId) {
 		// 게시물 상세보기
-		// 게시물 id를 받아서
-		// service에 보내고
-		// 결과를 json으로 만들어서
-		// return
-		String result = "";
-		return result;
+		log.debug("boardId 조회={}", boardId);
+
+		
+		// service 실행하기
+		// 게시물 아이디를 가진 boardVO로 Data 전달하기
+		CommunityBoard result = service.findOneCommunityBoard(boardId);
+		log.debug("예시 결과={}", result);
+
+		// 실행한 결과 json으로 변환하기
+		String jsonResult = gson.toJson(result);
+
+		return jsonResult;
 	}
 
 	@Override
@@ -50,9 +62,15 @@ public class CommunityControllerImpl implements CommunityBoardController {
 	}
 
 	@Override
+	@GetMapping(produces = "application/json; charset=UTF-8")
 	public String searchAllCommunityBoard() {
-		// TODO Auto-generated method stub
-		return null;
+		log.debug("searchAllCommunityBoard 실행");
+
+		List<CommunityBoard> result = service.findAllCommunityBoard();
+
+		String jsonResult = gson.toJson(result);
+		System.out.println("서비스 실행후");
+		return jsonResult;
 	}
 
 	@Override
@@ -62,9 +80,25 @@ public class CommunityControllerImpl implements CommunityBoardController {
 	}
 
 	@Override
-	public String createCommunityBoard() {
-		// TODO Auto-generated method stub
-		return null;
+	@PutMapping(produces = "application/json; charset=UTF-8")
+	public ResponseEntity<String> createCommunityBoard(@RequestBody CommunityBoard communityBoard) {
+
+		log.debug("createCommunityBoard 실행={}", communityBoard);
+		UUID uuid = UUID.randomUUID();
+		communityBoard.setBoardId(uuid.toString());
+		int result = service.createCommunityBoard(communityBoard);
+		if (result == 1) {
+			log.debug("잘 생성되었어요");
+		} else {
+			log.debug("이상이 있어요");
+//			throw new Exception();
+		}
+		log.debug("결과={}", result);
+
+        String jsonResult = gson.toJson("게시물 생성 완료");
+        
+        // 처리 결과와 함께 200 상태 코드로 응답
+        return new ResponseEntity<String>(jsonResult, HttpStatus.OK);
 	}
 
 	@Override
