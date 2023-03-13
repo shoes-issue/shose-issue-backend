@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 public class CommunityBoard {
 	private String boardId;
 	private String boardTitle;
-	private String boardContent;
+	private String boardContents;
 	private int boardLike;
 	private String boardDate;
-	private String boardUpdate;
-	private String boardDeleted;
+	private String boardUpdatedate;
+	private String boardDeletedate;
+	private String userId;
 }

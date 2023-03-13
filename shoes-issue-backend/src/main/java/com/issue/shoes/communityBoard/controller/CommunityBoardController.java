@@ -1,5 +1,7 @@
 package com.issue.shoes.communityBoard.controller;
 
+import org.springframework.http.ResponseEntity;
+
 import com.issue.shoes.communityBoard.vo.CommunityBoard;
 
 public interface CommunityBoardController {
@@ -8,7 +10,7 @@ public interface CommunityBoardController {
 	 * 게시물 상세보기
 	 * @return
 	 */
-	String searchCommunityBoard(CommunityBoard communityBoard);
+	String searchCommunityBoard(String boardId);
 
 	/**
 	 * 유저 게시물 검색
@@ -32,7 +34,7 @@ public interface CommunityBoardController {
 	 * 게시물 생성
 	 * @return
 	 */
-	String createCommunityBoard();
+	ResponseEntity<String> createCommunityBoard(CommunityBoard communityBoard);
 	
 	/**
 	 * 게시물 수정
