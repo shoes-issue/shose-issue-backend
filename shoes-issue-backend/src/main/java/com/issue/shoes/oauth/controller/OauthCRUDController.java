@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +28,8 @@ import com.issue.shoes.oauth.vo.OauthJwt;
 import com.issue.shoes.user.vo.User;
 
 @Controller
-@CrossOrigin("http://localhost:8080")
-@RequestMapping(value = "api/users", produces = "application/json; charset=utf-8")
+@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true", allowedHeaders = "Content-Type")
+@RequestMapping(value = "/api", produces = "application/json; charset=utf-8")
 public class OauthCRUDController implements OauthController {
 
     private Logger log = LogManager.getLogger("case3");
@@ -43,7 +45,7 @@ public class OauthCRUDController implements OauthController {
 
 	@Override
 	@GetMapping(value = "/{userNo}")
-	public User getUser(@PathVariable int userNo, HttpEntity entity){
+	public User getUser(@PathVariable String userId, HttpEntity entity){
 		log.debug("유저 조회");
 
 		// access token 의 유효성 검사
@@ -54,35 +56,33 @@ public class OauthCRUDController implements OauthController {
 				.build()
 				)){
 			// 유저 정보 조회
-			User user = service.getUser(OauthJwt.builder().userNo(userNo).build());
+			User user = service.getUser(OauthJwt.builder().userId(userId).build());
 			return user;
 		}
 		else {
 			return null;
 		}
 	}
-
+	
 	@Override
 	@PostMapping(value = "/login")
 	public ResponseEntity<Object> loginUserToken(@RequestBody User user) {
-
-		Boolean isLoginValidation = service.loginUser(user);
-		Map<String, Object> map = new HashMap<>();
-		HttpHeaders headers = new HttpHeaders();
-		if(isLoginValidation) {
-			String accessToken = jwtUtil.createAccessJwt(user.getUserId());
-			String userJwtIdx = jwtUtil.createRefreshJwt(user.getUserId());
-			jwtUtil.setHeaderAccessToken(headers, accessToken);
-			jwtUtil.setHeaderRefreshToken(headers, userJwtIdx);
-			map.put("success", true);
-		}
-		else {
-			map.put("success", false);
-		}
-		String json = gson.toJson(map);
-		return ResponseEntity.ok()
-				.headers(headers)
-				.body(json);
+	    Boolean isLoginValidation = service.loginUser(user);
+	    Map<String, Object> map = new HashMap<>();
+	    HttpHeaders headers = new HttpHeaders();
+	    if(isLoginValidation) {
+	        String accessToken = jwtUtil.createAccessJwt(user.getUserId());
+	        String userJwtIdx = jwtUtil.createRefreshJwt(user.getUserId());
+	        jwtUtil.setHeaderAccessToken(headers, accessToken);
+	        jwtUtil.setHeaderRefreshToken(headers, userJwtIdx);
+	        map.put("success", true);
+	    } else {
+	        map.put("success", false);
+	    }
+	    String json = gson.toJson(map);
+	    return ResponseEntity.ok()
+	            .headers(headers)
+	            .body(json);
 	}
 
 	@Override

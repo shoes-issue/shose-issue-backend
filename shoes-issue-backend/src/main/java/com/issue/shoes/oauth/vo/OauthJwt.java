@@ -13,7 +13,7 @@ public class OauthJwt {
 
     private String userJwtIdx;
     private String subject;
-    private int userNo;
+    private String userId;
     private String refreshToken;
 
 }

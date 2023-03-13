@@ -1,0 +1,66 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="userJwtMapper">
+
+	<resultMap id="userJwtResultSet" type="userJwt">
+		<result property="userJwtIdx" column="userJwtIdx" />
+		<result property="subject" column="subject" />
+		<result property="userId" column="userId" />
+		<result property="refreshToken" column="refreshToken" />
+	</resultMap>
+ 
+	<select id="selectUserJwt" parameterType="userJwt"
+		resultMap="userJwtResultSet">
+		SELECT *
+		FROM OauthJwt
+		WHERE userJwtIdx = #{userJwtIdx}
+	</select>
+
+	<select id="selectUserJwtBySubject" parameterType="userJwt"
+		resultMap="userJwtResultSet">
+		SELECT UJ.*
+		FROM OauthJwt UJ
+		JOIN User U
+		WHERE U.userId = UJ.userId
+		AND U.userId = #{subject}
+	</select>
+
+	<insert id="insertJwtWithIdx" parameterType="userJwt">
+		INSERT INTO OauthJwt
+		(userJwtIdx, subject, userId, refreshToken)
+		SELECT #{userJwtIdx},
+		userId, #{refreshToken}
+		FROM User
+		WHERE userId = #{subject}
+	</insert>
+
+	<update id="updateUserJwtWithIdx" parameterType="userJwt">
+		UPDATE OauthJwt
+		SET refreshToken = #{refreshToken}
+		WHERE userJwtIdx = #{userJwtIdx}
+	</update>
+
+	<delete id="deleteUserJwtWithSubject" parameterType="userJwt">
+		DELETE
+		FROM OauthJwt
+		WHERE subject = #{subject}
+		<if test="userJwtIdx != null and userJwtIdx != ''">
+			AND userJwtIdx = #{userJwtIdx}
+		</if>
+	</delete>
+
+	<delete id="deleteUserJwtWithUserJwtIdx" parameterType="userJwt">
+		DELETE UJ
+		FROM OauthJwt UJ
+		JOIN User U
+		ON UJ.userId = U.userId
+		<where>
+			<if test="subject != null and subject != ''">U.userId = #{subject}</if>
+			<if test="userJwtIdx != null and userJwtIdx != ''">UJ.userJwtIdx = #{userJwtIdx}</if>
+		</where>
+	</delete>
+
+</mapper>
+

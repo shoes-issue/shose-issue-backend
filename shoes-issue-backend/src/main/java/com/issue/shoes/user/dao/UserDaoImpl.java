@@ -13,10 +13,11 @@ public class UserDaoImpl implements UserDao {
 	private SqlSession session;
 	
 	@Override
-	public 	User selectLoginUser(User user) {
-	    User result = null;
+	public User selectLoginUser(User user) {
+		User result = null;
 	    
-//	    result = session.selectOne("User.", user);
+	    result = session.selectOne("User.selectLoginUser", user);
+	    System.out.println(result);
 	    
 	    return result;
 	}

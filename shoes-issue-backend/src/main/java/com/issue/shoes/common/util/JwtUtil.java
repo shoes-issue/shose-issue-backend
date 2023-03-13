@@ -40,24 +40,6 @@ public class JwtUtil {
     @Autowired
     private OauthService service;
 
-//    public String createJwt(String subject, Long expTime) {
-//
-//        if(expTime <= 0) {
-//            throw new RuntimeException("만료 시간이 0보다 커야 한다");
-//        }
-//        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-//        byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRETKEY);
-//        Key signingKey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());
-//        String token = Jwts.builder()
-//                .setSubject(subject)
-//                .setIssuedAt(new Date(System.currentTimeMillis()))
-//                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPTIME))
-//                .signWith(signingKey)
-//                .compact();
-//
-//        return token;
-//    }
-
     public String createAccessJwt(String subject) {
         if(ACCESS_TOKEN_EXPTIME <= 0) {
             throw new RuntimeException("만료 시간이 0보다 커야 한다");
@@ -135,19 +117,10 @@ public class JwtUtil {
         headers.set("Authorization", "bearer "+ accessJwt);
     }
 
-    // 리프레시 토큰 헤더 설정
-//    public void setHeaderRefreshToken(HttpHeaders headers, String refreshJwt) {
-//        headers.set("RefreshToken", "bearer "+ refreshJwt);
-//    }
-
     // DB 리프레시 토큰의 idx 값 헤더 설정
     public void setHeaderRefreshToken(HttpHeaders headers, String userJwtIdx) {
         headers.set("RefreshTokenIdx", userJwtIdx);
     }
-
-//    public boolean registerRefreshToken(UserAuthentication userAuthentication) {
-//        return service.registerJwtWithIdx(userAuthentication);
-//    }
 
     // Request의 Header에서 AccessToken 값을 가져옵니다. "Authorization" : "token'
     public String resolveAccessToken(HttpEntity entity) {

@@ -2,6 +2,8 @@ package com.issue.shoes.oauth.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import com.issue.shoes.oauth.vo.OauthJwt;
 import com.issue.shoes.user.vo.User;
 
@@ -11,7 +13,7 @@ public interface OauthService {
 
     User getUser(OauthJwt oauthJwt);
 	
-    Boolean loginUser(User user);
+	Boolean loginUser(User user);
 	
     OauthJwt getUserJwt(OauthJwt oauthJwt);
 
@@ -22,4 +24,5 @@ public interface OauthService {
     OauthJwt getUserJwtBySubject(OauthJwt build);
 
     int removeUserJwt(OauthJwt oauthJwt);
+
 }
