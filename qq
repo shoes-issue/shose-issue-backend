@@ -1,0 +1,168 @@
+[33mcommit e6054c66fff9eee228f1849493083f64cd76c698[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m, [m[1;31morigin/develop[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 49d3202 7706c10
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 19:08:18 2023 +0900
+
+    Merge pull request #19 from shoes-issue/feature_#16
+    
+    [#16] feat tradeBoard event
+
+[33mcommit 7706c10f1eff93f487cb08320b969711694caf62[m[33m ([m[1;31morigin/feature_#16[m[33m)[m
+Merge: 4121946 49d3202
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 19:08:11 2023 +0900
+
+    Merge branch 'develop' into feature_#16
+
+[33mcommit 41219465e514437e5c086fc9e00286c6e2631c79[m
+Author: rlatks1217 <rlatks1217@gmail.com>
+Date:   Fri Mar 10 19:06:05 2023 +0900
+
+    [#16] feat tradeBoard event
+
+[33mcommit 49d3202fd2b7c5e88d258500ed3357c489999753[m
+Merge: 2be6ab2 40a3eac
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 19:01:58 2023 +0900
+
+    Merge pull request #17 from shoes-issue/feature-#12
+    
+    [#12] message 3/10
+
+[33mcommit 2be6ab2cb9872b8fb1e53da967545be68f2a6b33[m
+Merge: 9487f51 b5133d9
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 19:01:49 2023 +0900
+
+    Merge pull request #16 from shoes-issue/feature-#2
+    
+    user spring 작성 #2
+
+[33mcommit 9487f517eb907cccf14729b14e687aaf5512e6c1[m
+Merge: 88f9380 c7a5cd8
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 19:01:38 2023 +0900
+
+    Merge pull request #18 from shoes-issue/feature-#4
+    
+    [#4] feat: communityController
+
+[33mcommit c7a5cd8de9f1dd1de0e4174482ddc532f5e490ed[m[33m ([m[1;31morigin/feature-#4[m[33m)[m
+Author: jhyeom1545 <jhyeom1545@gmail.com>
+Date:   Fri Mar 10 19:00:57 2023 +0900
+
+    [#4] feat: communityController
+
+[33mcommit 40a3eac82deb5091fdb9d453a334cbab72ea8f6b[m[33m ([m[1;31morigin/feature-#12[m[33m)[m
+Author: eunseo0423 <kyee0423@gmail.com>
+Date:   Fri Mar 10 18:57:37 2023 +0900
+
+    20230310
+
+[33mcommit b5133d99d6fb895dc9fa920597af1d69f6f7b100[m[33m ([m[1;31morigin/feature-#2[m[33m, [m[1;32mfeature-#2[m[33m)[m
+Author: Newbi7 <anelitgel12@gmail.com>
+Date:   Fri Mar 10 17:19:04 2023 +0900
+
+    user spring 작성
+
+[33mcommit 88f938092ecb6f1ccb309d2c242292a0c91ded34[m
+Merge: b80a500 e3d5334
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 10:28:49 2023 +0900
+
+    Merge pull request #15 from shoes-issue/feature-#4
+    
+    [#4] feat: 1일차 community board 작업
+
+[33mcommit e3d5334252808916f3e6edb7eb961bb606715920[m
+Author: jhyeom1545 <jhyeom1545@gmail.com>
+Date:   Fri Mar 10 10:27:26 2023 +0900
+
+    [#4] feat: 1일차 community board 작업
+
+[33mcommit b80a5008e364d19568d3179fe1fd568de9fbde3f[m
+Merge: ea7cfc7 2970e4c
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 09:51:21 2023 +0900
+
+    Merge pull request #14 from shoes-issue/feature-#12
+    
+    [#12] feat message 작업 day1
+
+[33mcommit 2970e4c5db72d1779d40a1e2ff73addc83e0c7b1[m
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 09:50:23 2023 +0900
+
+    Delete web.xml
+
+[33mcommit 621232c41d6606a2914cbadf533a496304cf74c4[m
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 09:50:07 2023 +0900
+
+    Delete tomcat-users.xml
+
+[33mcommit ddc8bf2f61e9366ebf6d172a9609b76de403e6b7[m
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 09:49:59 2023 +0900
+
+    Delete server.xml
+
+[33mcommit 83918824a58c626d1e41b82e2ad31a0a4255241d[m
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 09:49:51 2023 +0900
+
+    Delete jmxremote.password
+
+[33mcommit d4acf5f70df281a67549d45f0c85202a5eb49ead[m
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 09:49:43 2023 +0900
+
+    Delete jmxremote.access
+
+[33mcommit 07570e56516cae8d011010feaea65d57b8bf7456[m
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 09:49:36 2023 +0900
+
+    Delete context.xml
+
+[33mcommit 6b50644fe3e5d2c19fe29bba9417581255e54fc1[m
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 09:49:27 2023 +0900
+
+    Delete catalina.properties
+
+[33mcommit 1bf6882857b521c478e2f63b5ce0db0c4b7b74be[m
+Author: JUNHO YEOM <105836661+jhyeom1545@users.noreply.github.com>
+Date:   Fri Mar 10 09:49:00 2023 +0900
+
+    Delete catalina.policy
+
+[33mcommit 56f216613f27f030b2c8870bef48a9e253b109af[m
+Author: eunseo0423 <kyee0423@gmail.com>
+Date:   Fri Mar 10 09:44:34 2023 +0900
+
+    20230309
+
+[33mcommit ea7cfc7c359e2e31c17402dbb93eff0df093a9fd[m
+Author: Newbi7 <anelitgel12@gmail.com>
+Date:   Fri Mar 10 09:40:10 2023 +0900
+
+    git ignore 수정, springedu 제거
+
+[33mcommit 955f9872f1b299dc00bf0f7472f202c19fce7749[m
+Author: jhyeom1545 <jhyeom1545@gmail.com>
+Date:   Thu Mar 9 11:10:15 2023 +0900
+
+    fix: .gitignore파일 수정
+
+[33mcommit 7f7465179b2ec12462549b27453d714bdd663fa3[m
+Author: jhyeom1545 <jhyeom1545@gmail.com>
+Date:   Thu Mar 9 11:00:31 2023 +0900
+
+    add: .gitignore 파일 추가
+
+[33mcommit f74bd60224a81c9ddf4cb05ea209ff866ff34582[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: rlatks1217 <rlatks1217@gmail.com>
+Date:   Wed Mar 8 17:49:20 2023 +0900
+
+    project-backEnd push
