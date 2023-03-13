@@ -1,5 +1,7 @@
 i# database personal config
 database.properties
+application personal config
+application.properties
 
 lecture
 target 

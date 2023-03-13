@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import com.issue.shoes.user.service.UserService;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:8081", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
 public class UserCRUDController implements UserController {
 	
 	@Autowired
