@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.gson.Gson;
 import com.issue.shoes.common.util.JwtUtil;
@@ -32,8 +33,8 @@ import com.issue.shoes.user.vo.User;
 @RequestMapping(value = "/api", produces = "application/json; charset=utf-8")
 public class OauthCRUDController implements OauthController {
 
-    private Logger log = LogManager.getLogger("case3");
-	
+	private Logger log = LogManager.getLogger("case3");
+
 	@Autowired
 	private OauthService service;
 
@@ -42,6 +43,7 @@ public class OauthCRUDController implements OauthController {
 
 	@Autowired
 	private Gson gson;
+
 
 	@Override
 	@GetMapping(value = "/{userNo}")
@@ -63,26 +65,37 @@ public class OauthCRUDController implements OauthController {
 			return null;
 		}
 	}
-	
+
 	@Override
 	@PostMapping(value = "/login")
 	public ResponseEntity<Object> loginUserToken(@RequestBody User user) {
-	    Boolean isLoginValidation = service.loginUser(user);
-	    Map<String, Object> map = new HashMap<>();
-	    HttpHeaders headers = new HttpHeaders();
-	    if(isLoginValidation) {
-	        String accessToken = jwtUtil.createAccessJwt(user.getUserId());
-	        String userJwtIdx = jwtUtil.createRefreshJwt(user.getUserId());
-	        jwtUtil.setHeaderAccessToken(headers, accessToken);
-	        jwtUtil.setHeaderRefreshToken(headers, userJwtIdx);
-	        map.put("success", user.getUserId());
-	    } else {
-	        map.put("success", false);
-	    }
-	    String json = gson.toJson(map);
-	    return ResponseEntity.ok()
-	            .headers(headers)
-	            .body(json);
+		Boolean isLoginValidation = service.loginUser(user);
+		Map<String, Object> map = new HashMap<>();
+		HttpHeaders headers = new HttpHeaders();
+		if(isLoginValidation) {
+			String accessToken = jwtUtil.createAccessJwt(user.getUserId());
+			String userJwtIdx = jwtUtil.createRefreshJwt(user.getUserId());
+			jwtUtil.setHeaderAccessToken(headers, accessToken);
+			jwtUtil.setHeaderRefreshToken(headers, userJwtIdx);
+			map.put("success", user.getUserId());
+			map.put("Authorization", accessToken);
+			map.put("RefreshTokenIdx", userJwtIdx);
+		} else {
+			map.put("success", false);
+		}
+		String json = gson.toJson(map);
+		return ResponseEntity.ok()
+				.headers(headers)
+				.body(json);
+	}
+	
+	@Override
+	@RequestMapping("/kakaologin")
+	public String home(@RequestParam(value = "code", required = false) String code) throws Exception{
+		System.out.println("#########" + code);
+		String access_Token = service.getAccessToken(code);
+		System.out.println("###access_Token#### : " + access_Token);
+		return "landingPage";
 	}
 
 	@Override

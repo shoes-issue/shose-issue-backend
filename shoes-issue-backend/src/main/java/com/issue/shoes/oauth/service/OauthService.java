@@ -25,4 +25,6 @@ public interface OauthService {
 
     int removeUserJwt(OauthJwt oauthJwt);
 
+	String getAccessToken(String authorize_code);
+
 }
