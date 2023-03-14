@@ -1,5 +1,12 @@
 package com.issue.shoes.oauth.service;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.issue.shoes.oauth.dao.OauthDao;
 import com.issue.shoes.oauth.vo.OauthJwt;
 import com.issue.shoes.user.dao.UserDao;
@@ -18,74 +27,135 @@ import com.issue.shoes.user.vo.User;
 @Service
 public class OauthCRUDService implements OauthService {
 
-    private Logger log = LogManager.getLogger("case3");
+	private Logger log = LogManager.getLogger("case3");
 
 	@Autowired
 	private OauthDao oauthdao;
-	
+
 	@Autowired
 	private UserDao userdao;
-	
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    @Value("${secretKey}")
-    private String key;
-    
-    @Override
-    public Boolean loginUser(User user) {
-        // login 시 사용하는 id 만 가지고 일단 db 를 불러온 뒤
-    	log.debug(user);
-    	User loginUser = userdao.selectLoginUser(user);
-    		log.debug("유저검색");
-    		
-        // 만약 유저 아이디가 일치 하지 않으면 db 에 조회가 안될 것이고,
-        if(loginUser == null) {
-            log.debug("해당 아이디의 유저가 존재하지 않습니다.");
-            return false;
-        }
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-        // 만약 비밀번호가 일치하지 않는다면
-        if(!user.getUserPw().equals(loginUser.getUserPw())) {
-            log.debug(user.getUserPw());
-            log.debug(loginUser.getUserPw());
-            log.debug("비밀번호가 일치하지 않습니다.");
-            return false;
-        }
-        log.debug("로그인에 성공했습니다.");
+	@Value("${secretKey}")
+	private String key;
 
-        return true;
-    }
-    
-    @Override
-    @Transactional
-    public OauthJwt createUserJwt(OauthJwt oauthJwt) {
-        oauthJwt.setUserJwtIdx(passwordEncoder.encode(oauthJwt.getSubject()+key));
-        oauthdao.insertJwtWithIdx(oauthJwt);
-        return oauthdao.selectUserJwt(oauthJwt);
-    }
+	@Override
+	public Boolean loginUser(User user) {
+		// login 시 사용하는 id 만 가지고 일단 db 를 불러온 뒤
+		log.debug(user);
+		User loginUser = userdao.selectLoginUser(user);
+		log.debug("유저검색");
 
-    @Override
-    public OauthJwt getUserJwt(OauthJwt oauthJwt) {
-        return oauthdao.selectUserJwt(oauthJwt);
-    }
+		// 만약 유저 아이디가 일치 하지 않으면 db 에 조회가 안될 것이고,
+		if(loginUser == null) {
+			log.debug("해당 아이디의 유저가 존재하지 않습니다.");
+			return false;
+		}
 
-    @Override
-    public OauthJwt getUserJwtBySubject(OauthJwt oauthJwt) {
-        return oauthdao.selectUserJwtBySubject(oauthJwt);
-    }
+		// 만약 비밀번호가 일치하지 않는다면
+		if(!user.getUserPw().equals(loginUser.getUserPw())) {
+			log.debug(user.getUserPw());
+			log.debug(loginUser.getUserPw());
+			log.debug("비밀번호가 일치하지 않습니다.");
+			return false;
+		}
+		log.debug("로그인에 성공했습니다.");
 
-    @Override
-    @Transactional
-    public OauthJwt editUserJwt(OauthJwt oauthJwt) {
-    	oauthdao.updateUserJwt(oauthJwt);
-        return oauthdao.selectUserJwt(oauthJwt);
-    }
+		return true;
+	}
 
-    @Override
-    public int removeUserJwt(OauthJwt oauthJwt) {
-        return oauthdao.deleteUserJwt(oauthJwt);
-    }
+	@Override
+	public String getAccessToken (String authorize_code) {
+		String access_Token = "";
+		String refresh_Token = "";
+		String reqURL = "https://kauth.kakao.com/oauth/token";
+
+		try {
+			URL url = new URL(reqURL);
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+			//    POST 요청을 위해 기본값이 false인 setDoOutput을 true로
+
+			conn.setRequestMethod("POST");
+			conn.setDoOutput(true);
+
+			//    POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+			StringBuilder sb = new StringBuilder();
+			sb.append("grant_type=authorization_code");
+			sb.append("&client_id=730975601d99f3b911f8fb8fff4edafa");  //본인이 발급받은 key
+			sb.append("&redirect_uri=http://localhost:8080/login");     // 본인이 설정해 놓은 경로
+			sb.append("&code=" + authorize_code);
+			bw.write(sb.toString());
+			bw.flush();
+
+			//    결과 코드가 200이라면 성공
+			int responseCode = conn.getResponseCode();
+			System.out.println("responseCode : " + responseCode);
+
+			//    요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String line = "";
+			String result = "";
+
+			while ((line = br.readLine()) != null) {
+				result += line;
+			}
+			System.out.println("response body : " + result);
+
+			//    Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
+			JsonParser parser = new JsonParser();
+			JsonElement element = parser.parse(result);
+
+			access_Token = element.getAsJsonObject().get("access_token").getAsString();
+			refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
+
+			System.out.println("access_token : " + access_Token);
+			System.out.println("refresh_token : " + refresh_Token);
+
+			br.close();
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return access_Token;
+	}
+
+
+	@Override
+	@Transactional
+	public OauthJwt createUserJwt(OauthJwt oauthJwt) {
+		oauthJwt.setUserJwtIdx(passwordEncoder.encode(oauthJwt.getSubject()+key));
+		oauthdao.insertJwtWithIdx(oauthJwt);
+		return oauthdao.selectUserJwt(oauthJwt);
+	}
+
+	@Override
+	public OauthJwt getUserJwt(OauthJwt oauthJwt) {
+		return oauthdao.selectUserJwt(oauthJwt);
+	}
+
+	@Override
+	public OauthJwt getUserJwtBySubject(OauthJwt oauthJwt) {
+		return oauthdao.selectUserJwtBySubject(oauthJwt);
+	}
+
+	@Override
+	@Transactional
+	public OauthJwt editUserJwt(OauthJwt oauthJwt) {
+		oauthdao.updateUserJwt(oauthJwt);
+		return oauthdao.selectUserJwt(oauthJwt);
+	}
+
+	@Override
+	public int removeUserJwt(OauthJwt oauthJwt) {
+		return oauthdao.deleteUserJwt(oauthJwt);
+	}
 
 	@Override
 	public List<User> getUsers() {

@@ -19,4 +19,6 @@ public interface OauthController {
 	Object update(User user);
 	
 	User loginUser(User user);
+	//카카오로그인
+	String home(String code) throws Exception;
 }
