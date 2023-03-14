@@ -7,6 +7,12 @@
 
 <mapper namespace="User">
 
+	<select id="selectLoginUser" parameterType="String"
+		resultType="com.issue.shoes.user.vo.User">
+		SELECT userId, userPw
+		FROM user WHERE userId = #{userId};
+	</select>
+
 	<select id="selectUserById" parameterType="String"
 		resultType="com.issue.shoes.user.vo.User">
 		SELECT userId, userPw, userName, nickName, signupDate, updateDate,
