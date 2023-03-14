@@ -3,12 +3,14 @@
 
 
 <mapper namespace="CommunityBoard">
+	
 	<!-- 게시글 세부 조회 -->
 	<select id="selectOne" parameterType="String"
 		resultType="CommunityBoard">
        <![CDATA[   
          SELECT *
-         FROM communityboard WHERE boardId = #{boardId}
+         FROM communityboard
+         WHERE boardId = #{boardId} AND boardDeletedate IS NULL
       ]]>
 	</select>
 
@@ -17,6 +19,7 @@
        <![CDATA[   
          SELECT *
          FROM communityboard
+         WHERE boardDeletedate IS NULL
       ]]>
 	</select>
 
@@ -26,4 +29,25 @@
   		VALUES (#{boardId}, #{boardTitle}, #{boardContents}, NOW(), #{userId})
 	   ]]>
 	</insert>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="delete" parameterType="CommunityBoard">
+		<![CDATA[
+		    UPDATE communityboard 
+		    SET boardDeletedate = NOW()
+		    WHERE boardId = #{boardId} AND userId = #{userId}
+  		]]>
+	</delete>
+	
+	<!-- 게시글 수정 -->
+	<update id="update" parameterType="CommunityBoard">
+		<![CDATA[
+		    UPDATE communityboard
+		    SET 
+		    	boardUpdateDate = NOW(),
+		    	boardTitle = #{boardTitle},
+		    	boardContents = #{boardContents}
+		    WHERE boardId = #{boardId} AND userId = #{userId}
+  		]]>
+	</update>
 </mapper>

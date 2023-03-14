@@ -1,6 +1,9 @@
 package com.issue.shoes.communityBoard.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.issue.shoes.communityBoard.vo.CommunityBoard;
 
@@ -22,7 +25,7 @@ public interface CommunityBoardController {
 	 * 게시물 모두 검색
 	 * @return
 	 */
-	String searchAllCommunityBoard();
+	List<CommunityBoard> searchAllCommunityBoard();
 
 	/**
 	 * 게시물 제목 검색
@@ -40,12 +43,12 @@ public interface CommunityBoardController {
 	 * 게시물 수정
 	 * @return
 	 */
-	String updateCommunityBoard();
+	String updateCommunityBoard(String boardId, CommunityBoard communityBoard);
 	
 	/**
 	 * 게시물 삭제
 	 * @return
 	 */
-	String deleteCommunityBoard();
+	String deleteCommunityBoard(@PathVariable String userId, CommunityBoard communityBoard);
 
 }

@@ -29,6 +29,11 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 	    this.transactionManager = transactionManager;
 	}
 	
+	/**
+	 * 
+	 * @param boardId
+	 * @return CommunityBoard
+	 */
 	public CommunityBoard findOneCommunityBoard(String boardId) {
 		CommunityBoard result = null;
 		
@@ -48,6 +53,10 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @return List
+	 */
 	public List<CommunityBoard> findAllCommunityBoard() {
 		List<CommunityBoard> result = null;
 		
@@ -66,12 +75,69 @@ public class CommunityBoardServiceImpl implements CommunityBoardService {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @param communityBoard
+	 * @return int
+	 */
 	public int createCommunityBoard(CommunityBoard communityBoard) {
 	int result = 0;
 		TransactionStatus txStatus =
 	            transactionManager.getTransaction(new DefaultTransactionDefinition());
 		try {
 			result = dao.insert(communityBoard);
+			if(result == 1) {
+				transactionManager.commit(txStatus);
+				log.debug("service => 잘 실행 되었어요");	
+			} else {
+				throw new Exception("error");
+			}
+		} catch (Exception e) {
+			transactionManager.rollback(txStatus);
+			log.debug("service => 뭔가 이상해요 사유={}", e);
+			throw new RuntimeException("게시판 목록 조회 중 오류가 발생하였습니다.", e);
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param communityBoard
+	 * @return int
+	 */
+	public int deleteCommunityBoard(CommunityBoard communityBoard) {
+		int result = 0;
+		TransactionStatus txStatus =
+	            transactionManager.getTransaction(new DefaultTransactionDefinition());
+		try {
+			result = dao.delete(communityBoard);
+			log.debug("result={}",result);
+			if(result == 1) {
+				transactionManager.commit(txStatus);
+				log.debug("service => 잘 실행 되었어요");	
+			} else {
+				throw new Exception("error");
+			}
+		} catch (Exception e) {
+			transactionManager.rollback(txStatus);
+			log.debug("service => 뭔가 이상해요 사유={}", e);
+			throw new RuntimeException("게시판 목록 조회 중 오류가 발생하였습니다.", e);
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param communityBoard
+	 * @return int
+	 */
+	public int updateCommunityBoard(CommunityBoard communityBoard) {
+		int result = 0;
+		TransactionStatus txStatus =
+	            transactionManager.getTransaction(new DefaultTransactionDefinition());
+		try {
+			result = dao.update(communityBoard);
+			log.debug("result={}",result);
 			if(result == 1) {
 				transactionManager.commit(txStatus);
 				log.debug("service => 잘 실행 되었어요");	
