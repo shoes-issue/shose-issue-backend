@@ -64,7 +64,7 @@ public class CommunityControllerImpl implements CommunityBoardController {
 	@Override
 	@GetMapping(value = "/123")
 	public String searchUserCommunityBoard() {
-		
+		log.debug("123");
 		return null;
 	}
 

@@ -1,11 +1,13 @@
 package com.issue.shoes.communityLike.controller;
 
+import com.issue.shoes.communityLike.vo.CommunityLike;
+
 public interface communityLikeController {
 	
 	//좋아요 추가
-	String createCommunityBoardLike();
+	String createCommunityBoardLike(CommunityLike communityLike);
 	//좋아요 삭제
-	String deleteCommunityBoardLike();
+	String deleteCommunityBoardLike(CommunityLike communityLike);
 	
 	//사실 컨트롤러에 method가 두 개 있을 필요는 없을 듯
 

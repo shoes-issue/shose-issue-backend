@@ -28,6 +28,7 @@
 				<value>classpath:mappers/TradeBoardMapper.xml</value>
 				<value>classpath:mappers/CommunityBoardMapper.xml</value>
 				<value>classpath:mappers/UserJwtMapper.xml</value>
+				<value>classpath:mappers/CommunityLikeMapper.xml</value>
 			</list>
 		</property>
 
