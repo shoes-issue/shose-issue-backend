@@ -46,7 +46,7 @@ public class OauthCRUDService implements OauthService {
         }
 
         // 만약 비밀번호가 일치하지 않는다면
-        if(user.getUserPw() == loginUser.getUserPw()) {
+        if(!user.getUserPw().equals(loginUser.getUserPw())) {
             log.debug(user.getUserPw());
             log.debug(loginUser.getUserPw());
             log.debug("비밀번호가 일치하지 않습니다.");

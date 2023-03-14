@@ -75,7 +75,7 @@ public class OauthCRUDController implements OauthController {
 	        String userJwtIdx = jwtUtil.createRefreshJwt(user.getUserId());
 	        jwtUtil.setHeaderAccessToken(headers, accessToken);
 	        jwtUtil.setHeaderRefreshToken(headers, userJwtIdx);
-	        map.put("success", true);
+	        map.put("success", user.getUserId());
 	    } else {
 	        map.put("success", false);
 	    }
