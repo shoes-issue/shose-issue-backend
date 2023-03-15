@@ -27,9 +27,6 @@ import com.issue.shoes.communityBoard.vo.CommunityBoard;
 @CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "Content-Type", allowCredentials = "true")
 // 자동으로 설정된 헤더들 말고, 내가 추가로 설정한 헤더 설정이 있으면 이 옵션을 넣어줘야해
 public class CommunityControllerImpl implements CommunityBoardController {
-
-	// javadoc
-	// sagger
 	
 	// 로그 추가
 	Logger log = LogManager.getLogger("case3");
@@ -101,7 +98,6 @@ public class CommunityControllerImpl implements CommunityBoardController {
 			log.debug("잘 생성되었어요");
 		} else {
 			log.debug("이상이 있어요");
-//			throw new Exception();
 		}
 		log.debug("결과={}", result);
 

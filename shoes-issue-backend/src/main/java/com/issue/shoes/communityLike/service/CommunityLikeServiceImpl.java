@@ -90,4 +90,19 @@ public class CommunityLikeServiceImpl {
 		return result;
 	}
 
+	public CommunityLike searchCommunityLIke(CommunityLike communityLike) {
+		CommunityLike result = null;
+
+		try {
+			result = dao.selectOne(communityLike);
+			if(result == null) {
+				log.debug(new Exception("searchCommunityLike 오류 발생"));
+				
+			}
+		} catch (Exception e) {
+			log.debug("searchCommunityLikeService 오류 발생={}",e);
+		}
+		return result;
+	}
+
 }

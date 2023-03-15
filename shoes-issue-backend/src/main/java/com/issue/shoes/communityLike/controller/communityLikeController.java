@@ -1,5 +1,6 @@
 package com.issue.shoes.communityLike.controller;
 
+import org.springframework.http.ResponseEntity;
 import com.issue.shoes.communityLike.vo.CommunityLike;
 
 public interface communityLikeController {
@@ -9,6 +10,6 @@ public interface communityLikeController {
 	//좋아요 삭제
 	String deleteCommunityBoardLike(CommunityLike communityLike);
 	
-	//사실 컨트롤러에 method가 두 개 있을 필요는 없을 듯
+	ResponseEntity<Object> searchCommunityBoardLike(String userId,String boardId);
 
 }

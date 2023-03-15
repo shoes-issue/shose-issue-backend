@@ -12,6 +12,7 @@
 	 	<typeAlias type="com.issue.shoes.tradeBoard.vo.TradeBoard" alias="tradeBoard" />
 	 	<typeAlias type="com.issue.shoes.communityBoard.vo.CommunityBoard" alias="CommunityBoard" />
 	 	<typeAlias type="com.issue.shoes.communityLike.vo.CommunityLike" alias="communityLike" />
+	 	<typeAlias type="com.issue.shoes.communityComment.vo.CommunityComment" alias="CommunityComment" />
 	 	<typeAlias type="com.issue.shoes.oauth.vo.OauthJwt" alias="userJwt" />
 	</typeAliases>
 </configuration>

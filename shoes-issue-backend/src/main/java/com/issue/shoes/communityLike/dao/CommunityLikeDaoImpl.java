@@ -31,4 +31,13 @@ public class CommunityLikeDaoImpl {
 	public int delete(CommunityLike communityLike) throws Exception {
 		return session.delete("communityLike.delete", communityLike);
 	}
+
+	/**
+	 * @apiNote 좋아요 조회
+	 * @param communityLike
+	 * @return CommunityLike
+	 */
+	public CommunityLike selectOne(CommunityLike communityLike) throws Exception {
+		return session.selectOne("communityLike.selectOne", communityLike);
+	}
 }

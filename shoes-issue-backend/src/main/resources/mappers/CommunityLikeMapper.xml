@@ -24,7 +24,7 @@
 			AND boardId = #{boardId}
       ]]>
 	</update>
-	
+		
 	<!--좋아요 확인 -->
 	<select id="selectOne" parameterType="communityLike" resultType="communityLike">
 		<![CDATA[

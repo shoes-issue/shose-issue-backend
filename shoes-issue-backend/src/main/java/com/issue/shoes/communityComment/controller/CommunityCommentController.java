@@ -1,12 +1,33 @@
 package com.issue.shoes.communityComment.controller;
 
+import java.util.List;
+
+import com.issue.shoes.communityComment.vo.CommunityComment;
+
 public interface CommunityCommentController {
 	
-	//댓글 등록
-	String createComment();
-	//댓글 수정
-	String updateComment();
-	//댓글 삭제
-	String deleteComment();
+	/**
+	 * @apiNote 댓글 등록
+	 * @return int
+	 */
+	int createComment(CommunityComment communityComment);
+	
+	/**
+	 * @apiNote 댓글 수정
+	 * @return int
+	 */
+	int updateComment(CommunityComment communityComment);
+
+	/**
+	 * @apiNote 댓글 삭제
+	 * @return int
+	 */
+	int deleteComment(CommunityComment communityComment);
+	
+	/**
+	 * @apiNote 게시글의 모든 댓글 조회 
+	 * @return CommunityComment
+	 */
+	List<CommunityComment> searchAllComment(String boardId);
 
 }
