@@ -7,14 +7,20 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InsertTradeBoard {
+public class TradeBoardDetail {
+	
+	private String nickName;
+	private int point;
+	
 	private String tradeId;
-	private String tradeTitle;
-	private String tradeContents;
-	private int tradeLike;
-	private String tradeStatus;
-	private int tradePrice;
 	private String tradeImage;
 	private String goodsCategory;
-	private String userId;
+	private String tradeTitle;
+	private String tradeContents;
+	private String tradeDate;
+	private int tradePrice;
+	private int tradeLike;
+	private String tradeStatus;
+	
+
 }

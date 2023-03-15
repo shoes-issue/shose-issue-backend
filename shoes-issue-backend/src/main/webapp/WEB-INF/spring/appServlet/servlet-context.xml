@@ -34,7 +34,7 @@
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
-
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></beans:bean>
 
 
 </beans:beans>
