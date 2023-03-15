@@ -8,8 +8,14 @@
 	<select id="selectOne" parameterType="String"
 		resultType="CommunityBoard">
        <![CDATA[   
-         SELECT *
-         FROM communityboard
+         SELECT
+         	boardId,
+         	boardTitle,
+         	boardContents,
+         	userId,
+         	boardDate,
+         	(SELECT COUNT(*) FROM communityLike l WHERE l.boardId = b.boardId) AS boardLike
+         FROM communityboard b
          WHERE boardId = #{boardId} AND boardDeletedate IS NULL
       ]]>
 	</select>
@@ -17,8 +23,13 @@
 	<!-- 모든 게시글 조회 -->
 	<select id="selectAll" resultType="CommunityBoard">
        <![CDATA[   
-         SELECT *
-         FROM communityboard
+         SELECT
+         	boardId,
+         	boardTitle,
+         	boardContents,
+         	boardDate,
+         	(SELECT COUNT(*) FROM communityLike l WHERE l.boardId = b.boardId) AS boardLike
+         FROM communityboard b
          WHERE boardDeletedate IS NULL
       ]]>
 	</select>
