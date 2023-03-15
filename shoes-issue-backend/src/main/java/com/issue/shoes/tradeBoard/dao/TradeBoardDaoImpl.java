@@ -8,7 +8,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
+import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
 
 @Repository
 public class TradeBoardDaoImpl implements TradeBoardDao {
@@ -33,6 +35,38 @@ public class TradeBoardDaoImpl implements TradeBoardDao {
 		
 		return list;
 	}
+
+	@Override
+	public int insertTradeBoard(InsertTradeBoard tradeBoard) throws Exception {
+		
+		int result = 0;
+		
+		result = session.insert("tradeBoard.insertTradeBoard", tradeBoard);
+		
+		if (result != 1) {
+			throw new Exception();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public TradeBoardDetail selectTradeBoardDetail(String tradeId) throws Exception{
+		
+		TradeBoardDetail boardDetail = session.selectOne("tradeBoard.boardDetail", tradeId);
+		
+		return boardDetail;
+	}
+
+	@Override
+	public TradeBoardDetail selecTradeBoardUser(String userId) throws Exception{
+		
+		TradeBoardDetail user = session.selectOne("tradeBoard.user", userId);
+		
+		return user;
+	}
+	
+	
 	
 	
 }

@@ -37,7 +37,7 @@
             <AppenderRef ref="File_1" />
         </Logger>
   
-  		<Logger name="myBook" level="trace"></Logger>
+  		<Logger name="tradeBoard" level="trace"></Logger>
   
         <Root level="INFO">
             <AppenderRef ref="stdout_2" />

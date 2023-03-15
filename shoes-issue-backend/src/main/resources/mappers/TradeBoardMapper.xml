@@ -7,9 +7,14 @@
 <mapper namespace="tradeBoard">
 
 	<select id="searchAllTradeBoard" resultType="tradeBoard">
-		SELECT tradeId, goodsCategory, tradeImage, tradeTitle,
-				userId, tradeLike, tradeDate
-		FROM tradeBoard
+		SELECT A.tradeId, A.goodsCategory, A.tradeImage, A.tradeTitle, 
+		A.userId, A.tradeDate, IFNULL(B.count, 0) AS tradeLike
+		FROM tradeBoard A
+		LEFT JOIN
+		(SELECT tradeId, COUNT(*) AS count
+		FROM tradeLike
+		GROUP BY tradeId) B
+		ON A.tradeId = B.tradeId
 	</select>
 	
 	<select id="selectTradeTitle" parameterType="String" resultType="tradeBoard">
@@ -17,5 +22,27 @@
 				userId, tradeLike, tradeDate
 		FROM tradeBoard
 		WHERE tradeTitle LIKE CONCAT('%',#{keyword},'%')
+	</select>
+	
+	<insert id="insertTradeBoard" parameterType="insertTradeBoard">
+		INSERT INTO tradeBoard(tradeId, tradeTitle, tradeContents, tradeLike, tradeStatus, tradePrice, tradeImage, goodsCategory, userId) 
+		VALUES(#{tradeId}, #{tradeTitle}, #{tradeContents}, ${tradeLike}, #{tradeStatus}, ${tradePrice}, #{tradeImage}, #{goodsCategory}, #{userId})
+	</insert>
+	
+	<select id="user" parameterType="String" resultType="tradeBoardDetail">
+		SELECT nickName, point FROM user
+		WHERE userId = #{userId}; 
+	</select>
+	
+	<select id="boardDetail" parameterType="String" resultType="tradeBoardDetail">
+		SELECT A.tradeId, A.goodsCategory, A.tradeImage, A.tradeTitle, 
+		A.tradeContents, A.tradePrice, A.tradeStatus, A.tradeDate, IFNULL(B.count, 0) AS tradeLike
+		FROM tradeBoard A
+		LEFT JOIN
+		(SELECT tradeId, COUNT(*) AS count
+		FROM tradeLike
+		GROUP BY tradeId) B
+		ON A.tradeId = B.tradeId
+		WHERE A.tradeId = #{tradeId}
 	</select>
 </mapper>
