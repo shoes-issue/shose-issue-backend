@@ -23,10 +23,8 @@
 
 	<insert id="insertUser"
 		parameterType="com.issue.shoes.user.vo.User">
-		INSERT INTO user (userId, userPw, userName, nickName,
-		profileImage, phone)
-		VALUES (#{userId}, #{userPw}, #{userName}, #{nickName}, #{profileImage},
-		#{phone})
+		INSERT INTO user (userId, userPw, userName, nickName, phone)
+		VALUES (#{userId}, #{userPw}, #{userName}, #{nickName}, #{phone})
 	</insert>
 
 	<update id="updateUser"

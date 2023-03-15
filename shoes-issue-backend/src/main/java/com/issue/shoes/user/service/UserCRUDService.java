@@ -26,7 +26,7 @@ public class UserCRUDService implements UserService {
 		// userId를 사용하여 유저 검색 기능 구현
 		return userId;
 	}
-
+	
 	@Transactional
 	@Override
 	public User createUser(User user) throws Exception {
