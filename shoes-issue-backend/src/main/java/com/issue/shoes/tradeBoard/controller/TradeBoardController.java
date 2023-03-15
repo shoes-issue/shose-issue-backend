@@ -1,5 +1,7 @@
 package com.issue.shoes.tradeBoard.controller;
 
+import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
+
 public interface TradeBoardController {
 	
 	//중고 게시물 상세보기
@@ -7,7 +9,7 @@ public interface TradeBoardController {
 	
 	String searchAllTradeBoard();
 	//중고 게시물 등록
-	String createTradeBoard();
+	String createTradeBoard(InsertTradeBoard tradeBoard);
 	//중고 게시물 수정
 	String updateTradeBoard();
 	//중고 게시물 삭제
