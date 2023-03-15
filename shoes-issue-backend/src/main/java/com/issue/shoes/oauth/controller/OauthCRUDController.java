@@ -1,10 +1,7 @@
 package com.issue.shoes.oauth.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,12 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.gson.Gson;
 import com.issue.shoes.common.util.JwtUtil;
@@ -30,7 +30,7 @@ import com.issue.shoes.user.vo.User;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true", allowedHeaders = "Content-Type")
-@RequestMapping(value = "/api", produces = "application/json; charset=utf-8")
+@RequestMapping(value = "/oauth", produces = "application/json; charset=utf-8")
 public class OauthCRUDController implements OauthController {
 
 	private Logger log = LogManager.getLogger("case3");
@@ -88,15 +88,55 @@ public class OauthCRUDController implements OauthController {
 				.headers(headers)
 				.body(json);
 	}
+
+	@Override
+	@GetMapping("/kakaologin")
+	@ResponseBody
+	public String home() {
+		String url = "https://kauth.kakao.com/oauth/authorize?client_id=1c5c44bb7c9666ba81f5ffd3a2b86d76&redirect_uri=http://localhost:80/oauth/kakaologincallback&response_type=code";
+		System.out.println("login 컨트롤러 접근");
+		return url;
+	}
 	
 	@Override
-	@RequestMapping("/kakaologin")
-	public String home(@RequestParam(value = "code", required = false) String code) throws Exception{
-		System.out.println("#########" + code);
-		String access_Token = service.getAccessToken(code);
-		System.out.println("###access_Token#### : " + access_Token);
-		return "landingPage";
+	@GetMapping(value="/kakaologincallback")
+	public ResponseEntity<Object> kakaoCallback(@RequestParam(value = "code", required = false) String code) throws Exception{
+	    System.out.println("#########" + code);
+	    String access_Token = service.getAccessToken(code);
+	    HashMap<String, Object> userInfo = service.getUserInfo(access_Token);
+	    
+	    System.out.println("###access_Token#### : " + access_Token);
+	    System.out.println("###userInfo#### : " + userInfo.get("email"));
+	    System.out.println("###nickname#### : " + userInfo.get("nickname"));
+	    System.out.println("###profile_image#### : " + userInfo.get("profile_image"));
+	    String email = (String) userInfo.get("email");
+	    String nickname = (String) userInfo.get("nickname");
+	    String profile_image = (String) userInfo.get("profile_image");
+
+	    // 인증 토큰 생성
+	    String accessToken = jwtUtil.createAccessJwt(email);
+	    HttpHeaders headers = new HttpHeaders();
+	    jwtUtil.setHeaderAccessToken(headers, accessToken);
+
+	    // 응답 데이터 생성
+	    Map<String, Object> responseData = new HashMap<>();
+	    responseData.put("access_token", accessToken);
+	    responseData.put("email", email);
+	    responseData.put("nickname", nickname);
+	    responseData.put("profile_image", profile_image);
+
+//	    // mainredirect 메소드 호출하고 URL이 생성될 때까지 쓰레드 블록
+//	    mainredirect();
+	    
+	    return ResponseEntity.ok().headers(headers).body(responseData);
 	}
+//	
+//	@Override
+//	public void mainredirect() throws Exception {
+//	    ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+//	    attributes.getResponse().sendRedirect("http://localhost:8080/");
+//	}
+
 
 	@Override
 	@PostMapping(value = "/logout")

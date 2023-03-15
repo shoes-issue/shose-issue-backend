@@ -3,11 +3,21 @@ package com.issue.shoes.user.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+	
+	
+	public User(String userName, String nickName, String userId, String userPw, String phone) {
+		this.userName = userName;
+		this.nickName = nickName;
+		this.userId = userId;
+		this.userPw = userPw;
+		this.phone = phone;
+	}
 	
 	private String userId;
 	private String userPw;
