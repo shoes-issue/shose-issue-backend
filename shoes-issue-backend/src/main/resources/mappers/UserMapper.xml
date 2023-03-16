@@ -26,6 +26,12 @@
 		INSERT INTO user (userId, userPw, userName, nickName, phone)
 		VALUES (#{userId}, #{userPw}, #{userName}, #{nickName}, #{phone})
 	</insert>
+	
+	<insert id="insertUseroauth"
+		parameterType="com.issue.shoes.user.vo.User">
+		INSERT INTO oauthjwt (userId, subject)
+		VALUES (#{userId}, #{userId})
+	</insert>
 
 	<update id="updateUser"
 		parameterType="com.issue.shoes.user.vo.User">
@@ -34,13 +40,16 @@
 		userPw = #{userPw},
 		userName = #{userName},
 		nickName = #{nickName},
-		profileImage = #{profileImage},
 		phone = #{phone}
 		WHERE userId = #{userId}
 	</update>
 
 	<delete id="deleteUser" parameterType="String">
 		DELETE FROM user WHERE userId = #{userId}
+	</delete>
+	
+	<delete id="deleteUseroauth" parameterType="String">
+		DELETE FROM oauthjwt WHERE userId = #{userId}
 	</delete>
 
 </mapper>

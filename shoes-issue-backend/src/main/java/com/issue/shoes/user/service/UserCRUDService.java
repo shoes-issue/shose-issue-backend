@@ -29,8 +29,22 @@ public class UserCRUDService implements UserService {
 	
 	@Transactional
 	@Override
+	public User selectUserById(String userId) {
+		User user = userDao.selectUserById(userId);
+		return user;
+	}
+	
+	@Transactional
+	@Override
 	public User createUser(User user) throws Exception {
 	    userDao.insertUser(user);
+	    return user;
+	}
+	
+	@Transactional
+	@Override
+	public User createUseroauth(User user) throws Exception {
+	    userDao.insertUseroauth(user);
 	    return user;
 	}
 
@@ -45,6 +59,13 @@ public class UserCRUDService implements UserService {
 	@Override
 	public String deleteUser(String userId) throws Exception {
 	    userDao.deleteUser(userId);
+	    return userId;
+	}
+	
+	@Transactional
+	@Override
+	public String deleteUseroauth(String userId) throws Exception {
+	    userDao.deleteUseroauth(userId);
 	    return userId;
 	}
 
