@@ -44,6 +44,7 @@ public class CommunityCommentControllerImpl implements CommunityCommentControlle
 	@Override
 	@PostMapping
 	public int updateComment(@RequestBody CommunityComment communityComment) {
+		log.debug("updateComment={}", communityComment);
 		int result = service.updateComment(communityComment);
 		return result;
 	}
@@ -52,6 +53,7 @@ public class CommunityCommentControllerImpl implements CommunityCommentControlle
 	@Override
 	@DeleteMapping
 	public int deleteComment(@RequestBody CommunityComment communityComment) {
+		log.debug("deleteComment 확인하기={}", communityComment);
 		int result = service.deleteComment(communityComment);
 		return result;
 	}
