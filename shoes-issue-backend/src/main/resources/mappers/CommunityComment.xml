@@ -15,7 +15,8 @@
 	<select id="selectAll" parameterType="communityComment" resultType="communityComment">
        <![CDATA[   
          SELECT * FROM boardComment
-         WHERE boardId = #{boardId}
+         WHERE boardId = #{boardId} AND commentDeletedate IS NULL
+         ORDER BY commentDate DESC
       ]]>
 	</select>
 
@@ -31,14 +32,21 @@
 	<!-- 댓글 삭제 -->
 	<delete id="delete" parameterType="communityComment">
 		<![CDATA[
-
+			UPDATE boardComment SET
+			commentDeletedate=NOW()
+			WHERE
+				userId=#{userId} AND commentId=#{commentId} AND boardId=#{boardId}
   		]]>
 	</delete>
 	
 	<!-- 댓글 수정 -->
 	<update id="update" parameterType="communityComment">
 		<![CDATA[
-		
+		UPDATE boardComment SET
+		commentContents=#{commentContents},
+		commentUpdatedate=NOW()
+		WHERE
+			userId=#{userId} AND commentId=#{commentId} AND boardId=#{boardId}
   		]]>
 	</update>
 </mapper>

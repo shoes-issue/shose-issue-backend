@@ -59,11 +59,13 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
 		return result;
 	}
 
+	// 댓글 수정
 	public int updateComment(CommunityComment communityComment) {
 		int result = 0;
 
 		try {
 			result = dao.update(communityComment);
+			log.debug("updateCommentService resultValue={}",result);
 			if (result != 1) {
 				throw new Exception("updateComment 오류!");
 			}
