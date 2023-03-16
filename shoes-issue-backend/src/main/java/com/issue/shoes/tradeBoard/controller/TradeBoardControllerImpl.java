@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +16,7 @@ import com.issue.shoes.tradeBoard.service.TradeBoardService;
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
+import com.issue.shoes.tradeBoard.vo.UpdateContent;
 
 @RestController
 @CrossOrigin(origins="http://localhost:8080", allowCredentials = "true")
@@ -71,11 +73,27 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 
 
 	@Override
-	public String updateTradeBoard() {
-		// TODO Auto-generated method stub
-		return null;
+	@GetMapping(value="/trade-board/", params="tradeId")
+	public String updateTradeBoard(String tradeId) {
+		
+		UpdateContent contents = service.selectUpdateContent(tradeId);
+		
+		String sendContent = gson.toJson(contents);
+		
+		return sendContent;
 	}
 
+	@Override
+	@PostMapping(value="/trade-board/board")
+	public String updateComplete(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile) {
+		System.out.println("잘 들어옵니다.");
+		List<TradeBoard> list = service.updateTradeBoard(tradeBoard, uploadFile);
+		
+		String tradeBoardList = gson.toJson(list);
+		
+		return tradeBoardList;
+	}
+	
 	@Override
 	public String deleteTradeBoard() {
 		// TODO Auto-generated method stub

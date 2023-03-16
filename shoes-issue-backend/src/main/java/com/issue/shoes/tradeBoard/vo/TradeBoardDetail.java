@@ -22,5 +22,4 @@ public class TradeBoardDetail {
 	private int tradeLike;
 	private String tradeStatus;
 	
-
 }
