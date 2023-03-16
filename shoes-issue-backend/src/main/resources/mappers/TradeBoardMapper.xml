@@ -15,6 +15,7 @@
 		FROM tradeLike
 		GROUP BY tradeId) B
 		ON A.tradeId = B.tradeId
+		WHERE tradeDeleteDate IS NULL
 	</select>
 	
 	<select id="selectTradeTitle" parameterType="String" resultType="tradeBoard">
@@ -45,4 +46,32 @@
 		ON A.tradeId = B.tradeId
 		WHERE A.tradeId = #{tradeId}
 	</select>
+	
+	<select id="contents" parameterType="String" resultType="updateContent">
+		SELECT tradeId, tradeImage, tradePrice, 
+		tradeTitle, tradeContents 
+		FROM tradeBoard
+		WHERE tradeId = #{tradeId}
+	</select>
+	
+	<update id="excludeUpdate" parameterType="updateContent">
+		UPDATE tradeBoard
+		SET
+		tradeTitle = #{tradeTitle},
+		tradeContents = #{tradeContents},
+		tradePrice = #{tradePrice},
+		goodsCategory = #{goodsCategory}
+		WHERE tradeId = #{tradeId}
+	</update>
+	
+	<update id="includeUpdate" parameterType="updateContent">
+		UPDATE tradeBoard
+		SET 
+		tradeImage = #{tradeImage},
+		tradeTitle = #{tradeTitle},
+		tradeContents = #{tradeContents},
+		tradePrice = #{tradePrice},
+		goodsCategory = #{goodsCategory}
+		WHERE tradeId = #{tradeId}
+	</update>
 </mapper>

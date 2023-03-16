@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
+import com.issue.shoes.tradeBoard.vo.UpdateContent;
 
 @Repository
 public class TradeBoardDaoImpl implements TradeBoardDao {
@@ -64,6 +65,39 @@ public class TradeBoardDaoImpl implements TradeBoardDao {
 		TradeBoardDetail user = session.selectOne("tradeBoard.user", userId);
 		
 		return user;
+	}
+
+	@Override
+	public UpdateContent selectUpdateContent(String tradeId) {
+		
+		UpdateContent contents = session.selectOne("tradeBoard.contents", tradeId);
+		
+		return contents;
+	}
+
+	@Override
+	public void updateTradeBoard(InsertTradeBoard tradeBoard) throws Exception{
+		
+		int result = 0;
+		
+		result = session.update("tradeBoard.excludeUpdate", tradeBoard);
+		
+		if (result != 1) {
+			throw new Exception();
+		}
+		
+	}
+
+	@Override
+	public void updateTradeBoardIncludeImg(InsertTradeBoard tradeBoard) throws Exception {
+		
+		int result = 0;
+		
+		result = session.update("tradeBoard.includeUpdate", tradeBoard);
+		
+		if (result != 1) {
+			throw new Exception();
+		}
 	}
 	
 	
