@@ -27,6 +27,7 @@
 				<value>classpath:mappers/UserMapper.xml</value>
 				<value>classpath:mappers/TradeBoardMapper.xml</value>
 				<value>classpath:mappers/CommunityBoardMapper.xml</value>
+				<value>classpath:mappers/MessageMapper.xml</value>
 				<value>classpath:mappers/UserJwtMapper.xml</value>
 				<value>classpath:mappers/CommunityLikeMapper.xml</value>
 				<value>classpath:mappers/CommunityComment.xml</value>

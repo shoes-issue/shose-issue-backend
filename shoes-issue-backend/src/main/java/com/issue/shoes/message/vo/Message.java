@@ -14,7 +14,7 @@ public class Message {
 	private String messageTitle;
 	private String messageContents;
 	private String messageSenddate;
-	private int messageOpenstatus;
+	private Boolean messageOpenstatus;
 	private String messageSender;
 	private String messageReceiver;
 }
