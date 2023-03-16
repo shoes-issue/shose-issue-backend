@@ -14,4 +14,9 @@ public interface UserDao {
 
 	void deleteUser(String userId) throws Exception;
 
+	void insertUseroauth(User user) throws Exception;
+
+	void deleteUseroauth(String userId) throws Exception;
+
+
 }

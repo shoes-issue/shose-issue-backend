@@ -11,8 +11,11 @@ public interface UserController {
 	//유저 생성
 	ResponseEntity<?> createUser(User user);
 	//유저 수정
-	String updateUser();
+	ResponseEntity<?> updateUser(User user);
 	//유저 탈퇴
-	String deleteUser();
+	ResponseEntity<?> deleteUser(String userId);
+	
+	ResponseEntity<?> selectUserById(String userId) throws Exception;
+
 
 }

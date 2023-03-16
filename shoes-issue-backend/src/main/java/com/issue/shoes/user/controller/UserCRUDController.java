@@ -1,18 +1,24 @@
 package com.issue.shoes.user.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.google.gson.Gson;
 import com.issue.shoes.user.service.UserService;
 import com.issue.shoes.user.vo.User;
 
@@ -23,6 +29,8 @@ public class UserCRUDController implements UserController {
 
 	private Logger log = LogManager.getLogger("case3");
 
+	@Autowired
+	private Gson gson;
 
 	@Autowired
 	private UserService userService;
@@ -36,6 +44,37 @@ public class UserCRUDController implements UserController {
 		// userService를 사용하여 검색 기능 구현
 		return "searchUser";
 	}
+
+	@Override
+	@PostMapping("/user/{userId}")
+	public ResponseEntity<?> selectUserById(@PathVariable String userId) throws Exception{
+		User user = userService.selectUserById(userId);
+		
+		Map<String, Object> map = new HashMap<>();
+		if (user != null) {
+			map.put("userId", user.getUserId());
+			map.put("userName", user.getUserName());
+			map.put("nickName", user.getNickName());
+			map.put("signupDate", user.getSignupDate());
+			map.put("updateDate", user.getUpdateDate());
+			map.put("deleteDate", user.getDeleteDate());
+			map.put("adminStatus", user.getAdminStatus());
+			map.put("point", user.getPoint());
+			map.put("profileImage", user.getProfileImage());
+			map.put("phone", user.getPhone());
+			map.put("reportCount", user.getReportCount());
+			map.put("reportDate", user.getReportDate());
+			
+			map.put("success", true);
+		} else {
+			map.put("success", false);
+		}
+		
+		String json = gson.toJson(map);
+		return ResponseEntity.ok()
+				.body(json);
+	}
+
 
 	@Override
 	@PostMapping("/user")
@@ -55,6 +94,7 @@ public class UserCRUDController implements UserController {
 			log.debug("New User: {}", newUser);
 
 			userService.createUser(newUser);
+			userService.createUseroauth(newUser);
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -62,16 +102,38 @@ public class UserCRUDController implements UserController {
 	}
 
 
+	@Override
 	@PutMapping("/user/{userId}")
-	public String updateUser() {
-		// userService를 사용하여 수정 기능 구현
-		return "updateUser";
+	public ResponseEntity<?> updateUser(@RequestBody User user) {
+		try {
+			// 전달받은 정보를 이용하여 User 객체를 생성합니다.
+			User newUser = new User(
+					user.getUserName(),
+					user.getNickName(),
+					user.getUserId(),
+					user.getUserPw(),
+					user.getPhone()
+					);
+			// UserService를 이용하여 새로운 사용자를 생성합니다.
+			log.debug("New User: {}", newUser);
+
+			userService.updateUser(newUser);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 
+	@Override
 	@DeleteMapping("/user/{userId}")
-	public String deleteUser() {
-		// userService를 사용하여 삭제 기능 구현
-		return "deleteUser";
+	public ResponseEntity<?> deleteUser(@PathVariable String userId) {
+		try {
+			userService.deleteUser(userId);
+			userService.deleteUseroauth(userId);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 }
 

@@ -125,18 +125,8 @@ public class OauthCRUDController implements OauthController {
 	    responseData.put("nickname", nickname);
 	    responseData.put("profile_image", profile_image);
 
-//	    // mainredirect 메소드 호출하고 URL이 생성될 때까지 쓰레드 블록
-//	    mainredirect();
-	    
 	    return ResponseEntity.ok().headers(headers).body(responseData);
 	}
-//	
-//	@Override
-//	public void mainredirect() throws Exception {
-//	    ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-//	    attributes.getResponse().sendRedirect("http://localhost:8080/");
-//	}
-
 
 	@Override
 	@PostMapping(value = "/logout")
