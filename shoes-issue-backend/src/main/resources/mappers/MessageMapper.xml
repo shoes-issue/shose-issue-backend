@@ -6,7 +6,7 @@
   
  <mapper namespace="message">
  
- 	<resultMap id="result"
+<!--  	<resultMap id="result"
  		type="com.issue.shoes.message.vo.Message">
  		<result property="messageId" column="messageId" />
  		<result property="messageTitle" column="messageTitle" />
@@ -15,12 +15,47 @@
  			javaType="String"/>
  		<result property="messageReceivedate" column="messageReceivedate" jdbcType="DATETIME" 
  			javaType="String"/>
- 		<result property="messageOpenstatus" column="messageOpenstatus" jdbcType="BOOLEAN"
- 			javaType="int"/>
+ 		<result property="messageOpenstatus" column="messageOpenstatus" jdbcType="BOOLEAN"/>
  		<result property="messageSender" column="messageSender" />
  		<result property="messageReceiver" column="messageReceiver" />
- 	</resultMap>
+ 	</resultMap> -->
  	
- 	<select id=""></select>
+ 	<select id="selectOne" parameterType="String" resultType="com.issue.shoes.message.vo.Message">
+ 		<!-- resultMap="result"> -->
+ 		<![CDATA[
+ 			SELECT 
+ 				messageId, 
+ 				messageTitle, 
+ 				messageContents, 
+ 				messageSenddate,
+ 				messageReceivedate,
+ 				messageOpenstatus,
+ 				messageSender,
+ 				messageReceiver
+ 			FROM message
+ 			WHERE messageId = #{messageId}
+ 		]]>
+ 	</select>
+ 	
+ 	<!-- messageId, 
+ 				messageTitle, 
+ 				messageContents, 
+ 				messageSenddate,
+ 				messageReceivedate,
+ 				messageOpenstatus,
+ 				messageSender,
+ 				messageReceiver-->
+ 	<select id="selectAllReceived" parameterType="String" resultType="com.issue.shoes.message.vo.Message">
+ 		<![CDATA[
+ 			SELECT 
+ 			*	
+ 			FROM message
+ 			WHERE messageReceiver = #{messageReceiver}
+ 		
+ 		]]>
+ 		
+ 		
+ 	
+ 	</select>
  
  </mapper> 
