@@ -16,5 +16,6 @@ public class TradeBoard {
 	private String userId;
 	private String tradeLike;
 	private String tradeDate;
+	private String tradeUpdateDate;
 
 }

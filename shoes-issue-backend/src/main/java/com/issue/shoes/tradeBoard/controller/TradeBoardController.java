@@ -4,6 +4,7 @@ package com.issue.shoes.tradeBoard.controller;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
+import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
 
 public interface TradeBoardController {
 	
@@ -18,16 +19,18 @@ public interface TradeBoardController {
 	//중고 게시물 수정페이지 이동
 	String updateTradeBoard(String tradeId);
 	//중고 게시물 수정완료
-	String updateComplete(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile);
-	
-	
-	
+	String updateComplete(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile);	
 	//중고 게시물 삭제
-	String deleteTradeBoard();
+	String deleteTradeBoard(String tradeId, String tradeImage);
+	//좋아요 클릭
+	String clickLike(TradeBoardLike like);
+	//게시물 상태 변경(거래예약)
+	String changeStatusReservation(String tradeId, String tradeStatus);
+	//거래 취소
+	String changeStatusCancel(String tradeId);
+
 	//중고 게시물 카테고리 검색
 	String selectTradeCategory();
-	//게시물 상태 변경(거래예약)
-	String changeStatusReservation();
 	//게시물 상태 변경(거래완료)
 	String changeStatusComplete();
 	

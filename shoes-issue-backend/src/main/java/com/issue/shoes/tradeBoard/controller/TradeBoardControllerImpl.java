@@ -2,8 +2,11 @@ package com.issue.shoes.tradeBoard.controller;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +19,7 @@ import com.issue.shoes.tradeBoard.service.TradeBoardService;
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
+import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
 import com.issue.shoes.tradeBoard.vo.UpdateContent;
 
 @RestController
@@ -26,6 +30,8 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	private TradeBoardService service;
 	@Autowired
 	private Gson gson;
+	
+	Logger log = LogManager.getLogger("case3");
 	
 	@Override
 	@GetMapping(value="/trade-board/all")
@@ -86,7 +92,7 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	@Override
 	@PostMapping(value="/trade-board/board")
 	public String updateComplete(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile) {
-		System.out.println("잘 들어옵니다.");
+		
 		List<TradeBoard> list = service.updateTradeBoard(tradeBoard, uploadFile);
 		
 		String tradeBoardList = gson.toJson(list);
@@ -95,11 +101,26 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	}
 	
 	@Override
-	public String deleteTradeBoard() {
-		// TODO Auto-generated method stub
-		return null;
+	@DeleteMapping(value="/trade-board/")
+	public String deleteTradeBoard(String tradeId, String tradeImage) {
+		
+		List<TradeBoard> list = service.deleteTradeBoard(tradeId, tradeImage);
+		
+		String tradeBoardList = gson.toJson(list);
+		
+		return tradeBoardList;
 	}
-
+	
+	@Override
+	@GetMapping(value="/trade-board/", params= {"tradeId", "userId"})
+	public String clickLike(TradeBoardLike like) {
+		
+		int result = service.clickLike(like);
+		
+		String resultString = gson.toJson(result);
+		
+		return resultString;
+	}
 
 	@Override
 	public String selectTradeCategory() {
@@ -108,15 +129,28 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	}
 
 	@Override
-	public String changeStatusReservation() {
-		// TODO Auto-generated method stub
-		return null;
+	@PutMapping(value="/trade-board/status", params="tradeStatus=예약 가능")
+	public String changeStatusReservation(String tradeId, String tradeStatus) {
+		
+		String statusString = service.updateStatus(tradeId, tradeStatus);
+		
+		return statusString;
 	}
 
+	@Override
+	@PutMapping(value="/trade-board/trade-status")
+	public String changeStatusCancel(String tradeId) {
+		
+		String statusString = service.updateStatusCancel(tradeId);
+		
+		return statusString;
+	}
+	
 	@Override
 	public String changeStatusComplete() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

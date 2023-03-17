@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class TradeBoardDetail {
 	
 	private String nickName;
+	private String userId;
 	private int point;
 	
 	private String tradeId;
@@ -21,5 +22,6 @@ public class TradeBoardDetail {
 	private int tradePrice;
 	private int tradeLike;
 	private String tradeStatus;
+	private String iconStyle;
 	
 }
