@@ -8,7 +8,7 @@
 
 	<select id="searchAllTradeBoard" resultType="tradeBoard">
 		SELECT A.tradeId, A.goodsCategory, A.tradeImage, A.tradeTitle, 
-		A.userId, A.tradeDate, IFNULL(B.count, 0) AS tradeLike
+		A.userId, A.tradeDate, A.tradeUpdateDate, IFNULL(B.count, 0) AS tradeLike
 		FROM tradeBoard A
 		LEFT JOIN
 		(SELECT tradeId, COUNT(*) AS count
@@ -54,24 +54,55 @@
 		WHERE tradeId = #{tradeId}
 	</select>
 	
-	<update id="excludeUpdate" parameterType="updateContent">
+	<update id="excludeUpdate" parameterType="insertTradeBoard">
 		UPDATE tradeBoard
 		SET
 		tradeTitle = #{tradeTitle},
 		tradeContents = #{tradeContents},
 		tradePrice = #{tradePrice},
-		goodsCategory = #{goodsCategory}
+		goodsCategory = #{goodsCategory},
+		tradeUpdateDate = #{tradeUpdateDate}
 		WHERE tradeId = #{tradeId}
 	</update>
 	
-	<update id="includeUpdate" parameterType="updateContent">
+	<update id="includeUpdate" parameterType="insertTradeBoard">
 		UPDATE tradeBoard
 		SET 
 		tradeImage = #{tradeImage},
 		tradeTitle = #{tradeTitle},
 		tradeContents = #{tradeContents},
 		tradePrice = #{tradePrice},
-		goodsCategory = #{goodsCategory}
+		goodsCategory = #{goodsCategory},
+		tradeUpdateDate = #{tradeUpdateDate}
+		WHERE tradeId = #{tradeId}
+	</update>
+	
+	<update id="updateDeleteDate" parameterType="HashMap">
+		UPDATE tradeBoard
+		SET tradeDeleteDate = #{sysDate}
+		WHERE tradeId = #{tradeId}
+	</update>
+	
+	<!-- 좋아요 -->
+	<select id="clickLikeUser" parameterType="tradeBoardLike" resultType="String">
+		SELECT userId FROM tradeLike
+		WHERE userId = #{userId} AND tradeId = #{tradeId} 
+		LIMIT 1
+	</select>
+	
+	<insert id="insertLike" parameterType="tradeBoardLike">
+		INSERT INTO tradeLike(tradeId, userId) VALUES(#{tradeId},#{userId})
+	</insert>
+	
+	<delete id="deleteLike" parameterType="tradeBoardLike">
+		DELETE FROM tradeLike
+		WHERE userId = #{userId} AND tradeId = #{tradeId}
+	</delete>
+	
+	<!-- 예약 -->
+	<update id="updateStatus" parameterType="HashMap">
+		UPDATE tradeBoard
+		SET tradeStatus = #{tradeStatus}
 		WHERE tradeId = #{tradeId}
 	</update>
 </mapper>

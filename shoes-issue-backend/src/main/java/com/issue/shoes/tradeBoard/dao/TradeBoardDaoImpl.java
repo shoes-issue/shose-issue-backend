@@ -1,5 +1,6 @@
 package com.issue.shoes.tradeBoard.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
+import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
 import com.issue.shoes.tradeBoard.vo.UpdateContent;
 
 @Repository
@@ -99,6 +101,68 @@ public class TradeBoardDaoImpl implements TradeBoardDao {
 			throw new Exception();
 		}
 	}
+
+	@Override
+	public int deleteDateUpdate(HashMap<String,String> map) throws Exception {
+		
+		int result = 0;
+		
+		result = session.update("tradeBoard.updateDeleteDate", map);
+		
+		if (result != 1) {
+			throw new Exception();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public String selectClickUser(TradeBoardLike like) {
+		
+		String clickUser = session.selectOne("tradeBoard.clickLikeUser", like);
+		
+		return clickUser;
+	}
+
+	@Override
+	public void insertLike(TradeBoardLike like) throws Exception{
+		
+		int result = 0;
+		
+		result = session.insert("tradeBoard.insertLike", like);
+		
+		if (result != 1) {
+			throw new Exception();
+		}
+	}
+
+	@Override
+	public void deletLike(TradeBoardLike like) throws Exception {
+
+		int result = 0;
+		
+		result = session.delete("tradeBoard.deleteLike", like);
+		
+		if (result != 1) {
+			throw new Exception();
+		}
+		
+	}
+
+	@Override
+	public int updateStatus(HashMap<String, String> map) throws Exception{
+		
+		int result = 0;
+		
+		result = session.update("tradeBoard.updateStatus", map);
+		
+		if (result != 1) {
+			throw new Exception();
+		}
+		
+		return result;
+	}
+
 	
 	
 	

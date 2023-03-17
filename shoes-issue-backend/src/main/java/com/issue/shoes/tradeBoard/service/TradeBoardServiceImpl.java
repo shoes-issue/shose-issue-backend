@@ -2,6 +2,7 @@ package com.issue.shoes.tradeBoard.service;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ import com.issue.shoes.tradeBoard.dao.TradeBoardDao;
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
+import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
 import com.issue.shoes.tradeBoard.vo.UpdateContent;
 
 @Service
@@ -61,8 +63,6 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		tradeBoard.setTradeId(boardUuid.toString());
 		tradeBoard.setTradeStatus("예약 가능");
 		tradeBoard.setTradeLike(0);
-		// 작성자 아이디
-		tradeBoard.setUserId("user2");
 
 		String uploadFileName = "";
 
@@ -92,9 +92,6 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			if (success) {
 				list = searchAllTradeBoard();
 				transactionManager.commit(txStatus);
-
-			} else {
-				transactionManager.rollback(txStatus);
 			}
 
 		} catch (Exception e) {
@@ -145,7 +142,9 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			TradeBoardDetail user = dao.selecTradeBoardUser(userId);
 			boardDetail.setNickName(user.getNickName());
 			boardDetail.setPoint(user.getPoint());
+			boardDetail.setUserId(userId);
 			boardDetail.setTradeImage("../../../images/tradeBoard/" + boardDetail.getTradeImage());
+
 			transactionManager.commit(txStatus);
 		} catch (Exception e) {
 			transactionManager.rollback(txStatus);
@@ -173,10 +172,15 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
 		
 		List<TradeBoard> list = null;
+		
+		//수정날짜
+		LocalDateTime date = LocalDateTime.now();
+		String sysDate = date.toString().replace("T", " ").substring(0,19);
 		try {
 			if (uploadFile == null) {
+				tradeBoard.setTradeUpdateDate(sysDate);
 				dao.updateTradeBoard(tradeBoard);
-				
+				list = searchAllTradeBoard();
 			} else {
 				String uploadFileName = "";
 				String insertString = uploadFile[0].getOriginalFilename();
@@ -187,9 +191,6 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 				boolean result = deleteAndUploadImg(tradeBoard.getTradeImage(), uploadFile, imgUuid);
 				
 				if (result) {
-					//수정 날짜 생성
-					LocalDateTime date = LocalDateTime.now();
-					String sysDate = date.toString().replace("T", " ").substring(0,19);
 					
 					tradeBoard.setTradeUpdateDate(sysDate);
 					tradeBoard.setTradeImage(uploadFileName);
@@ -230,6 +231,127 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public List<TradeBoard> deleteTradeBoard(String tradeId, String tradeImage) {
+		
+		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+		
+		//삭제날짜
+		LocalDateTime date = LocalDateTime.now();
+		String sysDate = date.toString().replace("T", " ").substring(0,19);
+		
+		List<TradeBoard> list = null;
+		try {
+			HashMap<String, String> map = new HashMap<String, String>();
+			
+			map.put("tradeId", tradeId);
+			map.put("sysDate", sysDate);
+			
+			int result = dao.deleteDateUpdate(map);
+			
+			if (result == 1) {
+				tradeImage = tradeImage.replace("../../..", "C:/Users/KOSA/git/shose-issue-frontend");
+				File file = new File(tradeImage);
+				
+				if( file.exists() ){
+					file.delete();
+				}
+			}
+			
+			list = searchAllTradeBoard();
+			
+			transactionManager.commit(txStatus);
+		} catch (Exception e) {
+			transactionManager.rollback(txStatus);
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+
+	@Override
+	public int clickLike(TradeBoardLike like) {
+		
+		int result = 0;
+		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+		
+		String clickUser = dao.selectClickUser(like);
+		System.out.println(clickUser);
+		
+		
+		try {
+		if (clickUser == null) {
+			
+			dao.insertLike(like);
+			result = 1;
+			log.debug("잘 실행되었습니다.");
+		} else {
+			dao.deletLike(like);
+			log.debug("잘 실행되었습니다.");
+		}
+		transactionManager.commit(txStatus);
+		} catch (Exception e) {
+			transactionManager.rollback(txStatus);
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public String updateStatus(String tradeId, String tradeStatus) {
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("tradeId", tradeId);
+		map.put("tradeStatus", tradeStatus);
+		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+		String returnString = "";
+		try {
+			int result = dao.updateStatus(map);
+			
+			if (result == 1) {
+				//좋아요 누른 사람들에게 쪽지 보내는 부분
+				returnString = "예약중";
+				transactionManager.commit(txStatus);
+			}else {
+				transactionManager.rollback(txStatus);			
+			}
+		} catch (Exception e) {
+			transactionManager.rollback(txStatus);			
+			e.printStackTrace();
+		}
+		
+		return returnString;
+	}
+
+	@Override
+	public String updateStatusCancel(String tradeId) {
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("tradeId", tradeId);
+		map.put("tradeStatus", "예약 가능");
+		
+		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+		String returnString = "";
+		
+		try {
+			int result = dao.updateStatus(map);
+			
+			if (result == 1) {
+				//좋아요 누른 사람들에게 쪽지 보내는 부분은 따로 없음
+				returnString = "예약 가능";
+				transactionManager.commit(txStatus);
+			}else {
+				transactionManager.rollback(txStatus);			
+			}
+		} catch (Exception e) {
+			transactionManager.rollback(txStatus);			
+			e.printStackTrace();
+		}
+		return returnString;
+		
 	}
 
 }
