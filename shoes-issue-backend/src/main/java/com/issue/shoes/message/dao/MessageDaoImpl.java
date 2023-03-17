@@ -15,24 +15,29 @@ public class MessageDaoImpl implements MessageDao {
 	private SqlSession session;
 
 	public String createMessage() {
-		
+
 		return null;
 	}
 
 	public int create(Message message) throws Exception {
-		return session.insert("myRasdfho.sadfho",message);
+		return session.insert("myRasdfho.sadfho", message);
 	}
 
 	// 쪽지 상세 조회
-	public Message selectOne(String messageId)throws Exception {
-		return session.selectOne("Message.selectOne", messageId);
+	public Message selectOne(String messageId) throws Exception {
+		return session.selectOne("message.selectOne", messageId);
 	}
 
 	// 보낸 쪽지 전체 목록 조회
-	public List<Message> selectReceivedList(String messageReceiver)throws Exception {
+	public List<Message> selectReceivedList(String messageReceiver) throws Exception {
 		System.out.println(session);
 		return session.selectList("message.selectAllReceived", messageReceiver);
 	}
-	
-	
+
+	// 받은 쪽지 전체 목록 조회
+	public List<Message> selectSendList(String messageSender) throws Exception {
+		System.out.println(session);
+		return session.selectList("message.selectAllSend", messageSender);
+	}
+
 }
