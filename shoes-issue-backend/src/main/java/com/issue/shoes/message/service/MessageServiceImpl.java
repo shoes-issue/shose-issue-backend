@@ -18,17 +18,17 @@ public class MessageServiceImpl implements MessageService {
 
 	// 로그 추가
 	Logger log = LogManager.getLogger("case3");
-	
+
 	@Autowired
 	MessageDaoImpl dao;
-	
+
 	private final PlatformTransactionManager transactionManager;
-	
+
 	// 쪽지 보내기
-	public MessageServiceImpl (PlatformTransactionManager transactionManager) {
+	public MessageServiceImpl(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
 	}
-	
+
 	public int sendMessage(Message message) {
 		int result = 0;
 		try {
@@ -47,10 +47,9 @@ public class MessageServiceImpl implements MessageService {
 	// 보낸 쪽지 전체 목록
 	public List<Message> findAllReceivedMessage(String messageReceiver) {
 		List<Message> result = null;
-		
-		TransactionStatus txStatus =
-				transactionManager.getTransaction(new DefaultTransactionDefinition());
-		
+
+		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+
 		try {
 			result = dao.selectReceivedList(messageReceiver);
 			transactionManager.commit(txStatus);
@@ -60,18 +59,35 @@ public class MessageServiceImpl implements MessageService {
 			log.debug("service => 이상해요 사유={}", e);
 			throw new RuntimeException("보낸 쪽지 목록 조회 중 오류가 발생했습니다", e);
 		}
-		
-		
+
 		return result;
 	}
-	
+
+	// 받은 쪽지 전체 목록
+	public List<Message> findAllSendMessage(String messageSender) {
+		List<Message> result = null;
+
+		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+
+		try {
+			result = dao.selectSendList(messageSender);
+			transactionManager.commit(txStatus);
+			log.debug("service => 잘실행되었어요");
+		} catch (Exception e) {
+			transactionManager.rollback(txStatus);
+			log.debug("service => 이상해요 사유={}", e);
+			throw new RuntimeException("받은 쪽지 목록 조회 중 오류가 발생했습니다", e);
+		}
+
+		return result;
+	}
+
 	// 쪽지 상세 정보 조회
 	public Message findOneMessage(String messageId) {
 		Message result = null;
-		
-		TransactionStatus txStatus =
-				transactionManager.getTransaction(new DefaultTransactionDefinition());
-		
+
+		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+
 		log.debug("service 소환");
 		try {
 			result = dao.selectOne(messageId);
@@ -81,7 +97,7 @@ public class MessageServiceImpl implements MessageService {
 			transactionManager.rollback(txStatus);
 			log.debug("service => 뭔가 이상해요 사유={}", e);
 		}
-		
+
 		return result;
 	}
 

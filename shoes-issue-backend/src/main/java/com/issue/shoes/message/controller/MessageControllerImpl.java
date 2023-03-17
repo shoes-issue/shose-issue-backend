@@ -5,21 +5,21 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.issue.shoes.message.service.MessageServiceImpl;
 import com.issue.shoes.message.vo.Message;
 
 @CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "Content-Type", allowCredentials = "true")
-@Controller
+@RestController
 @RequestMapping(value = "message")
 public class MessageControllerImpl implements MessageController {
 	
@@ -29,9 +29,9 @@ public class MessageControllerImpl implements MessageController {
 	private MessageServiceImpl service;
 	
 	@Override
-	@PostMapping
-	public String sendMessage(Message message) {
-		System.out.println("123");
+	@PostMapping(produces = "application/json; charset=UTF-8")
+	public ResponseEntity<String> sendMessage(Message message) {
+		log.debug("sendMessage 실행={}", message);
 		int result = service.sendMessage(message);
 		// status 
 		if(result == 1 ) {
@@ -40,7 +40,7 @@ public class MessageControllerImpl implements MessageController {
 		}
 		if(result != 1 ) {
 			// 메시지 전송에 실패햐였습니다.
-			// status 실패
+			// st	atus 실패
 		}
 		// status 답장으로 보내주기
 		
@@ -70,10 +70,15 @@ public class MessageControllerImpl implements MessageController {
 		return result;
 	}
 	
+	// 보낸 쪽지함
 	@Override
-	@GetMapping(value="sent")
-	public String allSendMessage() {
-		return null;
+	@GetMapping(value="sent/{messageSender}", produces ="application/json; charset= UTF-8")
+	public List<Message> allSendMessage(@PathVariable("messageSender") String messageSender) {
+		log.debug("messageSender 조회={}", messageSender);
+
+		List<Message> result = service.findAllSendMessage(messageSender);
+
+		return result;
 	}
 	
 	// 쪽지 상세 정보 조회
@@ -83,7 +88,7 @@ public class MessageControllerImpl implements MessageController {
 	@GetMapping(value = "{messageId}", produces = "application/json; charset= UTF-8")
 	public Message openMessageDetail(@PathVariable("messageId") String messageId) {
 		// http://localhost:80/message/{messageId} 의 주소로 GET요청을 보내면 여기로 도착할 꺼에요
-		
+		System.out.println(messageId+ "왜 안나와!!!!");
 		// 1. 일단 여기로 요청이 들어와야 해요
 		log.debug("messageId 조회={}", messageId);
 		

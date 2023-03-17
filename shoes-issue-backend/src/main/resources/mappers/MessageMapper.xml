@@ -3,25 +3,22 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
- <mapper namespace="message">
- 
-<!--  	<resultMap id="result"
- 		type="com.issue.shoes.message.vo.Message">
- 		<result property="messageId" column="messageId" />
- 		<result property="messageTitle" column="messageTitle" />
- 		<result property="messageContents" column="messageContents" />
- 		<result property="messageSenddate" column="messageSenddate" jdbcType="DATETIME" 
- 			javaType="String"/>
- 		<result property="messageReceivedate" column="messageReceivedate" jdbcType="DATETIME" 
- 			javaType="String"/>
- 		<result property="messageOpenstatus" column="messageOpenstatus" jdbcType="BOOLEAN"/>
- 		<result property="messageSender" column="messageSender" />
- 		<result property="messageReceiver" column="messageReceiver" />
- 	</resultMap> -->
- 	
- 	<select id="selectOne" parameterType="String" resultType="com.issue.shoes.message.vo.Message">
- 		<!-- resultMap="result"> -->
+
+<mapper namespace="message">
+
+	<!-- <resultMap id="result" type="com.issue.shoes.message.vo.Message"> <result 
+		property="messageId" column="messageId" /> <result property="messageTitle" 
+		column="messageTitle" /> <result property="messageContents" column="messageContents" 
+		/> <result property="messageSenddate" column="messageSenddate" jdbcType="DATETIME" 
+		javaType="String"/> <result property="messageReceivedate" column="messageReceivedate" 
+		jdbcType="DATETIME" javaType="String"/> <result property="messageOpenstatus" 
+		column="messageOpenstatus" jdbcType="BOOLEAN"/> <result property="messageSender" 
+		column="messageSender" /> <result property="messageReceiver" column="messageReceiver" 
+		/> </resultMap> -->
+
+	<select id="selectOne" parameterType="String"
+		resultType="com.issue.shoes.message.vo.Message">
+		<!-- resultMap="result"> -->
  		<![CDATA[
  			SELECT 
  				messageId, 
@@ -35,17 +32,11 @@
  			FROM message
  			WHERE messageId = #{messageId}
  		]]>
- 	</select>
- 	
- 	<!-- messageId, 
- 				messageTitle, 
- 				messageContents, 
- 				messageSenddate,
- 				messageReceivedate,
- 				messageOpenstatus,
- 				messageSender,
- 				messageReceiver-->
- 	<select id="selectAllReceived" parameterType="String" resultType="com.issue.shoes.message.vo.Message">
+	</select>
+
+
+	<select id="selectAllReceived" parameterType="String"
+		resultType="com.issue.shoes.message.vo.Message">
  		<![CDATA[
  			SELECT 
  			*	
@@ -53,9 +44,21 @@
  			WHERE messageReceiver = #{messageReceiver}
  		
  		]]>
+
+
+
+	</select>
+
+	<select id="selectAllSend" parameterType="String"
+		resultType="com.issue.shoes.message.vo.Message">
+ 		<![CDATA[
+ 			SELECT 
+ 			*	
+ 			FROM message
+ 			WHERE messageSender = #{messageSender}
  		
- 		
- 	
- 	</select>
- 
- </mapper> 
+ 		]]>
+
+	</select>
+
+</mapper> 
