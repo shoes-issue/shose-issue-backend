@@ -2,6 +2,7 @@ package com.issue.shoes.user.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.issue.shoes.user.service.UserService;
@@ -103,16 +106,25 @@ public class UserCRUDController implements UserController {
 
 
 	@Override
-	@PutMapping("/user/{userId}")
-	public ResponseEntity<?> updateUser(@RequestBody User user) {
+	@PostMapping("/userProfile/{userId}")
+	public ResponseEntity<?> updateUser(MultipartFile imageUrl, User user) {
 		try {
+			UUID imgUuid = UUID.randomUUID();
+
+			String profileImage = imageUrl.getOriginalFilename();
+			profileImage = profileImage.substring(profileImage.lastIndexOf("\\") + 1);
+			profileImage = imgUuid.toString() + "_" + profileImage;
 			// 전달받은 정보를 이용하여 User 객체를 생성합니다.
+			
+			log.debug("sdf");
 			User newUser = new User(
 					user.getUserName(),
 					user.getNickName(),
 					user.getUserId(),
 					user.getUserPw(),
-					user.getPhone()
+					user.getPhone(),
+					profileImage,
+					imageUrl
 					);
 			// UserService를 이용하여 새로운 사용자를 생성합니다.
 			log.debug("New User: {}", newUser);
@@ -120,6 +132,7 @@ public class UserCRUDController implements UserController {
 			userService.updateUser(newUser);
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
@@ -135,5 +148,6 @@ public class UserCRUDController implements UserController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+
 }
 

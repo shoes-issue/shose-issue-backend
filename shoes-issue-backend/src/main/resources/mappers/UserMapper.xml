@@ -10,7 +10,7 @@
 	<select id="selectLoginUser" parameterType="String"
 		resultType="com.issue.shoes.user.vo.User">
 		SELECT userId, userPw
-		FROM user WHERE userId = #{userId};
+		FROM user WHERE userId = #{userId} AND deleteDate IS NULL;;
 	</select>
 
 	<select id="selectUserById" parameterType="String"
@@ -18,7 +18,7 @@
 		SELECT userId, userPw, userName, nickName, signupDate, updateDate,
 		deleteDate,
 		adminStatus, point, profileImage, phone, reportCount, reportDate
-		FROM user WHERE userId = #{userId};
+		FROM user WHERE userId = #{userId} AND deleteDate IS NULL;;
 	</select>
 
 	<insert id="insertUser"
@@ -36,20 +36,24 @@
 	<update id="updateUser"
 		parameterType="com.issue.shoes.user.vo.User">
 		UPDATE user
-		SET userId = #{userId},
-		userPw = #{userPw},
+		SET userPw = #{userPw},
 		userName = #{userName},
 		nickName = #{nickName},
-		phone = #{phone}
-		WHERE userId = #{userId}
+		phone = #{phone},
+		profileImage = #{profileImage}
+		WHERE userId = #{userId} AND deleteDate IS NULL;
 	</update>
 
-	<delete id="deleteUser" parameterType="String">
-		DELETE FROM user WHERE userId = #{userId}
-	</delete>
+	<update id="deleteUser" parameterType="String">
+		UPDATE user
+		SET deleteDate = NOW()
+		WHERE userId = #{userId}
+	</update>
 	
-	<delete id="deleteUseroauth" parameterType="String">
-		DELETE FROM oauthjwt WHERE userId = #{userId}
-	</delete>
+	<update id="deleteUseroauth" parameterType="String">
+		UPDATE OauthJwt
+		SET deleteDate = NOW()
+		WHERE userId = #{userId}
+	</update>
 
 </mapper>

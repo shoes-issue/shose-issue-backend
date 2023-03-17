@@ -15,7 +15,7 @@
 		resultMap="userJwtResultSet">
 		SELECT *
 		FROM OauthJwt
-		WHERE userJwtIdx = #{userJwtIdx}
+		WHERE userJwtIdx = #{userJwtIdx} AND deleteDate IS NULL;
 	</select>
 
 	<select id="selectUserJwtBySubject" parameterType="userJwt"
@@ -24,7 +24,7 @@
 		FROM OauthJwt UJ
 		JOIN User U
 		WHERE U.userId = UJ.userId
-		AND U.userId = #{subject}
+		AND U.userId = #{subject} AND U.deleteDate IS NULL;
 	</select>
 
 	<insert id="insertJwtWithIdx" parameterType="userJwt">
@@ -39,7 +39,7 @@
 	<update id="updateUserJwtWithIdx" parameterType="userJwt">
 		UPDATE OauthJwt
 		SET refreshToken = #{refreshToken}
-		WHERE userJwtIdx = #{userJwtIdx}
+		WHERE userJwtIdx = #{userJwtIdx} AND deleteDate IS NULL;
 	</update>
 
 	<delete id="deleteUserJwtWithSubject" parameterType="userJwt">

@@ -68,7 +68,7 @@ public class UserDaoImpl implements UserDao {
 	public void deleteUser(String userId) throws Exception {
 		int result = 0;
 
-		result = session.delete("User.deleteUser", userId);
+		result = session.update("User.deleteUser", userId);
 
 		if (result != 1) {
 			throw new Exception();
@@ -79,7 +79,7 @@ public class UserDaoImpl implements UserDao {
 	public void deleteUseroauth(String userId) throws Exception {
 		int result = 0;
 
-		result = session.delete("User.deleteUseroauth", userId);
+		result = session.update("User.deleteUseroauth", userId);
 
 		if (result != 1) {
 			throw new Exception();
