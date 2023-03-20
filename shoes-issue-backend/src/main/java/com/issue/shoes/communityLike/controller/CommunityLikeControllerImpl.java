@@ -37,11 +37,17 @@ public class CommunityLikeControllerImpl implements communityLikeController {
 		return null;
 	}
 
+	// 좋아요 삭제
 	@Override
 	@DeleteMapping
-	public String deleteCommunityBoardLike(@RequestBody CommunityLike communityLike) {
+	public ResponseEntity<String> deleteCommunityBoardLike(CommunityLike communityLike) {
+		log.debug("deleteCommunityBoardLike Controller Value={}",communityLike);
 		int result = service.deleteCommunityLike(communityLike);
-		return null;
+		if (result == 1) {
+	        return ResponseEntity.ok("Success");
+	    } else {
+	        return ResponseEntity.badRequest().body("Error: Failed to delete like.");
+	    }
 	}
 
 	@Override

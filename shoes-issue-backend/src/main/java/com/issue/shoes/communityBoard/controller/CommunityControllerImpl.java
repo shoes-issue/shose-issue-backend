@@ -74,6 +74,7 @@ public class CommunityControllerImpl implements CommunityBoardController {
 
 //		String jsonResult = gson.toJson(result);
 //		System.out.println("서비스 실행후");
+		log.debug("result 수행 결과 ={}",result);
 		return result;
 	}
 

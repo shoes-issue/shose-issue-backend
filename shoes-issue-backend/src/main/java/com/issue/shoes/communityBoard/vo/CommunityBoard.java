@@ -16,4 +16,5 @@ public class CommunityBoard {
 	private String boardUpdatedate;
 	private String boardDeletedate;
 	private String userId;
+	private String nickName;
 }

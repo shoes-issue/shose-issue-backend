@@ -8,7 +8,7 @@ public interface communityLikeController {
 	//좋아요 추가
 	String createCommunityBoardLike(CommunityLike communityLike);
 	//좋아요 삭제
-	String deleteCommunityBoardLike(CommunityLike communityLike);
+	ResponseEntity<String> deleteCommunityBoardLike(CommunityLike communityLike);
 	
 	ResponseEntity<Object> searchCommunityBoardLike(String userId,String boardId);
 
