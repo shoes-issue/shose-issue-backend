@@ -30,10 +30,16 @@ public class UserCRUDService implements UserService {
 		return userId;
 	}
 	
+	@Override
+	public boolean idDuplicate(String userId) {
+	    User user = userDao.selectByUserId(userId);
+	    return user!= null;
+	}
+	
 	@Transactional
 	@Override
 	public User selectUserById(String userId) {
-		User user = userDao.selectUserById(userId);
+		User user = userDao.selectByUserId(userId);
 		return user;
 	}
 	
@@ -50,6 +56,13 @@ public class UserCRUDService implements UserService {
 	    userDao.insertUseroauth(user);
 	    return user;
 	}
+	
+	@Transactional
+	@Override
+	public User createPreference(User user) throws Exception {
+	    userDao.insertPreference(user);
+	    return user;
+	}
 
 	@Transactional
 	@Override
@@ -64,8 +77,7 @@ public class UserCRUDService implements UserService {
 
 	private void uploadImg(String profileImage, MultipartFile multipartFile) {
 		
-		String uploadFolder = "C:\\Users\\aneli\\문서\\shose-issue-frontend\\images\\profile";
-		
+		String uploadFolder = "C:\\Users\\aneli\\문서\\shoes-issue-frontend-vuetify\\public\\images\\profile";
 		File uploadPath = new File(uploadFolder);
 
 		if (!uploadPath.exists()) {
@@ -96,5 +108,7 @@ public class UserCRUDService implements UserService {
 	    userDao.deleteUseroauth(userId);
 	    return userId;
 	}
+
+
 
 }

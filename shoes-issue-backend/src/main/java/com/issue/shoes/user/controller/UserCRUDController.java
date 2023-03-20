@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +34,9 @@ public class UserCRUDController implements UserController {
 	private Logger log = LogManager.getLogger("case3");
 
 	@Autowired
+    private PasswordEncoder passwordEncoder;
+	
+	@Autowired
 	private Gson gson;
 
 	@Autowired
@@ -42,11 +46,17 @@ public class UserCRUDController implements UserController {
 		this.userService = userService;
 	}
 
-	@GetMapping("/user/{userId}")
-	public String searchUser() {
-		// userService를 사용하여 검색 기능 구현
-		return "searchUser";
+	@Override
+	@PostMapping("/user/usercheck")
+	public ResponseEntity<Map<String, Boolean>> searchUser(@RequestBody Map<String, String> requestBody) {
+	    String userId = requestBody.get("userId");
+	    boolean isDuplicate = userService.idDuplicate(userId);
+
+	    Map<String, Boolean> response = new HashMap<>();
+	    response.put("isDuplicate", isDuplicate);
+	    return ResponseEntity.ok(response);
 	}
+
 
 	@Override
 	@PostMapping("/user/{userId}")
@@ -83,13 +93,20 @@ public class UserCRUDController implements UserController {
 	@PostMapping("/user")
 	public ResponseEntity<?> createUser(@RequestBody User user) {
 		try {
+			
+		    // PasswordEncoder를 사용하여 userPw를 암호화합니다.
+            String encodedPassword = passwordEncoder.encode(user.getUserPw());
+
 			// 전달받은 정보를 이용하여 User 객체를 생성합니다.
 			User newUser = new User(
 					user.getUserName(),
 					user.getNickName(),
 					user.getUserId(),
-					user.getUserPw(),
-					user.getPhone()
+					encodedPassword,
+					user.getPhone(),
+					user.getPreference1(),
+					user.getPreference2(),
+					user.getPreference3()
 					);
 			// UserService를 이용하여 새로운 사용자를 생성합니다.
 			log.debug(user.getUserId().getClass());
@@ -98,6 +115,7 @@ public class UserCRUDController implements UserController {
 
 			userService.createUser(newUser);
 			userService.createUseroauth(newUser);
+			userService.createPreference(newUser);
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -114,6 +132,8 @@ public class UserCRUDController implements UserController {
 			String profileImage = imageUrl.getOriginalFilename();
 			profileImage = profileImage.substring(profileImage.lastIndexOf("\\") + 1);
 			profileImage = imgUuid.toString() + "_" + profileImage;
+			
+			String encodedPassword = passwordEncoder.encode(user.getUserPw());
 			// 전달받은 정보를 이용하여 User 객체를 생성합니다.
 			
 			log.debug("sdf");
@@ -121,7 +141,7 @@ public class UserCRUDController implements UserController {
 					user.getUserName(),
 					user.getNickName(),
 					user.getUserId(),
-					user.getUserPw(),
+					encodedPassword,
 					user.getPhone(),
 					profileImage,
 					imageUrl
