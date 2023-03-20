@@ -2,6 +2,7 @@ package com.issue.shoes.message.service;
 
 import java.util.List;
 
+import org.apache.ibatis.transaction.Transaction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +32,20 @@ public class MessageServiceImpl implements MessageService {
 
 	public int sendMessage(Message message) {
 		int result = 0;
+			TransactionStatus txStatus =
+					transactionManager.getTransaction(new DefaultTransactionDefinition());
 		try {
 			result = dao.create(message);
 			if (result == 1) {
-				// commit
+				transactionManager.commit(txStatus);
+				log.debug("service => 잘실행되었어요");
 			} else {
-				// rollback
+				throw new Exception("error");
 			}
 		} catch (Exception e) {
-			// 로그 실행
+			transactionManager.rollback(txStatus);
+			log.debug("service => 뭔가 이상해요 사유={}", e);
+			throw new RuntimeException("쪽지 생성 중 오류가 발생하였습니다.", e);
 		}
 		return result;
 	}
