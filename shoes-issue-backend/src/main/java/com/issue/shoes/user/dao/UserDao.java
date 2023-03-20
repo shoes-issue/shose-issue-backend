@@ -6,7 +6,7 @@ public interface UserDao {
 
 	User selectLoginUser(User user);
 	
-	User selectUserById(String userId);
+	User selectByUserId(String userId);
 
 	void insertUser(User user) throws Exception;
 
@@ -15,8 +15,11 @@ public interface UserDao {
 	void deleteUser(String userId) throws Exception;
 
 	void insertUseroauth(User user) throws Exception;
+	
+	void insertPreference(User user) throws Exception;
 
 	void deleteUseroauth(String userId) throws Exception;
+	
 
 
 }

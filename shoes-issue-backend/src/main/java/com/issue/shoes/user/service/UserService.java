@@ -12,11 +12,16 @@ public interface UserService {
 	User updateUser(User newUser) throws Exception;
 	//유저 탈퇴
 	String deleteUser(String userId) throws Exception;
-
+	//oauth vo 삽입
 	User createUseroauth(User user) throws Exception;
+	
+	User createPreference(User user) throws Exception;
 	
 	String deleteUseroauth(String userId) throws Exception;
 	
 	User selectUserById(String userId) throws Exception;
+	
+	boolean idDuplicate(String userId);
+	//Preference vo 삽입
 	
 }

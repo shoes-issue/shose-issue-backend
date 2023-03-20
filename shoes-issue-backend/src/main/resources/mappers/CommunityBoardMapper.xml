@@ -5,18 +5,20 @@
 <mapper namespace="CommunityBoard">
 	
 	<!-- 게시글 세부 조회 -->
-	<select id="selectOne" parameterType="String"
-		resultType="CommunityBoard">
+	<select id="selectOne" parameterType="String"		
+resultType="CommunityBoard">
        <![CDATA[   
-         SELECT
-         	boardId,
-         	boardTitle,
-         	boardContents,
-         	userId,
-         	boardDate,
-         	(SELECT COUNT(*) FROM communityLike l WHERE l.boardId = b.boardId) AS boardLike
-         FROM communityboard b
-         WHERE boardId = #{boardId} AND boardDeletedate IS NULL
+         SELECT 
+    b.boardId,
+    b.boardTitle,
+    b.boardContents,
+    b.userId,
+    b.boardDate,
+    u.nickName,
+    (SELECT COUNT(*) FROM communityLike l WHERE l.boardId = b.boardId) AS boardLike
+		FROM communityboard b
+		JOIN user u ON u.userId = b.userId
+		WHERE boardId = #{boardId} AND boardDeletedate IS NULL
       ]]>
 	</select>
 
@@ -28,9 +30,12 @@
          	boardTitle,
          	boardContents,
          	boardDate,
+         	b.userId,
+         	u.nickName,
          	(SELECT COUNT(*) FROM communityLike l WHERE l.boardId = b.boardId) AS boardLike
-         FROM communityboard b
-         WHERE boardDeletedate IS NULL
+         	FROM communityboard b
+			JOIN user u ON u.userId = b.userId
+			WHERE boardDeletedate IS NULL
       ]]>
 	</select>
 

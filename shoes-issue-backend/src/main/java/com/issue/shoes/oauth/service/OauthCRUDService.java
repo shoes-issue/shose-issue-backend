@@ -45,22 +45,24 @@ public class OauthCRUDService implements OauthService {
 
 	@Override
 	public Boolean loginUser(User user) {
-		// login 시 사용하는 id 만 가지고 일단 db 를 불러온 뒤
-		log.debug(user);
-		User loginUser = userdao.selectLoginUser(user);
-		log.debug("유저검색");
+	    // login 시 사용하는 id 만 가지고 일단 db 를 불러온 뒤
+	    log.debug(user);
+	    User loginUser = userdao.selectLoginUser(user);
+	    log.debug("유저검색");
+	    
+	    // 만약 유저 아이디가 일치 하지 않으면 db 에 조회가 안될 것이고,
+	    if(loginUser == null) {
+	        log.debug("해당 아이디의 유저가 존재하지 않습니다.");
+	        return false;
+	    }
 
-		// 만약 유저 아이디가 일치 하지 않으면 db 에 조회가 안될 것이고,
-		if(loginUser == null) {
-			log.debug("해당 아이디의 유저가 존재하지 않습니다.");
-			return false;
-		}
-
-		// 만약 비밀번호가 일치하지 않는다면
-		if(!user.getUserPw().equals(loginUser.getUserPw())) {
-			log.debug(user.getUserPw());
-			log.debug(loginUser.getUserPw());
-			log.debug("비밀번호가 일치하지 않습니다.");
+	    // 로그인 시 입력한 비밀번호를 가져와서 암호화한 후, DB에서 조회한 사용자의 비밀번호와 비교
+	    String loginencodedPassword = user.getUserPw();
+	    String dbPassword = loginUser.getUserPw();
+	    if(!passwordEncoder.matches(loginencodedPassword, dbPassword)) {
+	    	log.debug(loginencodedPassword);
+	    	log.debug(dbPassword);
+	    	log.debug("비밀번호가 일치하지 않습니다.");
 			return false;
 		}
 		log.debug("로그인에 성공했습니다.");

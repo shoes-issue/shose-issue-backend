@@ -11,7 +11,7 @@ public interface MessageController {
 	//쪽지 전송
 	ResponseEntity<String> sendMessage(Message message);
 	//쪽지 삭제
-	String deleteMessage();
+	ResponseEntity<String> deleteMessage(Message messageId);
 	//받은 쪽지함
 	List<Message> allReceivedMessage(String messageReceiver);
 	//보낸 쪽지함

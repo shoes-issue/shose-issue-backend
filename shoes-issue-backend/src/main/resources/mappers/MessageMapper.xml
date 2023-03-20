@@ -15,7 +15,7 @@
 		column="messageOpenstatus" jdbcType="BOOLEAN"/> <result property="messageSender" 
 		column="messageSender" /> <result property="messageReceiver" column="messageReceiver" 
 		/> </resultMap> -->
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 	<select id="selectOne" parameterType="String"
 		resultType="com.issue.shoes.message.vo.Message">
 		<!-- resultMap="result"> -->
@@ -60,5 +60,13 @@
  		]]>
 
 	</select>
+	
+	<insert id="insert" parameterType="Message">
+		<![CDATA[
+			INSERT INTO message (messageId, messageTitle, messageContents, 
+			messageSenddate, messageSender, messageReceiver)
+			VALUES (#{messageId}, #{messageTitle}, #{messageContents}, NOW(), #{messageSender}, #{messageReceiver})
+		]]>
+	</insert>
 
 </mapper> 

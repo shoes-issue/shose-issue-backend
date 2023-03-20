@@ -28,12 +28,16 @@ public class User {
 		this.userId = userId;
 	}
 
-	public User(String userName, String nickName, String userId, String userPw, String phone) {
+	public User(String userName, String nickName, String userId, String userPw, String phone, 
+			String preference1, String preference2, String preference3) {
 		this.userName = userName;
 		this.nickName = nickName;
 		this.userId = userId;
 		this.userPw = userPw;
 		this.phone = phone;
+		this.preference1 = preference1;
+		this.preference2 = preference2;
+		this.preference3 = preference3;
 	}
 
 	private String userId;
@@ -50,5 +54,8 @@ public class User {
 	private int reportCount;
 	private String reportDate;
 	private MultipartFile imageUrl;
+	private String preference1;
+	private String preference2;
+	private String preference3;
 	
 }

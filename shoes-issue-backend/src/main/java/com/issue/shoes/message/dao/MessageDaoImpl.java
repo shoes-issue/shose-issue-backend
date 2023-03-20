@@ -20,7 +20,7 @@ public class MessageDaoImpl implements MessageDao {
 	}
 
 	public int create(Message message) throws Exception {
-		return session.insert("myRasdfho.sadfho", message);
+		return session.insert("message.insert", message);
 	}
 
 	// 쪽지 상세 조회
