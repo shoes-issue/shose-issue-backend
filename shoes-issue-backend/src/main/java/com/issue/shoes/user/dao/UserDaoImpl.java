@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User selectUserById(String userId) {
+	public User selectByUserId(String userId) {
 		User result = null;
 
 		result = session.selectOne("User.selectUserById", userId);
@@ -47,6 +47,17 @@ public class UserDaoImpl implements UserDao {
 		int result = 0;
 
 		result = session.insert("User.insertUseroauth", user);
+
+		if (result != 1) {
+			throw new Exception();
+		}
+	}
+	
+	@Override
+	public void insertPreference(User user) throws Exception {
+		int result = 0;
+
+		result = session.insert("User.insertPreference", user);
 
 		if (result != 1) {
 			throw new Exception();

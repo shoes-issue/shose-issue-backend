@@ -12,15 +12,7 @@ public interface OauthController {
 	//문자로 인증번호 전송
 	ResponseEntity<Object> loginUserToken(User user);
 	//문자 인증번호 검증
-//	Object logoutUser(HttpEntity entity);
-
 	Object update(User user);
 
 	User loginUser(User user);
-	//카카오로그인
-//	String home();
-
-//	ResponseEntity<Object> kakaoCallback(String code) throws Exception;
-	
-//	void mainredirect() throws Exception;
 }
