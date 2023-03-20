@@ -80,13 +80,12 @@ public class CommunityLikeServiceImpl {
 				log.debug(new Exception("CommunityLikeServiceImpl 좋아요 삭제 오류"));
 				transactionManager.rollback(txStatus);
 			}
-			transactionManager.commit(txStatus);
-			
 			// 오류 발생시
 		} catch (Exception e) {
 			log.debug("CommunityLikeServiceImpl 좋아요 삭제 오류={}",e);
 			transactionManager.rollback(txStatus);
 		}
+		transactionManager.commit(txStatus);
 		return result;
 	}
 
