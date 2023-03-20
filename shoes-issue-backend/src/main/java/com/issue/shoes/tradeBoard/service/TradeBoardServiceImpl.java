@@ -2,6 +2,7 @@ package com.issue.shoes.tradeBoard.service;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.issue.shoes.tradeBoard.dao.TradeBoardDao;
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
+import com.issue.shoes.tradeBoard.vo.PageNation;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
 import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
@@ -37,21 +39,73 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 	}
 
 	@Override
-	public List<TradeBoard> searchAllTradeBoard() {
+	public List<Object> searchAllTradeBoard(PageNation page) {
 
-		List<TradeBoard> list = dao.searchAllTradeBoard();
-
-		for (TradeBoard tradeBoard : list) {
-			tradeBoard.setTradeImage("../../../images/tradeBoard/" + tradeBoard.getTradeImage());
+		page.setStartPage((page.getPage() -1) * page.getRecordSize());//페이지 처음 번호 vo 넣음
+		
+		List<Object> totalList = new ArrayList<>();
+		
+		List<TradeBoard> list = null;
+		
+		try {
+			list = dao.searchAllTradeBoard(page);
+		
+			int boardCount = dao.countTradeBoard();
+			
+			int totalPage = 0;
+			
+			log.debug(totalPage);
+			
+			if ((boardCount%10) > 0) {
+				totalPage = totalPage/10 + 1;
+			}
+			log.debug(totalPage);
+			
+			for (TradeBoard tradeBoard : list) {
+				tradeBoard.setTradeImage("/images/tradeBoard/" + tradeBoard.getTradeImage());
+				
+				if (tradeBoard.getTradeStatus().equals("예약 가능")) {				
+					tradeBoard.setStatusStyle("font-size: larger; color: blue");
+				}else if (tradeBoard.getTradeStatus().equals("거래중")) {
+					tradeBoard.setStatusStyle("font-size: larger; color: #ffc107");
+				} else {
+					tradeBoard.setStatusStyle("font-size: larger; color: red");				
+				}
+			}
+			
+			totalList.add(list);
+			totalList.add(totalPage);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		return list;
+		return totalList;
 	}
 
 	@Override
-	public List<TradeBoard> selectTradeTitle(String keyword) {
+	public List<TradeBoard> selectTradeTitle(String keyword, String category) {
+		
+		HashMap<String, String> map = new HashMap<>();
+		
+		map.put("keyword", keyword);
+		map.put("category", category);
 
-		List<TradeBoard> list = dao.selectTradeTitle(keyword);
+		List<TradeBoard> list = null; //오류방지
+//		List<TradeBoard> list = dao.selectTradeTitle(map);
+		
+		for (TradeBoard tradeBoard : list) {
+			tradeBoard.setTradeImage("/images/tradeBoard/" + tradeBoard.getTradeImage());
+			
+			if (tradeBoard.getTradeStatus().equals("예약 가능")) {				
+				tradeBoard.setStatusStyle("font-size: larger; color: blue");
+			}else if (tradeBoard.getTradeStatus().equals("거래중")) {
+				tradeBoard.setStatusStyle("font-size: larger; color: #ffc107");
+			} else {
+				tradeBoard.setStatusStyle("font-size: larger; color: red");				
+			}
+		}
 
 		return list;
 	}
@@ -90,7 +144,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			}
 
 			if (success) {
-				list = searchAllTradeBoard();
+//				list = searchAllTradeBoard();
 				transactionManager.commit(txStatus);
 			}
 
@@ -107,7 +161,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 
 		boolean success = true;
 
-		String uploadFolder = "C:/Users/KOSA/git/shose-issue-frontend/images/tradeBoard";
+		String uploadFolder = "C:/Users/KOSA/git/shoes-issue-frontend-vuetify/public/images/tradeBoard";
 
 		File uploadPath = new File(uploadFolder);
 
@@ -180,7 +234,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			if (uploadFile == null) {
 				tradeBoard.setTradeUpdateDate(sysDate);
 				dao.updateTradeBoard(tradeBoard);
-				list = searchAllTradeBoard();
+//				list = searchAllTradeBoard();
 			} else {
 				String uploadFileName = "";
 				String insertString = uploadFile[0].getOriginalFilename();
@@ -197,7 +251,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 					
 					dao.updateTradeBoardIncludeImg(tradeBoard);
 					
-					list = searchAllTradeBoard();
+//					list = searchAllTradeBoard();
 					
 					transactionManager.commit(txStatus);
 				}
@@ -260,7 +314,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 				}
 			}
 			
-			list = searchAllTradeBoard();
+//			list = searchAllTradeBoard();
 			
 			transactionManager.commit(txStatus);
 		} catch (Exception e) {
@@ -305,7 +359,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("tradeId", tradeId);
-		map.put("tradeStatus", tradeStatus);
+		map.put("tradeStatus", "거래중");
 		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
 		String returnString = "";
 		try {
@@ -313,7 +367,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			
 			if (result == 1) {
 				//좋아요 누른 사람들에게 쪽지 보내는 부분
-				returnString = "예약중";
+				returnString = "거래중";
 				transactionManager.commit(txStatus);
 			}else {
 				transactionManager.rollback(txStatus);			
@@ -352,6 +406,33 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		}
 		return returnString;
 		
+	}
+
+	@Override
+	public String updateStatusComplete(String tradeId) {
+
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("tradeId", tradeId);
+		map.put("tradeStatus", "판매 완료");
+
+		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+		String returnString = "";
+
+		try {
+			int result = dao.updateStatus(map);
+
+			if (result == 1) {
+				//좋아요 누른 사람들에게 쪽지 보내는 부분
+				returnString = "판매 완료";
+				transactionManager.commit(txStatus);
+			} else {
+				transactionManager.rollback(txStatus);
+			}
+		} catch (Exception e) {
+			transactionManager.rollback(txStatus);
+			e.printStackTrace();
+		}
+		return returnString;
 	}
 
 }

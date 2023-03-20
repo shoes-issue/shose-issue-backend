@@ -7,53 +7,53 @@
 
 <mapper namespace="User">
 
-	<select id="selectLoginUser" parameterType="String"
-		resultType="com.issue.shoes.user.vo.User">
-		SELECT userId, userPw
-		FROM user WHERE userId = #{userId} AND deleteDate IS NULL;;
-	</select>
+   <select id="selectLoginUser" parameterType="String"
+      resultType="com.issue.shoes.user.vo.User">
+      SELECT userId, userPw
+      FROM user WHERE userId = #{userId} AND deleteDate IS NULL;
+   </select>
 
-	<select id="selectUserById" parameterType="String"
-		resultType="com.issue.shoes.user.vo.User">
-		SELECT userId, userPw, userName, nickName, signupDate, updateDate,
-		deleteDate,
-		adminStatus, point, profileImage, phone, reportCount, reportDate
-		FROM user WHERE userId = #{userId} AND deleteDate IS NULL;;
-	</select>
+   <select id="selectUserById" parameterType="String"
+      resultType="com.issue.shoes.user.vo.User">
+      SELECT userId, userPw, userName, nickName, signupDate, updateDate,
+      deleteDate,
+      adminStatus, point, profileImage, phone, reportCount, reportDate
+      FROM user WHERE userId = #{userId} AND deleteDate IS NULL;
+   </select>
 
-	<insert id="insertUser"
-		parameterType="com.issue.shoes.user.vo.User">
-		INSERT INTO user (userId, userPw, userName, nickName, phone)
-		VALUES (#{userId}, #{userPw}, #{userName}, #{nickName}, #{phone})
-	</insert>
-	
-	<insert id="insertUseroauth"
-		parameterType="com.issue.shoes.user.vo.User">
-		INSERT INTO oauthjwt (userId, subject)
-		VALUES (#{userId}, #{userId})
-	</insert>
+   <insert id="insertUser"
+      parameterType="com.issue.shoes.user.vo.User">
+      INSERT INTO user (userId, userPw, userName, nickName, phone)
+      VALUES (#{userId}, #{userPw}, #{userName}, #{nickName}, #{phone})
+   </insert>
+   
+   <insert id="insertUseroauth"
+      parameterType="com.issue.shoes.user.vo.User">
+      INSERT INTO oauthjwt (userId, subject)
+      VALUES (#{userId}, #{userId})
+   </insert>
 
-	<update id="updateUser"
-		parameterType="com.issue.shoes.user.vo.User">
-		UPDATE user
-		SET userPw = #{userPw},
-		userName = #{userName},
-		nickName = #{nickName},
-		phone = #{phone},
-		profileImage = #{profileImage}
-		WHERE userId = #{userId} AND deleteDate IS NULL;
-	</update>
+   <update id="updateUser"
+      parameterType="com.issue.shoes.user.vo.User">
+      UPDATE user
+      SET userPw = #{userPw},
+      userName = #{userName},
+      nickName = #{nickName},
+      phone = #{phone},
+      profileImage = #{profileImage}
+      WHERE userId = #{userId} AND deleteDate IS NULL;
+   </update>
 
-	<update id="deleteUser" parameterType="String">
-		UPDATE user
-		SET deleteDate = NOW()
-		WHERE userId = #{userId}
-	</update>
-	
-	<update id="deleteUseroauth" parameterType="String">
-		UPDATE OauthJwt
-		SET deleteDate = NOW()
-		WHERE userId = #{userId}
-	</update>
+   <update id="deleteUser" parameterType="String">
+      UPDATE user
+      SET deleteDate = NOW()
+      WHERE userId = #{userId}
+   </update>
+   
+   <update id="deleteUseroauth" parameterType="String">
+      UPDATE OauthJwt
+      SET deleteDate = NOW()
+      WHERE userId = #{userId}
+   </update>
 
 </mapper>

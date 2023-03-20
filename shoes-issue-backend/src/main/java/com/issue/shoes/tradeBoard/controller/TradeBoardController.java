@@ -4,16 +4,18 @@ package com.issue.shoes.tradeBoard.controller;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
+import com.issue.shoes.tradeBoard.vo.PageNation;
 import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
 
 public interface TradeBoardController {
 	
 	//중고 게시물 카테고리 클릭
-	String searchAllTradeBoard();
+//	String searchAllTradeBoard();
+	String searchAllTradeBoard(PageNation page);
 	//중고 게시물 등록
 	String createTradeBoard(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile);
-	//중고 게시물 제목 검색
-	String selectTradeTitle(String keywordsearchTradeBoard);
+	//중고 게시물 제목 검색(카테고리 포함)
+	String selectTradeTitle(String keyword, String category);
 	//중고 게시물 상세보기
 	String searchTradeBoard(String tradeId, String userId);
 	//중고 게시물 수정페이지 이동
@@ -28,11 +30,8 @@ public interface TradeBoardController {
 	String changeStatusReservation(String tradeId, String tradeStatus);
 	//거래 취소
 	String changeStatusCancel(String tradeId);
-
-	//중고 게시물 카테고리 검색
-	String selectTradeCategory();
 	//게시물 상태 변경(거래완료)
-	String changeStatusComplete();
+	String changeStatusComplete(String tradeId);
 	
 
 }

@@ -6,23 +6,43 @@
 
 <mapper namespace="tradeBoard">
 
-	<select id="searchAllTradeBoard" resultType="tradeBoard">
+	<select id="searchAllTradeBoard" parameterType="page" resultType="tradeBoard">
 		SELECT A.tradeId, A.goodsCategory, A.tradeImage, A.tradeTitle, 
-		A.userId, A.tradeDate, A.tradeUpdateDate, IFNULL(B.count, 0) AS tradeLike
+		A.userId, A.tradeDate, A.tradeUpdateDate, IFNULL(B.count, 0) AS tradeLike,
+		C.nickName, A.tradeStatus
 		FROM tradeBoard A
 		LEFT JOIN
 		(SELECT tradeId, COUNT(*) AS count
 		FROM tradeLike
 		GROUP BY tradeId) B
 		ON A.tradeId = B.tradeId
-		WHERE tradeDeleteDate IS NULL
+		INNER JOIN
+		user C
+		ON A.userId = C.userId
+		WHERE A.tradeDeleteDate IS NULL
+		LIMIT #{startPage}, #{recordSize};
 	</select>
 	
-	<select id="selectTradeTitle" parameterType="String" resultType="tradeBoard">
-		SELECT tradeId, goodsCategory, tradeImage, tradeTitle,
-				userId, tradeLike, tradeDate
-		FROM tradeBoard
-		WHERE tradeTitle LIKE CONCAT('%',#{keyword},'%')
+	<select id="countTradeBoard" resultType="int">
+		SELECT count(*) FROM tradeBoard
+	</select>
+	
+	<select id="selectTradeTitle" parameterType="HashMap" resultType="tradeBoard">
+		SELECT A.tradeId, A.goodsCategory, A.tradeImage, A.tradeTitle, 
+		A.userId, A.tradeDate, A.tradeUpdateDate, IFNULL(B.count, 0) AS tradeLike,
+		C.nickName, A.tradeStatus
+		FROM tradeBoard A
+		LEFT JOIN
+		(SELECT tradeId, COUNT(*) AS count
+		FROM tradeLike
+		GROUP BY tradeId) B
+		ON A.tradeId = B.tradeId
+		INNER JOIN
+		user C
+		ON A.userId = C.userId
+		WHERE A.tradeDeleteDate IS NULL
+		AND tradeTitle LIKE CONCAT('%',#{keyword},'%')
+		AND goodsCategory = #{category}
 	</select>
 	
 	<insert id="insertTradeBoard" parameterType="insertTradeBoard">
