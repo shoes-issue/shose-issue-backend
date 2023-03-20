@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
+import com.issue.shoes.tradeBoard.vo.PageNation;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
 import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
@@ -24,17 +25,25 @@ public class TradeBoardDaoImpl implements TradeBoardDao {
 	private SqlSession session;
 
 	@Override
-	public List<TradeBoard> searchAllTradeBoard() {
+	public List<TradeBoard> searchAllTradeBoard(PageNation page) throws Exception {
 		
-		List<TradeBoard> list = session.selectList("tradeBoard.searchAllTradeBoard");
+		List<TradeBoard> list = session.selectList("tradeBoard.searchAllTradeBoard", page);
 		
 		return list;
 	}
+	
+	@Override
+	public int countTradeBoard() throws Exception {
+		
+		int count = session.selectOne("tradeBoard.countTradeBoard");
+		
+		return count;
+	}
 
 	@Override
-	public List<TradeBoard> selectTradeTitle(String keyword) {
+	public List<TradeBoard> selectTradeTitle(HashMap<String, String> map) throws Exception {
 		
-		List<TradeBoard> list = session.selectList("tradeBoard.selectTradeTitle", keyword);
+		List<TradeBoard> list = session.selectList("tradeBoard.selectTradeTitle", map);
 		
 		return list;
 	}

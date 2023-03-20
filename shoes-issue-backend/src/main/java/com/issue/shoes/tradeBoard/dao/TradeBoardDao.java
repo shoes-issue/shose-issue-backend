@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
+import com.issue.shoes.tradeBoard.vo.PageNation;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
 import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
@@ -11,9 +12,9 @@ import com.issue.shoes.tradeBoard.vo.UpdateContent;
 
 public interface TradeBoardDao {
 
-	List<TradeBoard> searchAllTradeBoard();
+	List<TradeBoard> searchAllTradeBoard(PageNation page) throws Exception;
 
-	List<TradeBoard> selectTradeTitle(String keyword);
+	List<TradeBoard> selectTradeTitle(HashMap<String, String> map) throws Exception;
 
 	int insertTradeBoard(InsertTradeBoard tradeBoard) throws Exception;
 
@@ -36,4 +37,6 @@ public interface TradeBoardDao {
 	void deletLike(TradeBoardLike like)throws Exception;
 
 	int updateStatus(HashMap<String, String> map) throws Exception;
+
+	int countTradeBoard() throws Exception;
 }

@@ -17,5 +17,7 @@ public class TradeBoard {
 	private String tradeLike;
 	private String tradeDate;
 	private String tradeUpdateDate;
-
+	private String nickName;
+	private String tradeStatus;
+	private String statusStyle;
 }

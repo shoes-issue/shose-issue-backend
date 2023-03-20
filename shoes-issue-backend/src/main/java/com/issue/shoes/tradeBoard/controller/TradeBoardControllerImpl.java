@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.Gson;
 import com.issue.shoes.tradeBoard.service.TradeBoardService;
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
+import com.issue.shoes.tradeBoard.vo.PageNation;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
 import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
@@ -35,20 +36,22 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	
 	@Override
 	@GetMapping(value="/trade-board/all")
-	public String searchAllTradeBoard() {
+	public String searchAllTradeBoard(PageNation page) {
 		
-		List<TradeBoard> list = service.searchAllTradeBoard();
+		List<Object> list = service.searchAllTradeBoard(page);
+//		List<TradeBoard> list = service.searchAllTradeBoard(page);
 		
-		String tradeBoardList = gson.toJson(list);
+//		String tradeBoardList = gson.toJson(list);
+		String tradeBoardMap = gson.toJson(list);		
 		
-		return tradeBoardList;
+		return tradeBoardMap;
 	}
 	
 	@Override
-	@GetMapping(value="/trade-board/{title}")
-	public String selectTradeTitle(@PathVariable("title")String keyword) {
+	@GetMapping(value="/trade-board/title")
+	public String selectTradeTitle(String keyword, String category) {
 		
-		List<TradeBoard> list = service.selectTradeTitle(keyword);
+		List<TradeBoard> list = service.selectTradeTitle(keyword, category);
 		
 		String tradeBoardList = gson.toJson(list);
 		
@@ -123,12 +126,6 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	}
 
 	@Override
-	public String selectTradeCategory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	@PutMapping(value="/trade-board/status", params="tradeStatus=예약 가능")
 	public String changeStatusReservation(String tradeId, String tradeStatus) {
 		
@@ -146,11 +143,14 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 		return statusString;
 	}
 	
-	@Override
-	public String changeStatusComplete() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	   @Override
+	   @PutMapping(value="/trade-board/status-c")
+	   public String changeStatusComplete(String tradeId) {
+	      
+	      String statusString = service.updateStatusComplete(tradeId);
+	      
+	      return statusString;
+	   }
 
 
 }

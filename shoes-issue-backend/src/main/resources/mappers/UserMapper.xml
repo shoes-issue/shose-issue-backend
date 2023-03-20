@@ -6,7 +6,6 @@
 
 
 <mapper namespace="User">
-
 	<select id="selectLoginUser" parameterType="String"
 		resultType="com.issue.shoes.user.vo.User">
 		SELECT userId, userPw
