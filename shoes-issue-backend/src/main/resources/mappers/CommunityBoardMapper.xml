@@ -36,9 +36,11 @@ resultType="CommunityBoard">
          	FROM communityboard b
 			JOIN user u ON u.userId = b.userId
 			WHERE boardDeletedate IS NULL
+			ORDER BY boardDate DESC
       ]]>
 	</select>
 
+	<!-- 게시글 작성 -->
 	<insert id="insert" parameterType="CommunityBoard">
 	   <![CDATA[
   		 INSERT INTO communityboard (boardId,boardTitle, boardContents, boardDate, userId)
