@@ -1,9 +1,12 @@
 package com.issue.shoes.user.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.issue.shoes.communityBoard.vo.CommunityBoard;
 import com.issue.shoes.user.vo.User;
 
 @Repository
@@ -17,7 +20,6 @@ public class UserDaoImpl implements UserDao {
 		User result = null;
 
 		result = session.selectOne("User.selectLoginUser", user);
-		System.out.println(result);
 
 		return result;
 	}
@@ -96,6 +98,16 @@ public class UserDaoImpl implements UserDao {
 			throw new Exception();
 		}
 
+	}
+
+	@Override
+	public List<CommunityBoard> selectcommunityAll(String userId) {
+
+		List<CommunityBoard> result = null;
+
+		result = session.selectList("User.selectcommunityAll", userId);
+
+		return result;
 	}
 }
 

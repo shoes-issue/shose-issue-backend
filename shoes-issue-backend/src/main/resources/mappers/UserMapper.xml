@@ -9,56 +9,86 @@
 	<select id="selectLoginUser" parameterType="String"
 		resultType="com.issue.shoes.user.vo.User">
 		SELECT userId, userPw
-		FROM user WHERE userId = #{userId} AND deleteDate IS NULL;
+		FROM user WHERE userId = #{userId} AND
+		deleteDate IS NULL;
 	</select>
 
 	<select id="selectUserById" parameterType="String"
 		resultType="com.issue.shoes.user.vo.User">
-		SELECT userId, userPw, userName, nickName, signupDate, updateDate,
+		SELECT userId, userPw, userName, nickName, signupDate,
+		updateDate,
 		deleteDate,
-		adminStatus, point, profileImage, phone, reportCount, reportDate
-		FROM user WHERE userId = #{userId} AND deleteDate IS NULL;
+		adminStatus, point, profileImage, phone,
+		reportCount, reportDate
+		FROM user WHERE userId = #{userId} AND
+		deleteDate IS NULL;
 	</select>
 
 	<insert id="insertUser"
 		parameterType="com.issue.shoes.user.vo.User">
-		INSERT INTO user (userId, userPw, userName, nickName, phone)
-		VALUES (#{userId}, #{userPw}, #{userName}, #{nickName}, #{phone})
+		INSERT INTO user (userId, userPw, userName, nickName,
+		phone)
+		VALUES (#{userId}, #{userPw}, #{userName}, #{nickName},
+		#{phone})
 	</insert>
-	
+
 	<insert id="insertUseroauth"
 		parameterType="com.issue.shoes.user.vo.User">
 		INSERT INTO oauthjwt (userId, subject)
-		VALUES (#{userId}, #{userId})
+		VALUES (#{userId},
+		#{userId})
 	</insert>
-	
+
 	<insert id="insertPreference"
 		parameterType="com.issue.shoes.user.vo.User">
-		INSERT INTO Preference (preference1, preference2, preference3, userId)
-		VALUES (#{preference1}, #{preference2}, #{preference3}, #{userId})
+		INSERT INTO Preference (preference1, preference2,
+		preference3, userId)
+		VALUES (#{preference1}, #{preference2},
+		#{preference3}, #{userId})
 	</insert>
 
 	<update id="updateUser"
 		parameterType="com.issue.shoes.user.vo.User">
 		UPDATE user
 		SET userPw = #{userPw},
-		userName = #{userName},
+		userName =
+		#{userName},
 		nickName = #{nickName},
 		phone = #{phone},
-		profileImage = #{profileImage}
+		profileImage =
+		#{profileImage}
 		WHERE userId = #{userId} AND deleteDate IS NULL;
 	</update>
 
 	<update id="deleteUser" parameterType="String">
 		UPDATE user
-		SET deleteDate = NOW()
+		SET deleteDate
+		= NOW()
 		WHERE userId = #{userId}
 	</update>
-	
+
 	<update id="deleteUseroauth" parameterType="String">
 		UPDATE OauthJwt
-		SET deleteDate = NOW()
+		SET
+		deleteDate = NOW()
 		WHERE userId = #{userId}
 	</update>
+
+	<!-- 모든 게시글 조회 -->
+	<select id="selectcommunityAll" parameterType="String" resultType="CommunityBoard">
+       <![CDATA[   
+         SELECT
+         	boardId,
+         	boardTitle,
+         	boardContents,
+         	boardDate,
+         	b.userId,
+         	u.nickName,
+         	(SELECT COUNT(*) FROM communityLike l WHERE l.boardId = b.boardId) AS boardLike
+         	FROM communityboard b
+			JOIN user u ON u.userId = b.userId
+			WHERE b.userId = #{userId} AND boardDeletedate IS NULL
+      ]]>
+	</select>
 
 </mapper>
