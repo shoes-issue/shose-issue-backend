@@ -39,9 +39,7 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	public String searchAllTradeBoard(PageNation page) {
 		
 		List<Object> list = service.searchAllTradeBoard(page);
-//		List<TradeBoard> list = service.searchAllTradeBoard(page);
-		
-//		String tradeBoardList = gson.toJson(list);
+
 		String tradeBoardMap = gson.toJson(list);		
 		
 		return tradeBoardMap;
@@ -49,9 +47,13 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	
 	@Override
 	@GetMapping(value="/trade-board/title")
-	public String selectTradeTitle(String keyword, String category) {
+	public String selectTradeTitle(PageNation page) {
 		
-		List<TradeBoard> list = service.selectTradeTitle(keyword, category);
+		log.debug(page.getKeyword());
+		log.debug(page.getPage());
+		log.debug(page.getRecordSize());
+		
+		List<Object> list = service.selectTradeTitle(page);
 		
 		String tradeBoardList = gson.toJson(list);
 		

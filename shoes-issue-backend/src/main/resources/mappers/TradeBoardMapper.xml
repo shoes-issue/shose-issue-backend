@@ -27,7 +27,7 @@
 		SELECT count(*) FROM tradeBoard
 	</select>
 	
-	<select id="selectTradeTitle" parameterType="HashMap" resultType="tradeBoard">
+	<select id="selectTradeTitle" parameterType="page" resultType="tradeBoard">
 		SELECT A.tradeId, A.goodsCategory, A.tradeImage, A.tradeTitle, 
 		A.userId, A.tradeDate, A.tradeUpdateDate, IFNULL(B.count, 0) AS tradeLike,
 		C.nickName, A.tradeStatus
@@ -42,6 +42,13 @@
 		ON A.userId = C.userId
 		WHERE A.tradeDeleteDate IS NULL
 		AND tradeTitle LIKE CONCAT('%',#{keyword},'%')
+		AND goodsCategory = #{category}
+		LIMIT #{startPage}, #{recordSize};
+	</select>
+	
+	<select id="countTradeBoardTitle" parameterType="page" resultType="int">
+		SELECT count(*) FROM tradeBoard
+		WHERE tradeTitle LIKE CONCAT('%',#{keyword},'%')
 		AND goodsCategory = #{category}
 	</select>
 	
