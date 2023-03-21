@@ -59,6 +59,8 @@ public class MessageControllerImpl implements MessageController {
 		return new ResponseEntity<String>(jsonResult, HttpStatus.OK);
 	}
 
+	
+	// 쪽지 삭제
 	@Override
 	@DeleteMapping(value = "{messageId}")
 	public ResponseEntity<String> deleteMessage(@PathVariable Message message) {
@@ -69,6 +71,7 @@ public class MessageControllerImpl implements MessageController {
 		return new ResponseEntity<String>(jsonResult, HttpStatus.OK);
 	}
 
+	
 	// 받은 쪽지함`
 	// messageReciever(받은 사람) == userId
 	// URL  : message/inbox
