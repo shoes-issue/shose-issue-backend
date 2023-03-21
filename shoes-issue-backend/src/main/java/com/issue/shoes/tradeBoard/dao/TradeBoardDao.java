@@ -14,7 +14,9 @@ public interface TradeBoardDao {
 
 	List<TradeBoard> searchAllTradeBoard(PageNation page) throws Exception;
 
-	List<TradeBoard> selectTradeTitle(HashMap<String, String> map) throws Exception;
+	List<TradeBoard> selectTradeTitle(PageNation page) throws Exception;
+	
+	int countTradeBoardTitle(PageNation page) throws Exception;
 
 	int insertTradeBoard(InsertTradeBoard tradeBoard) throws Exception;
 
@@ -39,4 +41,6 @@ public interface TradeBoardDao {
 	int updateStatus(HashMap<String, String> map) throws Exception;
 
 	int countTradeBoard() throws Exception;
+
+
 }

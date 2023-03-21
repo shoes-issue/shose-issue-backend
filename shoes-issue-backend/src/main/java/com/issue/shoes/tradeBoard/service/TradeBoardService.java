@@ -15,7 +15,7 @@ public interface TradeBoardService {
 	
 	List<Object> searchAllTradeBoard(PageNation page);
 
-	List<TradeBoard> selectTradeTitle(String keyword, String category);
+	List<Object> selectTradeTitle(PageNation page);
 
 	List<TradeBoard> insertTradeBoard(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile);
 

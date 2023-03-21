@@ -41,11 +41,19 @@ public class TradeBoardDaoImpl implements TradeBoardDao {
 	}
 
 	@Override
-	public List<TradeBoard> selectTradeTitle(HashMap<String, String> map) throws Exception {
+	public List<TradeBoard> selectTradeTitle(PageNation page) throws Exception {
 		
-		List<TradeBoard> list = session.selectList("tradeBoard.selectTradeTitle", map);
+		List<TradeBoard> list = session.selectList("tradeBoard.selectTradeTitle", page);
 		
 		return list;
+	}
+	
+	@Override
+	public int countTradeBoardTitle(PageNation page) throws Exception {
+		
+		int count = session.selectOne("tradeBoard.countTradeBoardTitle", page);
+		
+		return count;
 	}
 
 	@Override

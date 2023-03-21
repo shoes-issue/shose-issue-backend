@@ -10,6 +10,8 @@ import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -25,12 +27,16 @@ import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
 import com.issue.shoes.tradeBoard.vo.UpdateContent;
 
 @Service
+@PropertySource("classpath:/config/imageDirectory.properties")
 public class TradeBoardServiceImpl implements TradeBoardService {
 
 	Logger log = LogManager.getLogger("case3");
 
 	@Autowired
 	private TradeBoardDao dao;
+	
+	@Value("${directory}")
+	private String directory;
 
 	private final PlatformTransactionManager transactionManager;
 
@@ -40,8 +46,8 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 
 	@Override
 	public List<Object> searchAllTradeBoard(PageNation page) {
-
-		page.setStartPage((page.getPage() -1) * page.getRecordSize());//페이지 처음 번호 vo 넣음
+		
+		page.setStartPage(page.getPage());//페이지 처음 번호 vo 넣음
 		
 		List<Object> totalList = new ArrayList<>();
 		
@@ -50,16 +56,66 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		try {
 			list = dao.searchAllTradeBoard(page);
 		
-			int boardCount = dao.countTradeBoard();
+			int totalBoard = dao.countTradeBoard();
 			
 			int totalPage = 0;
+			//나머지 게시글들
+			int remainBoard = totalBoard%10;
 			
-			log.debug(totalPage);
+			page.setRemainBoardCount(remainBoard);
 			
-			if ((boardCount%10) > 0) {
-				totalPage = totalPage/10 + 1;
+			if ((totalBoard%10) > 0 && totalBoard > 10) {
+				totalPage = totalBoard/10 + 1;
+			}else {
+				totalPage = 1;
 			}
-			log.debug(totalPage);
+			
+			//1페이지일 경우 이전 페이지 없애기 위한 용도
+			if (page.getPage() == 1) {
+				page.setPrev(false);
+			}
+			
+			ArrayList<Integer> buttonCount = new ArrayList<Integer>();
+			
+			if (totalPage <= 5) {				
+				for (int i = 1; i <= totalPage; i++) {
+					if(i == totalPage) {
+						buttonCount.add(i);
+						page.setNext(false);
+						break;
+					}else {
+						buttonCount.add(i);
+					}				
+				}
+			}else if ((totalPage - page.getPage()) < 5 ){
+				
+				for (int i = totalPage-4; i <= totalPage; i++) {
+					if(i == totalPage) {
+						buttonCount.add(i);
+						page.setNext(false);
+						break;
+					}else {
+						buttonCount.add(i);
+					}				
+				}
+			}else {				
+				for (int i = page.getPage(); i <= page.getPage()+4; i++) {
+					if(i == totalPage) {
+						buttonCount.add(i);
+						page.setNext(false);
+						break;
+					}else {
+						buttonCount.add(i);
+					}				
+				}
+			}
+			
+			page.setButtonCount(buttonCount);
+			
+			if (buttonCount.size() <= 5) {
+				page.setPrev(false);
+				page.setNext(false);
+			}
 			
 			for (TradeBoard tradeBoard : list) {
 				tradeBoard.setTradeImage("/images/tradeBoard/" + tradeBoard.getTradeImage());
@@ -74,7 +130,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			}
 			
 			totalList.add(list);
-			totalList.add(totalPage);
+			totalList.add(page);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -85,29 +141,99 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 	}
 
 	@Override
-	public List<TradeBoard> selectTradeTitle(String keyword, String category) {
+	public List<Object> selectTradeTitle(PageNation page) {
 		
-		HashMap<String, String> map = new HashMap<>();
+		page.setStartPage(page.getPage());//페이지 처음 번호 vo 넣음
 		
-		map.put("keyword", keyword);
-		map.put("category", category);
-
-		List<TradeBoard> list = null; //오류방지
-//		List<TradeBoard> list = dao.selectTradeTitle(map);
+		List<Object> totalList = new ArrayList<>();
 		
-		for (TradeBoard tradeBoard : list) {
-			tradeBoard.setTradeImage("/images/tradeBoard/" + tradeBoard.getTradeImage());
+		List<TradeBoard> list = null;
+		try {
+			list = dao.selectTradeTitle(page);
 			
-			if (tradeBoard.getTradeStatus().equals("예약 가능")) {				
-				tradeBoard.setStatusStyle("font-size: larger; color: blue");
-			}else if (tradeBoard.getTradeStatus().equals("거래중")) {
-				tradeBoard.setStatusStyle("font-size: larger; color: #ffc107");
-			} else {
-				tradeBoard.setStatusStyle("font-size: larger; color: red");				
+			int totalBoard = dao.countTradeBoardTitle(page);
+			
+			int totalPage = 0;
+			//나머지 게시글들
+			int remainBoard = totalBoard%10;
+			
+			page.setRemainBoardCount(remainBoard);
+			
+			if ((totalBoard%10) > 0 && totalBoard > 10) {
+				totalPage = totalBoard/10 + 1;
+			}else {
+				totalPage = 1;
 			}
-		}
+			
+			//1페이지일 경우 이전 페이지 없애기 위한 용도
+			if (page.getPage() == 1) {
+				page.setPrev(false);
+			}
+			
+			ArrayList<Integer> buttonCount = new ArrayList<Integer>();
 
-		return list;
+			if (totalPage <= 5) {				
+				for (int i = 1; i <= totalPage; i++) {
+					if(i == totalPage) {
+						buttonCount.add(i);
+						page.setNext(false);
+						break;
+					}else {
+						buttonCount.add(i);
+					}				
+				}
+			}else if ((totalPage - page.getPage()) < 5 ){
+				
+				for (int i = totalPage-4; i <= totalPage; i++) {
+					if(i == totalPage) {
+						buttonCount.add(i);
+						page.setNext(false);
+						break;
+					}else {
+						buttonCount.add(i);
+					}				
+				}
+			}else {				
+				for (int i = page.getPage(); i <= page.getPage()+4; i++) {
+					if(i == totalPage) {
+						buttonCount.add(i);
+						page.setNext(false);
+						break;
+					}else {
+						buttonCount.add(i);
+					}				
+				}
+			}
+			
+			page.setButtonCount(buttonCount);
+			
+			if (buttonCount.size() <= 5) {
+				page.setPrev(false);
+				page.setNext(false);
+			}
+			
+			for (TradeBoard tradeBoard : list) {
+				tradeBoard.setTradeImage("/images/tradeBoard/" + tradeBoard.getTradeImage());
+				
+				if (tradeBoard.getTradeStatus().equals("예약 가능")) {				
+					tradeBoard.setStatusStyle("font-size: larger; color: blue");
+				}else if (tradeBoard.getTradeStatus().equals("거래중")) {
+					tradeBoard.setStatusStyle("font-size: larger; color: #ffc107");
+				} else {
+					tradeBoard.setStatusStyle("font-size: larger; color: red");				
+				}
+			}
+			
+			totalList.add(list);
+			totalList.add(page);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+		return totalList;
 	}
 
 	@Override
@@ -161,7 +287,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 
 		boolean success = true;
 
-		String uploadFolder = "C:/Users/KOSA/git/shoes-issue-frontend-vuetify/public/images/tradeBoard";
+		String uploadFolder = directory;
 
 		File uploadPath = new File(uploadFolder);
 
@@ -197,7 +323,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			boardDetail.setNickName(user.getNickName());
 			boardDetail.setPoint(user.getPoint());
 			boardDetail.setUserId(userId);
-			boardDetail.setTradeImage("../../../images/tradeBoard/" + boardDetail.getTradeImage());
+			boardDetail.setTradeImage("/images/tradeBoard/" + boardDetail.getTradeImage());
 
 			transactionManager.commit(txStatus);
 		} catch (Exception e) {
@@ -214,7 +340,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		UpdateContent contents = dao.selectUpdateContent(tradeId);
 
 		if (contents.getTradeImage() != null) {
-			contents.setTradeImage("../../../images/tradeBoard/" + contents.getTradeImage());
+			contents.setTradeImage("/images/tradeBoard/" + contents.getTradeImage());
 		}
 
 		return contents;
@@ -267,7 +393,9 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 	private boolean deleteAndUploadImg(String tradeImage, MultipartFile[] uploadFile, UUID imgUuid) {
 		
 		boolean result = false;
-		tradeImage = tradeImage.replace("../../..", "C:/Users/KOSA/git/shose-issue-frontend");
+		
+		String root = directory.replace("images/tradeBoard/", "");
+		tradeImage = root + tradeImage;
 		
 		try {
 			File file = new File(tradeImage);
@@ -306,7 +434,8 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			int result = dao.deleteDateUpdate(map);
 			
 			if (result == 1) {
-				tradeImage = tradeImage.replace("../../..", "C:/Users/KOSA/git/shose-issue-frontend");
+				String root = directory.replace("images/tradeBoard/", "");
+				tradeImage = root + tradeImage;
 				File file = new File(tradeImage);
 				
 				if( file.exists() ){
