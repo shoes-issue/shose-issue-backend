@@ -88,11 +88,12 @@ public class CommunityControllerImpl implements CommunityBoardController {
 	@PutMapping(produces = "application/json; charset=UTF-8")
 	public ResponseEntity<String> createCommunityBoard(@RequestBody CommunityBoard communityBoard) {
 
-		log.debug("createCommunityBoard 실행={}", communityBoard);
 		
 		// UUID로 boardId 생성
 		UUID uuid = UUID.randomUUID();
 		communityBoard.setBoardId(uuid.toString());
+		
+		log.debug("createCommunityBoard 실행={}", communityBoard);
 		
 		int result = service.createCommunityBoard(communityBoard);
 		if (result == 1) {
