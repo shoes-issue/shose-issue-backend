@@ -7,26 +7,22 @@ import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.issue.shoes.user.service.UserService;
 import com.issue.shoes.user.vo.User;
 
-@Controller
+@RestController
 @CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true", allowedHeaders = "Content-Type")
 @RequestMapping(produces = "application/json; charset=utf-8")
 public class UserCRUDController implements UserController {
@@ -34,8 +30,8 @@ public class UserCRUDController implements UserController {
 	private Logger log = LogManager.getLogger("case3");
 
 	@Autowired
-    private PasswordEncoder passwordEncoder;
-	
+	private PasswordEncoder passwordEncoder;
+
 	@Autowired
 	private Gson gson;
 
@@ -49,12 +45,12 @@ public class UserCRUDController implements UserController {
 	@Override
 	@PostMapping("/user/usercheck")
 	public ResponseEntity<Map<String, Boolean>> searchUser(@RequestBody Map<String, String> requestBody) {
-	    String userId = requestBody.get("userId");
-	    boolean isDuplicate = userService.idDuplicate(userId);
+		String userId = requestBody.get("userId");
+		boolean isDuplicate = userService.idDuplicate(userId);
 
-	    Map<String, Boolean> response = new HashMap<>();
-	    response.put("isDuplicate", isDuplicate);
-	    return ResponseEntity.ok(response);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("isDuplicate", isDuplicate);
+		return ResponseEntity.ok(response);
 	}
 
 
@@ -62,7 +58,7 @@ public class UserCRUDController implements UserController {
 	@PostMapping("/user/{userId}")
 	public ResponseEntity<?> selectUserById(@PathVariable String userId) throws Exception{
 		User user = userService.selectUserById(userId);
-		
+
 		Map<String, Object> map = new HashMap<>();
 		if (user != null) {
 			map.put("userId", user.getUserId());
@@ -77,12 +73,12 @@ public class UserCRUDController implements UserController {
 			map.put("phone", user.getPhone());
 			map.put("reportCount", user.getReportCount());
 			map.put("reportDate", user.getReportDate());
-			
+
 			map.put("success", true);
 		} else {
 			map.put("success", false);
 		}
-		
+
 		String json = gson.toJson(map);
 		return ResponseEntity.ok()
 				.body(json);
@@ -93,9 +89,9 @@ public class UserCRUDController implements UserController {
 	@PostMapping("/user")
 	public ResponseEntity<?> createUser(@RequestBody User user) {
 		try {
-			
-		    // PasswordEncoder를 사용하여 userPw를 암호화합니다.
-            String encodedPassword = passwordEncoder.encode(user.getUserPw());
+
+			// PasswordEncoder를 사용하여 userPw를 암호화합니다.
+			String encodedPassword = passwordEncoder.encode(user.getUserPw());
 
 			// 전달받은 정보를 이용하여 User 객체를 생성합니다.
 			User newUser = new User(
@@ -132,10 +128,10 @@ public class UserCRUDController implements UserController {
 			String profileImage = imageUrl.getOriginalFilename();
 			profileImage = profileImage.substring(profileImage.lastIndexOf("\\") + 1);
 			profileImage = imgUuid.toString() + "_" + profileImage;
-			
+
 			String encodedPassword = passwordEncoder.encode(user.getUserPw());
 			// 전달받은 정보를 이용하여 User 객체를 생성합니다.
-			
+
 			log.debug("sdf");
 			User newUser = new User(
 					user.getUserName(),
@@ -169,5 +165,29 @@ public class UserCRUDController implements UserController {
 		}
 	}
 
-}
+	@Override
+	@PostMapping("/user/tradeBoardAll")
+	public ResponseEntity<?> searchAllTradeBoard(@RequestBody String userId) throws Exception {
 
+		try {	    
+			userService.selectcommunityAll(userId);
+			return ResponseEntity.ok().build();
+		}
+		catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@Override
+	@PostMapping("/user/communityAll")
+	public ResponseEntity<?> searchAllCommunityBoard(@RequestBody String userId) throws Exception {
+
+		try {	    
+			userService.selectcommunityAll(userId);
+			return ResponseEntity.ok().build();
+		}
+		catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+}

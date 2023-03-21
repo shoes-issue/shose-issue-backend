@@ -1,6 +1,7 @@
 package com.issue.shoes.user.service;
 
 import java.io.File;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.issue.shoes.communityBoard.vo.CommunityBoard;
 import com.issue.shoes.user.dao.UserDao;
 import com.issue.shoes.user.vo.User;
 
@@ -108,7 +110,16 @@ public class UserCRUDService implements UserService {
 	    userDao.deleteUseroauth(userId);
 	    return userId;
 	}
-
+	
+	
+	@Transactional
+	@Override
+	public List<CommunityBoard> selectcommunityAll(String userId) {
+		
+		List<CommunityBoard> user = userDao.selectcommunityAll(userId);
+		
+		return user;
+	}
 
 
 }

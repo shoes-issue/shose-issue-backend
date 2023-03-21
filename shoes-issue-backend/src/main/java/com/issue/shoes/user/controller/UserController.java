@@ -1,11 +1,13 @@
 package com.issue.shoes.user.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.issue.shoes.communityBoard.vo.CommunityBoard;
 import com.issue.shoes.user.vo.User;
 
 public interface UserController {
@@ -20,6 +22,9 @@ public interface UserController {
 	ResponseEntity<?> deleteUser(String userId);
 	
 	ResponseEntity<?> selectUserById(String userId) throws Exception;
+	
+//	List<CommunityBoard> searchAllCommunityBoard(Map<String, Object> requestBody) throws Exception;
+	ResponseEntity<?> searchAllCommunityBoard(String requestBody) throws Exception;
 	
 //	ResponseEntity<Map<String, Boolean>> searchUser(String userId);
 

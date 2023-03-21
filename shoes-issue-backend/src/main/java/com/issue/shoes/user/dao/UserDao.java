@@ -1,5 +1,8 @@
 package com.issue.shoes.user.dao;
 
+import java.util.List;
+
+import com.issue.shoes.communityBoard.vo.CommunityBoard;
 import com.issue.shoes.user.vo.User;
 
 public interface UserDao {
@@ -19,6 +22,8 @@ public interface UserDao {
 	void insertPreference(User user) throws Exception;
 
 	void deleteUseroauth(String userId) throws Exception;
+
+	List<CommunityBoard> selectcommunityAll(String userId);
 	
 
 

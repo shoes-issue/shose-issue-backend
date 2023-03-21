@@ -1,5 +1,8 @@
 package com.issue.shoes.user.service;
 
+import java.util.List;
+
+import com.issue.shoes.communityBoard.vo.CommunityBoard;
 import com.issue.shoes.user.vo.User;
 
 public interface UserService {
@@ -23,5 +26,6 @@ public interface UserService {
 	
 	boolean idDuplicate(String userId);
 	//Preference vo 삽입
+	List<CommunityBoard> selectcommunityAll(String userId) throws Exception;
 	
 }
