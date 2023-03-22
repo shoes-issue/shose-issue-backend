@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
 import com.issue.shoes.tradeBoard.vo.PageNation;
+import com.issue.shoes.tradeBoard.vo.RendingInfo;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
 import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
@@ -152,7 +153,7 @@ public class TradeBoardDaoImpl implements TradeBoardDao {
 			throw new Exception();
 		}
 	}
-
+	
 	@Override
 	public void deletLike(TradeBoardLike like) throws Exception {
 
@@ -179,6 +180,24 @@ public class TradeBoardDaoImpl implements TradeBoardDao {
 		
 		return result;
 	}
+
+	@Override
+	public List<String> selectClickLikePeople(String tradeId) {
+		
+		List<String> list = session.selectList("tradeBoard.selectClickLikePeople",tradeId);
+		
+		return list;
+	}
+
+	
+	@Override
+	public List<RendingInfo> selectRendingBody() {
+		
+		List<RendingInfo> list = session.selectList("tradeBoard.selectRendingImg");
+		
+		return list;
+	}
+
 
 	
 	

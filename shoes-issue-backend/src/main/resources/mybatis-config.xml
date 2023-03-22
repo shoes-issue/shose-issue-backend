@@ -15,6 +15,7 @@
 	 	<typeAlias type="com.issue.shoes.tradeBoard.vo.UpdateContent" alias="updateContent" />
 	 	<typeAlias type="com.issue.shoes.tradeBoard.vo.TradeBoardLike" alias="tradeBoardLike" />
 	 	<typeAlias type="com.issue.shoes.tradeBoard.vo.PageNation" alias="page" />
+	 	<typeAlias type="com.issue.shoes.tradeBoard.vo.RendingInfo" alias="RendingInfo" />
 	 	<typeAlias type="com.issue.shoes.communityBoard.vo.CommunityBoard" alias="CommunityBoard" />
 	 	<typeAlias type="com.issue.shoes.communityLike.vo.CommunityLike" alias="communityLike" />
 	 	<typeAlias type="com.issue.shoes.communityComment.vo.CommunityComment" alias="CommunityComment" />

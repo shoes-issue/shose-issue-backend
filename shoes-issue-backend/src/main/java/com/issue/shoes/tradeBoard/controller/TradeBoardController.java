@@ -26,11 +26,14 @@ public interface TradeBoardController {
 	//좋아요 클릭
 	String clickLike(TradeBoardLike like);
 	//게시물 상태 변경(거래예약)
-	String changeStatusReservation(String tradeId, String tradeStatus);
+	String changeStatusReservation(String tradeId, String writerId);
 	//거래 취소
 	String changeStatusCancel(String tradeId);
 	//게시물 상태 변경(거래완료)
-	String changeStatusComplete(String tradeId);
-	
+	String changeStatusComplete(String tradeId, String writerId);
+	//랜딩페이지 이미지 및 기본정보 검색
+	String selectRendingBody();
+	//쪽지 보낸 이의 닉네임 검사
+//	String selectSenderNickName(String userId);
 
 }

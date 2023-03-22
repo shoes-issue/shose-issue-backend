@@ -134,4 +134,19 @@
 		SET tradeStatus = #{tradeStatus}
 		WHERE tradeId = #{tradeId}
 	</update>
+	
+	<!-- 예약 메세지 보내기 위해 좋아요 누른 사람들 조회 -->
+	<select id="selectClickLikePeople" parameterType="String" resultType="String">
+		SELECT userId FROM tradeLike
+		WHERE tradeId = #{tradeId}
+	</select>
+	
+	<!-- 랜딩페이지 이미지 검색 -->
+	<select id="selectRendingImg" resultType="rendingInfo">
+		select tradeId, tradeImage, tradeTitle, 
+		tradeContents, userId
+		from tradeBoard
+		ORDER BY tradeDate DESC
+		LIMIT 0, 6;
+	</select>
 </mapper>
