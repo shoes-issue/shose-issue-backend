@@ -20,6 +20,7 @@
 		user C
 		ON A.userId = C.userId
 		WHERE A.tradeDeleteDate IS NULL
+		ORDER BY A.tradeDate DESC
 		LIMIT #{startPage}, #{recordSize};
 	</select>
 	
@@ -43,6 +44,7 @@
 		WHERE A.tradeDeleteDate IS NULL
 		AND tradeTitle LIKE CONCAT('%',#{keyword},'%')
 		AND goodsCategory = #{category}
+		ORDER BY A.tradeDate DESC
 		LIMIT #{startPage}, #{recordSize};
 	</select>
 	

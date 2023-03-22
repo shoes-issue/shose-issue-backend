@@ -49,9 +49,6 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	@GetMapping(value="/trade-board/title")
 	public String selectTradeTitle(PageNation page) {
 		
-		log.debug(page.getKeyword());
-		log.debug(page.getPage());
-		log.debug(page.getRecordSize());
 		
 		List<Object> list = service.selectTradeTitle(page);
 		
@@ -64,7 +61,7 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	@PostMapping(value="/trade-board")
 	public String createTradeBoard(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile) {
 		
-		List<TradeBoard> list = service.insertTradeBoard(tradeBoard, uploadFile);
+		List<Object> list = service.insertTradeBoard(tradeBoard, uploadFile);
 		
 		String tradeBoardList = gson.toJson(list);
 		
@@ -98,7 +95,7 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	@PostMapping(value="/trade-board/board")
 	public String updateComplete(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile) {
 		
-		List<TradeBoard> list = service.updateTradeBoard(tradeBoard, uploadFile);
+		List<Object> list = service.updateTradeBoard(tradeBoard, uploadFile);
 		
 		String tradeBoardList = gson.toJson(list);
 		
@@ -109,7 +106,7 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	@DeleteMapping(value="/trade-board/")
 	public String deleteTradeBoard(String tradeId, String tradeImage) {
 		
-		List<TradeBoard> list = service.deleteTradeBoard(tradeId, tradeImage);
+		List<Object> list = service.deleteTradeBoard(tradeId, tradeImage);
 		
 		String tradeBoardList = gson.toJson(list);
 		
