@@ -166,14 +166,14 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 		return rendingList;
 	}
 
-//	@Override
-//	@GetMapping(value="/senderNickName")
-//	public String selectSenderNickName(String userId) {
-//		
-//		String nickName = service.selectSenderNickName(userId);
-//		
-//		return null;
-//	}
+	@Override
+	@GetMapping(value="/senderNickName")
+	public String selectSenderNickName(String userId) {
+		
+		String nickName = service.selectSenderNickName(userId);
+		
+		return nickName;
+	}
 
 
 }

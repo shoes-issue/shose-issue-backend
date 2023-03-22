@@ -38,7 +38,7 @@ public interface TradeBoardService {
 
 	List<RendingInfo> selectRendingBody();
 
-//	String selectSenderNickName(String userId);
+	String selectSenderNickName(String userId);
 
 
 

@@ -143,10 +143,16 @@
 	
 	<!-- 랜딩페이지 이미지 검색 -->
 	<select id="selectRendingImg" resultType="rendingInfo">
-		select tradeId, tradeImage, tradeTitle, 
+		SELECT tradeId, tradeImage, tradeTitle, 
 		tradeContents, userId
-		from tradeBoard
+		FROM tradeBoard
 		ORDER BY tradeDate DESC
 		LIMIT 0, 6;
+	</select>
+	
+	<!-- 보내는 이 닉네임 검색 -->
+	<select id="selectSenderNickName" parameterType="String" resultType="String">
+		SELECT nickName FROM user
+		WHERE userId = #{userId}
 	</select>
 </mapper>
