@@ -18,9 +18,12 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.issue.shoes.message.dao.MessageDaoImpl;
+import com.issue.shoes.message.vo.Message;
 import com.issue.shoes.tradeBoard.dao.TradeBoardDao;
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
 import com.issue.shoes.tradeBoard.vo.PageNation;
+import com.issue.shoes.tradeBoard.vo.RendingInfo;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
 import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
@@ -34,6 +37,9 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 
 	@Autowired
 	private TradeBoardDao dao;
+	
+	@Autowired
+	MessageDaoImpl messageDao;
 	
 	@Value("${directory}")
 	private String directory;
@@ -488,7 +494,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 	}
 
 	@Override
-	public String updateStatus(String tradeId, String tradeStatus) {
+	public String updateStatus(String tradeId, String writerId) {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("tradeId", tradeId);
@@ -500,6 +506,22 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			
 			if (result == 1) {
 				//좋아요 누른 사람들에게 쪽지 보내는 부분
+				List<String> likePeople = dao.selectClickLikePeople(tradeId);
+				
+				Message message = new Message();
+				UUID uuid = UUID.randomUUID();
+				message.setMessageId(uuid.toString());//UUID
+				message.setMessageTitle("상품 예약 알림");
+				message.setMessageContents("회원님의 관심목록 상품이 예약상태가 되었습니다.");
+				
+				message.setMessageOpenstatus(false);
+				message.setMessageSender(writerId); //보내는 사람
+				
+				for (String person : likePeople) {
+					message.setMessageReceiver(person); //좋아요 누른 사람				
+					messageDao.create(message);
+				}
+				
 				returnString = "거래중";
 				transactionManager.commit(txStatus);
 			}else {
@@ -527,7 +549,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			int result = dao.updateStatus(map);
 			
 			if (result == 1) {
-				//좋아요 누른 사람들에게 쪽지 보내는 부분은 따로 없음
+				
 				returnString = "예약 가능";
 				transactionManager.commit(txStatus);
 			}else {
@@ -542,7 +564,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 	}
 
 	@Override
-	public String updateStatusComplete(String tradeId) {
+	public String updateStatusComplete(String tradeId, String writerId) {
 
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("tradeId", tradeId);
@@ -556,6 +578,22 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 
 			if (result == 1) {
 				//좋아요 누른 사람들에게 쪽지 보내는 부분
+				List<String> likePeople = dao.selectClickLikePeople(tradeId);
+				
+				Message message = new Message();
+				UUID uuid = UUID.randomUUID();
+				message.setMessageId(uuid.toString());//UUID
+				message.setMessageTitle("상품 판매완료 알림");
+				message.setMessageContents("회원님의 관심목록 상품이 모두 판매었습니다.");
+				
+				message.setMessageOpenstatus(false);
+				message.setMessageSender(writerId); //보내는 사람
+				
+				for (String person : likePeople) {
+					message.setMessageReceiver(person); //좋아요 누른 사람				
+					messageDao.create(message);
+				}
+				
 				returnString = "판매 완료";
 				transactionManager.commit(txStatus);
 			} else {
@@ -567,5 +605,19 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		}
 		return returnString;
 	}
+
+	@Override
+	public List<RendingInfo> selectRendingBody() {
+		
+		List<RendingInfo> list = dao.selectRendingBody();
+		
+		for (RendingInfo rendingInfo : list) {
+			rendingInfo.setTradeImage("/images/tradeBoard/" + rendingInfo.getTradeImage());
+		}
+		
+		return list;
+	}
+	
+	
 
 }

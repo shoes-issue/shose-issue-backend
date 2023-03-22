@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
 import com.issue.shoes.tradeBoard.vo.PageNation;
+import com.issue.shoes.tradeBoard.vo.RendingInfo;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
 import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
@@ -41,6 +42,10 @@ public interface TradeBoardDao {
 	int updateStatus(HashMap<String, String> map) throws Exception;
 
 	int countTradeBoard() throws Exception;
+
+	List<RendingInfo> selectRendingBody();
+
+	List<String> selectClickLikePeople(String tradeId);
 
 
 }

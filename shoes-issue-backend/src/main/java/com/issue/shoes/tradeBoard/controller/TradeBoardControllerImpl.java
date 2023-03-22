@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.issue.shoes.tradeBoard.service.TradeBoardService;
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
 import com.issue.shoes.tradeBoard.vo.PageNation;
-import com.issue.shoes.tradeBoard.vo.TradeBoard;
+import com.issue.shoes.tradeBoard.vo.RendingInfo;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
 import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
 import com.issue.shoes.tradeBoard.vo.UpdateContent;
@@ -37,6 +37,8 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	@Override
 	@GetMapping(value="/trade-board/all")
 	public String searchAllTradeBoard(PageNation page) {
+		
+		log.debug(page.getPage());
 		
 		List<Object> list = service.searchAllTradeBoard(page);
 
@@ -125,10 +127,10 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	}
 
 	@Override
-	@PutMapping(value="/trade-board/status", params="tradeStatus=예약 가능")
-	public String changeStatusReservation(String tradeId, String tradeStatus) {
+	@PutMapping(value="/trade-board/status")
+	public String changeStatusReservation(String tradeId, String writerId) {
 		
-		String statusString = service.updateStatus(tradeId, tradeStatus);
+		String statusString = service.updateStatus(tradeId, writerId);
 		
 		return statusString;
 	}
@@ -144,12 +146,34 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 	
 	   @Override
 	   @PutMapping(value="/trade-board/status-c")
-	   public String changeStatusComplete(String tradeId) {
+	   public String changeStatusComplete(String tradeId, String writerId) {
 	      
-	      String statusString = service.updateStatusComplete(tradeId);
+	      String statusString = service.updateStatusComplete(tradeId, writerId);
 	      
 	      return statusString;
 	   }
+
+	@Override
+	@GetMapping(value="/rendingBody")
+	public String selectRendingBody() {
+		
+		List<RendingInfo> list = service.selectRendingBody();
+		
+		String rendingList = gson.toJson(list);
+		
+		log.debug(rendingList);
+		
+		return rendingList;
+	}
+
+//	@Override
+//	@GetMapping(value="/senderNickName")
+//	public String selectSenderNickName(String userId) {
+//		
+//		String nickName = service.selectSenderNickName(userId);
+//		
+//		return null;
+//	}
 
 
 }

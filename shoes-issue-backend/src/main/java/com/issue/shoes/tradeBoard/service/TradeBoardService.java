@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.issue.shoes.tradeBoard.vo.InsertTradeBoard;
 import com.issue.shoes.tradeBoard.vo.PageNation;
+import com.issue.shoes.tradeBoard.vo.RendingInfo;
 import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.tradeBoard.vo.TradeBoardDetail;
 import com.issue.shoes.tradeBoard.vo.TradeBoardLike;
@@ -29,11 +30,17 @@ public interface TradeBoardService {
 
 	int clickLike(TradeBoardLike like);
 
-	String updateStatus(String tradeId, String tradeStatus);
+	String updateStatus(String tradeId, String writerId);
 
 	String updateStatusCancel(String tradeId);
 
-	String updateStatusComplete(String tradeId);
+	String updateStatusComplete(String tradeId, String writerId);
+
+	List<RendingInfo> selectRendingBody();
+
+//	String selectSenderNickName(String userId);
+
+
 
 
 }
