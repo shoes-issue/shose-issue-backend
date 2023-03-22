@@ -1,7 +1,6 @@
 package com.issue.shoes.oauth.dao;
 
 import com.issue.shoes.oauth.vo.OauthJwt;
-import com.issue.shoes.user.vo.User;
 
 public interface OauthDao {
 

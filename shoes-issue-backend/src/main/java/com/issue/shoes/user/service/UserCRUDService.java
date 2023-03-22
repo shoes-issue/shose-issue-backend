@@ -7,10 +7,11 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.issue.shoes.communityBoard.vo.CommunityBoard;
@@ -20,6 +21,7 @@ import com.issue.shoes.user.dao.UserDao;
 import com.issue.shoes.user.vo.User;
 
 @Service
+@PropertySource("classpath:/config/profileImageDirectory.properties")
 public class UserCRUDService implements UserService {
 
 	private Logger log = LogManager.getLogger("case3");
@@ -31,6 +33,9 @@ public class UserCRUDService implements UserService {
 	public UserCRUDService(PlatformTransactionManager transactionManager) {
 	    this.transactionManager = transactionManager;
 	}
+	
+	@Value("${profiledirectory}")
+	private String profiledirectory;
 
 	@Transactional
 	@Override
@@ -285,7 +290,8 @@ public class UserCRUDService implements UserService {
 
 	private void uploadImg(String profileImage, MultipartFile multipartFile) {
 		
-		String uploadFolder = "C:\\Users\\aneli\\문서\\shoes-issue-frontend-vuetify\\public\\images\\profile";
+		String uploadFolder = profiledirectory;
+		
 		File uploadPath = new File(uploadFolder);
 
 		if (!uploadPath.exists()) {
