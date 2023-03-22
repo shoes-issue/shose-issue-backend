@@ -17,15 +17,15 @@ public interface TradeBoardService {
 
 	List<Object> selectTradeTitle(PageNation page);
 
-	List<TradeBoard> insertTradeBoard(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile);
+	List<Object> insertTradeBoard(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile);
 
 	TradeBoardDetail selectTradeBoardDetail(String tradeId, String userId);
 
 	UpdateContent selectUpdateContent(String tradeId);
 
-	List<TradeBoard> updateTradeBoard(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile);
+	List<Object> updateTradeBoard(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile);
 
-	List<TradeBoard> deleteTradeBoard(String tradeId, String tradeImage);
+	List<Object> deleteTradeBoard(String tradeId, String tradeImage);
 
 	int clickLike(TradeBoardLike like);
 

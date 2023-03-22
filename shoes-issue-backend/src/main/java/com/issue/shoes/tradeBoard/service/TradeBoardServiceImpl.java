@@ -237,7 +237,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 	}
 
 	@Override
-	public List<TradeBoard> insertTradeBoard(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile) {
+	public List<Object> insertTradeBoard(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile) {
 
 		UUID boardUuid = UUID.randomUUID();
 		tradeBoard.setTradeId(boardUuid.toString());
@@ -257,7 +257,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
 
 		int result = 0;
-		List<TradeBoard> list = null;
+		List<Object> list = null;
 
 		try {
 			result = dao.insertTradeBoard(tradeBoard);
@@ -270,7 +270,8 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			}
 
 			if (success) {
-//				list = searchAllTradeBoard();
+				PageNation page = new PageNation();
+				list = searchAllTradeBoard(page);
 				transactionManager.commit(txStatus);
 			}
 
@@ -347,11 +348,11 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 	}
 
 	@Override
-	public List<TradeBoard> updateTradeBoard(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile) {
+	public List<Object> updateTradeBoard(InsertTradeBoard tradeBoard, MultipartFile[] uploadFile) {
 
 		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
 		
-		List<TradeBoard> list = null;
+		List<Object> list = null;
 		
 		//수정날짜
 		LocalDateTime date = LocalDateTime.now();
@@ -360,7 +361,8 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			if (uploadFile == null) {
 				tradeBoard.setTradeUpdateDate(sysDate);
 				dao.updateTradeBoard(tradeBoard);
-//				list = searchAllTradeBoard();
+				PageNation page = new PageNation();
+				list = searchAllTradeBoard(page);
 			} else {
 				String uploadFileName = "";
 				String insertString = uploadFile[0].getOriginalFilename();
@@ -377,7 +379,8 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 					
 					dao.updateTradeBoardIncludeImg(tradeBoard);
 					
-//					list = searchAllTradeBoard();
+					PageNation page = new PageNation();
+					list = searchAllTradeBoard(page);
 					
 					transactionManager.commit(txStatus);
 				}
@@ -416,7 +419,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 	}
 
 	@Override
-	public List<TradeBoard> deleteTradeBoard(String tradeId, String tradeImage) {
+	public List<Object> deleteTradeBoard(String tradeId, String tradeImage) {
 		
 		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
 		
@@ -424,7 +427,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		LocalDateTime date = LocalDateTime.now();
 		String sysDate = date.toString().replace("T", " ").substring(0,19);
 		
-		List<TradeBoard> list = null;
+		List<Object> list = null;
 		try {
 			HashMap<String, String> map = new HashMap<String, String>();
 			
@@ -443,7 +446,8 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 				}
 			}
 			
-//			list = searchAllTradeBoard();
+			PageNation page = new PageNation();
+			list = searchAllTradeBoard(page);
 			
 			transactionManager.commit(txStatus);
 		} catch (Exception e) {
