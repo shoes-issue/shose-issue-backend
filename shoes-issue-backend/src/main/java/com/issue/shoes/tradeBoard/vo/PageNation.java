@@ -9,6 +9,7 @@ public class PageNation {
 	private int startPage;
 	ArrayList<Integer> buttonCount;
 	private int remainBoardCount;
+	private String userId;
 	
 	private boolean next;
 	private boolean prev;
@@ -97,5 +98,11 @@ public class PageNation {
 		this.remainBoardCount = remainBoardCount;
 	}
 	
+	public String getUserId() {
+		return userId;
+	}
 	
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 }
