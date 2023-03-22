@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.issue.shoes.communityBoard.vo.CommunityBoard;
+import com.issue.shoes.tradeBoard.vo.PageNation;
 import com.issue.shoes.user.vo.User;
 
 public interface UserController {
@@ -25,6 +26,12 @@ public interface UserController {
 	
 //	List<CommunityBoard> searchAllCommunityBoard(Map<String, Object> requestBody) throws Exception;
 	ResponseEntity<?> searchAllCommunityBoard(String requestBody) throws Exception;
+	
+	ResponseEntity<?> searchAllTradeBoard(String userId) throws Exception;
+	
+	String tradeBoardWrite(PageNation page);
+	
+	String tradeBoardLike(PageNation page);
 	
 //	ResponseEntity<Map<String, Boolean>> searchUser(String userId);
 

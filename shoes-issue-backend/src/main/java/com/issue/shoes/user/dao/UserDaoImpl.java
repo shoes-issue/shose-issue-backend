@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.issue.shoes.communityBoard.vo.CommunityBoard;
+import com.issue.shoes.tradeBoard.vo.PageNation;
+import com.issue.shoes.tradeBoard.vo.TradeBoard;
 import com.issue.shoes.user.vo.User;
 
 @Repository
@@ -15,6 +17,31 @@ public class UserDaoImpl implements UserDao {
 	@Autowired
 	private SqlSession session;
 
+	@Override
+	public List<TradeBoard> searchMypageAllTradeBoard(PageNation page) throws Exception {
+		
+		List<TradeBoard> list = session.selectList("User.searchAllTradeBoard", page);
+		
+		return list;
+	}
+	
+	@Override
+	public List<TradeBoard> searchMypagelikeTradeBoard(PageNation page) throws Exception {
+		
+		List<TradeBoard> list = session.selectList("User.searchMypagelikeTradeBoard", page);
+		
+		return list;
+	}
+	
+	@Override
+	public int countTradeBoard() throws Exception {
+		
+		int count = session.selectOne("User.countTradeBoard");
+		
+		return count;
+	}
+
+	
 	@Override
 	public User selectLoginUser(User user) {
 		User result = null;

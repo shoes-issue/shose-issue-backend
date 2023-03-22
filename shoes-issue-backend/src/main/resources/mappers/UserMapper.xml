@@ -75,7 +75,8 @@
 	</update>
 
 	<!-- 모든 게시글 조회 -->
-	<select id="selectcommunityAll" parameterType="String" resultType="CommunityBoard">
+	<select id="selectcommunityAll" parameterType="String"
+		resultType="CommunityBoard">
        <![CDATA[   
          SELECT
          	boardId,
@@ -89,6 +90,61 @@
 			JOIN user u ON u.userId = b.userId
 			WHERE b.userId = #{userId} AND boardDeletedate IS NULL
       ]]>
+	</select>
+
+	<select id="searchAllTradeBoard" parameterType="page"
+		resultType="tradeBoard">
+		SELECT A.tradeId, A.goodsCategory, A.tradeImage,
+		A.tradeTitle,
+		A.userId, A.tradeDate, A.tradeUpdateDate, IFNULL(B.count, 0) AS tradeLike,
+		C.nickName, A.tradeStatus
+		FROM tradeBoard A
+		LEFT JOIN
+		(SELECT tradeId,
+		COUNT(*) AS count
+		FROM tradeLike
+		GROUP BY tradeId) B
+		ON A.tradeId =
+		B.tradeId
+		INNER JOIN
+		user C
+		ON A.userId = C.userId
+		WHERE A.userId =
+		#{userId} AND A.tradeDeleteDate IS NULL
+		ORDER BY A.tradeDate DESC
+		LIMIT
+		#{startPage}, #{recordSize};
+	</select>
+
+	<select id="countTradeBoard" resultType="int">
+		SELECT count(*) FROM
+		tradeBoard
+	</select>
+
+	<select id="searchMypagelikeTradeBoard" parameterType="page"
+		resultType="tradeBoard">
+		SELECT A.tradeId, A.goodsCategory, A.tradeImage,
+		A.tradeTitle,
+		A.userId, A.tradeDate, A.tradeUpdateDate, IFNULL(B.count, 0) AS tradeLike,
+		C.nickName, A.tradeStatus
+		FROM tradeBoard A
+		LEFT JOIN
+		(SELECT tradeId,
+		COUNT(*) AS count
+		FROM tradeLike
+		GROUP BY tradeId) B
+		ON A.tradeId =
+		B.tradeId
+		INNER JOIN
+		user C
+		ON A.userId = C.userId
+		INNER JOIN
+		(SELECT tradeId FROM tradelike
+		WHERE userId = #{userId}) D
+		ON A.tradeId = D.tradeId
+		WHERE A.tradeDeleteDate IS NULL
+		ORDER BY A.tradeDate DESC
+		LIMIT #{startPage}, #{recordSize};
 	</select>
 
 </mapper>
