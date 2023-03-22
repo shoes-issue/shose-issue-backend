@@ -17,4 +17,5 @@ public class Message {
 	private Boolean messageOpenstatus;
 	private String messageSender;
 	private String messageReceiver;
+	private String nickName;
 }

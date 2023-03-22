@@ -21,15 +21,17 @@
 		<!-- resultMap="result"> -->
  		<![CDATA[
  			SELECT 
- 				messageId, 
- 				messageTitle, 
- 				messageContents, 
- 				messageSenddate,
- 				messageReceivedate,
- 				messageOpenstatus,
- 				messageSender,
- 				messageReceiver
- 			FROM message
+ 				m.messageId, 
+ 				m.messageTitle, 
+ 				m.messageContents, 
+ 				m.messageSenddate,
+ 				m.messageReceivedate,
+ 				m.messageOpenstatus,
+ 				m.messageSender,
+ 				m.messageReceiver,
+ 				u.nickName
+ 			FROM message m
+ 			JOIN user u ON u.userId = m.messageSender and u.userId = m.messageReceiver
  			WHERE messageId = #{messageId}
  		]]>
 	</select>
@@ -39,8 +41,17 @@
 		resultType="com.issue.shoes.message.vo.Message">
  		<![CDATA[
  			SELECT 
- 			*	
- 			FROM message
+ 				m.messageId, 
+ 				m.messageTitle, 
+ 				m.messageContents, 
+ 				m.messageSenddate,
+ 				m.messageReceivedate,
+ 				m.messageOpenstatus,
+ 				m.messageSender,
+ 				m.messageReceiver,
+ 				u.nickName	
+ 			FROM message m
+ 			JOIN user u ON u.userId = m.messageSender
  			WHERE messageReceiver = #{messageReceiver}
  		
  		]]>
@@ -53,8 +64,17 @@
 		resultType="com.issue.shoes.message.vo.Message">
  		<![CDATA[
  			SELECT 
- 			*	
- 			FROM message
+ 				m.messageId, 
+ 				m.messageTitle, 
+ 				m.messageContents, 
+ 				m.messageSenddate,
+ 				m.messageReceivedate,
+ 				m.messageOpenstatus,
+ 				m.messageSender,
+ 				m.messageReceiver,
+ 				u.nickName	
+ 			FROM message m
+ 			JOIN user u ON u.userId = m.messageReceiver
  			WHERE messageSender = #{messageSender}
  		
  		]]>
