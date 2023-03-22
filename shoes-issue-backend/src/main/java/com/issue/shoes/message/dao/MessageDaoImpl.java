@@ -23,9 +23,14 @@ public class MessageDaoImpl implements MessageDao {
 		return session.insert("message.insert", message);
 	}
 
-	// 쪽지 상세 조회
-	public Message selectOne(String messageId) throws Exception {
-		return session.selectOne("message.selectOne", messageId);
+	// 받은 쪽지 상세 조회
+	public Message selectReceiveOne(String messageId) throws Exception {
+		return session.selectOne("message.selectReceiveOne", messageId);
+	}
+
+	// 보낸 쪽지 상세 조회
+	public Message selectSendOne(String messageId) throws Exception {
+		return session.selectOne("message.selectSendOne", messageId);
 	}
 
 	// 보낸 쪽지 전체 목록 조회

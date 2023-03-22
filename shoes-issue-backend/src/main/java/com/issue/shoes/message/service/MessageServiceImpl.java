@@ -88,15 +88,15 @@ public class MessageServiceImpl implements MessageService {
 		return result;
 	}
 
-	// 쪽지 상세 정보 조회
-	public Message findOneMessage(String messageId) {
+	// 받은 쪽지 상세 정보 조회
+	public Message findOneReceiveMessage(String messageId) {
 		Message result = null;
 
 		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
 
 		log.debug("service 소환");
 		try {
-			result = dao.selectOne(messageId);
+			result = dao.selectReceiveOne(messageId);
 			transactionManager.commit(txStatus);
 			log.debug("service => 잘실행되었어요");
 		} catch (Exception e) {
@@ -106,5 +106,25 @@ public class MessageServiceImpl implements MessageService {
 
 		return result;
 	}
+
+	
+	// 받은 쪽지 상세 정보 조회
+		public Message findOneSendMessage(String messageId) {
+			Message result = null;
+
+			TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+
+			log.debug("service 소환");
+			try {
+				result = dao.selectSendOne(messageId);
+				transactionManager.commit(txStatus);
+				log.debug("service => 잘실행되었어요");
+			} catch (Exception e) {
+				transactionManager.rollback(txStatus);
+				log.debug("service => 뭔가 이상해요 사유={}", e);
+			}
+
+			return result;
+		}
 
 }

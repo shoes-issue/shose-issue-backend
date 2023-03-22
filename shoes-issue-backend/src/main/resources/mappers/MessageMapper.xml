@@ -16,7 +16,7 @@
 		column="messageSender" /> <result property="messageReceiver" column="messageReceiver" 
 		/> </resultMap> -->
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-	<select id="selectOne" parameterType="String"
+	<select id="selectReceiveOne" parameterType="String"
 		resultType="com.issue.shoes.message.vo.Message">
 		<!-- resultMap="result"> -->
  		<![CDATA[
@@ -31,7 +31,27 @@
  				m.messageReceiver,
  				u.nickName
  			FROM message m
- 			JOIN user u ON u.userId = m.messageSender and u.userId = m.messageReceiver
+ 			JOIN user u ON u.userId = m.messageSender
+ 			WHERE messageId = #{messageId}
+ 		]]>
+	</select>
+	
+	<select id="selectSendOne" parameterType="String"
+		resultType="com.issue.shoes.message.vo.Message">
+		<!-- resultMap="result"> -->
+ 		<![CDATA[
+ 			SELECT 
+ 				m.messageId, 
+ 				m.messageTitle, 
+ 				m.messageContents, 
+ 				m.messageSenddate,
+ 				m.messageReceivedate,
+ 				m.messageOpenstatus,
+ 				m.messageSender,
+ 				m.messageReceiver,
+ 				u.nickName
+ 			FROM message m
+ 			JOIN user u ON u.userId = m.messageReceiver
  			WHERE messageId = #{messageId}
  		]]>
 	</select>
