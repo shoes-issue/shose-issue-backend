@@ -378,6 +378,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 				uploadFileName = imgUuid.toString() + "_" + uploadFileName;
 				boolean result = deleteAndUploadImg(tradeBoard.getTradeImage(), uploadFile, imgUuid);
 				
+				
 				if (result) {
 					
 					tradeBoard.setTradeUpdateDate(sysDate);
@@ -403,9 +404,8 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		
 		boolean result = false;
 		
-		String root = directory.replace("images/tradeBoard/", "");
+		String root = directory.replace("/images/tradeBoard", "");
 		tradeImage = root + tradeImage;
-		
 		try {
 			File file = new File(tradeImage);
 			
@@ -443,7 +443,7 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			int result = dao.deleteDateUpdate(map);
 			
 			if (result == 1) {
-				String root = directory.replace("images/tradeBoard/", "");
+				String root = directory.replace("/images/tradeBoard", "");
 				tradeImage = root + tradeImage;
 				File file = new File(tradeImage);
 				
@@ -479,10 +479,8 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 			
 			dao.insertLike(like);
 			result = 1;
-			log.debug("잘 실행되었습니다.");
 		} else {
 			dao.deletLike(like);
-			log.debug("잘 실행되었습니다.");
 		}
 		transactionManager.commit(txStatus);
 		} catch (Exception e) {
@@ -616,6 +614,14 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		}
 		
 		return list;
+	}
+
+	@Override
+	public String selectSenderNickName(String userId) {
+		
+		String nickName = dao.selectSenderNickName(userId);
+		
+		return nickName;
 	}
 	
 	

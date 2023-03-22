@@ -34,6 +34,6 @@ public interface TradeBoardController {
 	//랜딩페이지 이미지 및 기본정보 검색
 	String selectRendingBody();
 	//쪽지 보낸 이의 닉네임 검사
-//	String selectSenderNickName(String userId);
+	String selectSenderNickName(String userId);
 
 }

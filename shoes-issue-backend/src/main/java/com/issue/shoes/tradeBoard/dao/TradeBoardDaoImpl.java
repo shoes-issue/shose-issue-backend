@@ -198,6 +198,16 @@ public class TradeBoardDaoImpl implements TradeBoardDao {
 		return list;
 	}
 
+	@Override
+	public String selectSenderNickName(String userId) {
+		
+		String nickName= session.selectOne("tradeBoard.selectSenderNickName", userId);
+		
+		return nickName;
+	}
+
+
+
 
 	
 	

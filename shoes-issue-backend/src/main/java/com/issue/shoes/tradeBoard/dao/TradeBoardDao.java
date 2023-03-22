@@ -47,5 +47,7 @@ public interface TradeBoardDao {
 
 	List<String> selectClickLikePeople(String tradeId);
 
+	String selectSenderNickName(String userId);
+
 
 }
