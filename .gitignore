@@ -3,6 +3,9 @@ database.properties
 # application personal config
 application.properties
 
+# 이미지 업로드 관련 설정
+imageDirectory.properties
+
 lecture
 target 
 
