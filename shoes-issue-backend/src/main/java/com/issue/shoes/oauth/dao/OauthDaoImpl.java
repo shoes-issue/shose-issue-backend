@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.issue.shoes.oauth.vo.OauthJwt;
-import com.mysql.cj.log.Log;
 
 @Repository
 public class OauthDaoImpl implements OauthDao {
