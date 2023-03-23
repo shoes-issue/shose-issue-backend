@@ -44,6 +44,7 @@ public class MessageControllerImpl implements MessageController {
 		UUID uuid = UUID.randomUUID();
 		message.setMessageId(uuid.toString());
 
+
 		int result = service.sendMessage(message);
 		// status
 		if (result == 1) {
@@ -60,14 +61,18 @@ public class MessageControllerImpl implements MessageController {
 
 	// 쪽지 삭제
 	@Override
-	@DeleteMapping(value = "{messageId}")
-	public ResponseEntity<String> deleteMessage(@PathVariable Message message) {
-		log.debug("deleteMessage 실행={}", message);
+	@PostMapping(value = "delete/{messageId}")
+	public ResponseEntity<String> deleteMessage(@PathVariable String messageId) {
+		log.debug("deleteMessage 실행={}", messageId);
 
+		service.deleteOneMessage(messageId);
+		
 		String jsonResult = gson.toJson("쪽지 삭제 완료");
-
+		
 		return new ResponseEntity<String>(jsonResult, HttpStatus.OK);
 	}
+	
+
 
 	// 받은 쪽지함`
 	// messageReciever(받은 사람) == userId

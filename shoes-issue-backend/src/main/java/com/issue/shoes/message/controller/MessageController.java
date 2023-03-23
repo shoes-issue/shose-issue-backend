@@ -12,7 +12,7 @@ public interface MessageController {
 	ResponseEntity<String> sendMessage(Message message);
 
 	// 쪽지 삭제
-	ResponseEntity<String> deleteMessage(Message messageId);
+	ResponseEntity<String> deleteMessage(String messageId) throws Exception;
 
 	// 받은 쪽지함
 	List<Message> allReceivedMessage(String messageReceiver);
