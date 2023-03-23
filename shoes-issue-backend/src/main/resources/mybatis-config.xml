@@ -21,5 +21,6 @@
 	 	<typeAlias type="com.issue.shoes.communityComment.vo.CommunityComment" alias="CommunityComment" />
 	 	<typeAlias type="com.issue.shoes.oauth.vo.OauthJwt" alias="userJwt" />
 	 	<typeAlias type="com.issue.shoes.message.vo.Message" alias="Message"/>
+	 	<typeAlias type="com.issue.shoes.user.vo.User" alias="User"/>
 	</typeAliases>
 </configuration>
