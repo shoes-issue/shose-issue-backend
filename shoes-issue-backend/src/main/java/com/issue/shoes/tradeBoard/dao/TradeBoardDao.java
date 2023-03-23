@@ -49,5 +49,9 @@ public interface TradeBoardDao {
 
 	String selectSenderNickName(String userId);
 
+	int selectFalseMessage(String userId);
+
+	String selectReceiverdMessage(String userId);
+
 
 }

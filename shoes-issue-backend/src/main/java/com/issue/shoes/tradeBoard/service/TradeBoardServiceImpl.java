@@ -623,6 +623,21 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 		
 		return nickName;
 	}
+
+	@Override
+	public int selectFalseMessage(String userId) {
+		
+		int result = 0;
+		
+		String receivedMessage = dao.selectReceiverdMessage(userId);
+		
+		if (receivedMessage != null) {
+			result = dao.selectFalseMessage(userId);
+		}
+		
+		
+		return result;
+	}
 	
 	
 
