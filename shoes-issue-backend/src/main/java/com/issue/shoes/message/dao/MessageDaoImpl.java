@@ -45,4 +45,16 @@ public class MessageDaoImpl implements MessageDao {
 		return session.selectList("message.selectAllSend", messageSender);
 	}
 
+	public int deleteOne(String messageId) throws Exception {
+		
+		return session.update("message.delete", messageId);
+	}
+	
+
+	public int openMessageStatus(String messageId) {
+		
+		return session.update("message.openMessageStatus", messageId);
+		
+	}
+
 }

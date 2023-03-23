@@ -32,7 +32,8 @@
  				u.nickName
  			FROM message m
  			JOIN user u ON u.userId = m.messageSender
- 			WHERE messageId = #{messageId}
+ 			WHERE messageId = #{messageId} and messageDeletedate is null
+ 		
  		]]>
 	</select>
 	
@@ -52,7 +53,8 @@
  				u.nickName
  			FROM message m
  			JOIN user u ON u.userId = m.messageReceiver
- 			WHERE messageId = #{messageId}
+ 			WHERE messageId = #{messageId} and messageDeletedate is null
+ 		
  		]]>
 	</select>
 
@@ -72,7 +74,8 @@
  				u.nickName	
  			FROM message m
  			JOIN user u ON u.userId = m.messageSender
- 			WHERE messageReceiver = #{messageReceiver}
+ 			WHERE messageReceiver = #{messageReceiver} and messageDeletedate is null
+ 		
  		
  		]]>
 
@@ -95,7 +98,7 @@
  				u.nickName	
  			FROM message m
  			JOIN user u ON u.userId = m.messageReceiver
- 			WHERE messageSender = #{messageSender}
+ 			WHERE messageSender = #{messageSender} and messageDeletedate is null
  		
  		]]>
 
@@ -108,5 +111,18 @@
 			VALUES (#{messageId}, #{messageTitle}, #{messageContents}, NOW(), #{messageSender}, #{messageReceiver})
 		]]>
 	</insert>
+	
+	<update id="delete" parameterType="String">
+			UPDATE shoes.message
+			SET messageDeletedate = now()
+			WHERE messageId = #{messageId}
+	</update>
+	
+	
+	<update id="openMessageStatus" parameterType="String">
+			UPDATE shoes.message
+			SET messageOpenstatus = true
+			WHERE messageId = #{messageId} AND messageOpenstatus = false
+	</update>
 
 </mapper> 
