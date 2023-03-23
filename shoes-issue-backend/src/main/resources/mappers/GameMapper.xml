@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="User">
+	<!-- 유저 포인트 조회 -->
+	<select id="selectOnePoint" parameterType="String"		
+resultType="User">
+       <![CDATA[   
+         SELECT 
+         point from user
+         where userId=#{userId}
+      ]]>
+	</select>
+
+	<!-- 유저 포인트 증가 -->
+	<update id="addPoint" parameterType="String" >
+       <![CDATA[   
+        	Update User SET
+        	point = point+40
+        	where userId=#{userId}
+      ]]>
+	</update>
+
+	<!-- 유저 포인트 감소  -->
+	<update id="minusPoint" parameterType="String" >
+	   <![CDATA[
+  		 Update User SET
+        	point = point-5
+        	where userId=#{userId}
+	   ]]>
+	</update>
+</mapper>

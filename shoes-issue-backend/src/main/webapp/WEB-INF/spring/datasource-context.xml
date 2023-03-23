@@ -31,6 +31,7 @@
 				<value>classpath:mappers/UserJwtMapper.xml</value>
 				<value>classpath:mappers/CommunityLikeMapper.xml</value>
 				<value>classpath:mappers/CommunityComment.xml</value>
+				<value>classpath:mappers/GameMapper.xml</value>
 			</list>
 		</property>
 
