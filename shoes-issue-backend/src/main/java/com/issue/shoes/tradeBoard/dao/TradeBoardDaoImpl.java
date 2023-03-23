@@ -205,6 +205,26 @@ public class TradeBoardDaoImpl implements TradeBoardDao {
 		
 		return nickName;
 	}
+	
+	@Override
+	public String selectReceiverdMessage(String userId) {
+		
+		System.out.println("실행됨"+ userId);
+		String receivedMessage = session.selectOne("tradeBoard.selectReceivedMessage", userId);
+		System.out.println("실행됨");
+		System.out.println("검색결과 "+receivedMessage);
+		
+		return receivedMessage;
+	}
+
+	@Override
+	public int selectFalseMessage(String userId) {
+		
+		int result = session.selectOne("tradeBoard.selectFalseCount", userId);
+		
+		return result;
+	}
+
 
 
 

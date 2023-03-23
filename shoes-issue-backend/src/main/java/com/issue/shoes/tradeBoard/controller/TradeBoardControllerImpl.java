@@ -174,6 +174,15 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 		
 		return nickName;
 	}
+	@GetMapping(value="/alarm")
+	public String messageAlert(String userId) {
+	
+		int result = service.selectFalseMessage(userId);
+		
+		String falseCount = gson.toJson(result);
+		
+		return falseCount;
+	}
 
 
 }

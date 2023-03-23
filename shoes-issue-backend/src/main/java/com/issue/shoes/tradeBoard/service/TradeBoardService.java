@@ -40,6 +40,8 @@ public interface TradeBoardService {
 
 	String selectSenderNickName(String userId);
 
+	int selectFalseMessage(String userId);
+
 
 
 

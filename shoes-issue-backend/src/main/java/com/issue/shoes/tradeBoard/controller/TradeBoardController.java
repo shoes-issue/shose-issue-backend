@@ -35,5 +35,6 @@ public interface TradeBoardController {
 	String selectRendingBody();
 	//쪽지 보낸 이의 닉네임 검사
 	String selectSenderNickName(String userId);
-
+	//쪽지 알람
+	String messageAlert(String userId);
 }
