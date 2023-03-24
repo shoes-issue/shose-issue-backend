@@ -507,8 +507,6 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 				List<String> likePeople = dao.selectClickLikePeople(tradeId);
 				
 				Message message = new Message();
-				UUID uuid = UUID.randomUUID();
-				message.setMessageId(uuid.toString());//UUID
 				message.setMessageTitle("상품 예약 알림");
 				message.setMessageContents("회원님의 관심목록 상품이 예약상태가 되었습니다.");
 				
@@ -516,6 +514,8 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 				message.setMessageSender(writerId); //보내는 사람
 				
 				for (String person : likePeople) {
+					UUID uuid = UUID.randomUUID();
+					message.setMessageId(uuid.toString());//UUID
 					message.setMessageReceiver(person); //좋아요 누른 사람				
 					messageDao.create(message);
 				}
@@ -579,8 +579,6 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 				List<String> likePeople = dao.selectClickLikePeople(tradeId);
 				
 				Message message = new Message();
-				UUID uuid = UUID.randomUUID();
-				message.setMessageId(uuid.toString());//UUID
 				message.setMessageTitle("상품 판매완료 알림");
 				message.setMessageContents("회원님의 관심목록 상품이 모두 판매었습니다.");
 				
@@ -588,6 +586,8 @@ public class TradeBoardServiceImpl implements TradeBoardService {
 				message.setMessageSender(writerId); //보내는 사람
 				
 				for (String person : likePeople) {
+					UUID uuid = UUID.randomUUID();
+					message.setMessageId(uuid.toString());//UUID
 					message.setMessageReceiver(person); //좋아요 누른 사람				
 					messageDao.create(message);
 				}
