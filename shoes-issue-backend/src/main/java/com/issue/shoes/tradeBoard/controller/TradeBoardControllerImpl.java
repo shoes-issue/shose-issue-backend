@@ -184,5 +184,4 @@ public class TradeBoardControllerImpl implements TradeBoardController{
 		return falseCount;
 	}
 
-
 }
